@@ -12,14 +12,20 @@
             tools:layout="@layout/fragment_home"/>
 
     <fragment
-            android:id="@+id/navigation_dashboard"
-            android:name="com.example.saglife.ui.dashboard.DashboardFragment"
-            android:label="@string/title_dashboard"
-            tools:layout="@layout/fragment_dashboard"/>
+            android:id="@+id/navigation_calendar"
+            android:name="com.example.saglife.ui.events.EventsFragment"
+            android:label="@string/title_calendar"
+            tools:layout="@layout/fragment_calendar"/>
 
     <fragment
-            android:id="@+id/navigation_notifications"
-            android:name="com.example.saglife.ui.notifications.NotificationsFragment"
-            android:label="@string/title_notifications"
-            tools:layout="@layout/fragment_notifications"/>
+            android:id="@+id/navigation_forum"
+            android:name="com.example.saglife.ui.forum.ForumFragment"
+            android:label="Forum"
+            tools:layout="@layout/fragment_forum"/>
+
+    <fragment
+            android:id="@+id/navigation_map"
+            android:name="com.example.saglife.ui.map.MapFragment"
+            android:label="Map"
+            tools:layout="@layout/fragment_map"/>
 </navigation>
