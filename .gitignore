@@ -141,7 +141,16 @@ fabric.properties
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+<<<<<<< HEAD
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,kotlin
 
 build/*
+=======
+<<<<<<< Updated upstream
+=======
+
+# End of https://www.toptal.com/developers/gitignore/api/intellij,kotlin
+local.properties
+>>>>>>> Stashed changes
+>>>>>>> 28041c1 (Ajout du component evénement)
