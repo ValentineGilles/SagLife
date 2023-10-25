@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "com.example.saglife.app-mergeDebugResources-48:/layout/fragment_calendar.xml",
+        "source": "com.example.saglife.app-main-51:/layout/fragment_calendar.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-mergeDebugResources-48:/layout/fragment_map.xml",
+        "source": "com.example.saglife.app-main-51:/layout/fragment_map.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-mergeDebugResources-48:/layout/activity_login.xml",
+        "source": "com.example.saglife.app-main-51:/layout/activity_login.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-mergeDebugResources-48:/layout/fragment_home.xml",
+        "source": "com.example.saglife.app-main-51:/layout/fragment_home.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-mergeDebugResources-48:/layout/activity_main.xml",
+        "source": "com.example.saglife.app-main-51:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-mergeDebugResources-48:/layout/fragment_forum.xml",
+        "source": "com.example.saglife.app-main-51:/layout/fragment_forum.xml"
+    }
+]
