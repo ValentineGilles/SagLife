@@ -1,4 +1,4 @@
-package com.example.saglife
+package com.example.saglife.component
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
