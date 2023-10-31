@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.saglife.app-mergeDebugResources-47:/values-v28/values-v28.xml",
+            "outputFile": "com.example.saglife.app-mergeDebugResources-58:/values-v28/values-v28.xml",
             "map": [
                 {
-                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/16e5c5ee02c27d7dac6da2cf9127f2b9/transformed/material-1.10.0/res/values-v28/values-v28.xml",
+                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/dcc406f52a9e8c63cec66d29da7a3ff5/transformed/material-1.10.0/res/values-v28/values-v28.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/171c44968776a7c416268678501cf32f/transformed/appcompat-1.6.1/res/values-v28/values-v28.xml",
+                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/e5be0b8d68940c264c44d2852cbb4e6d/transformed/appcompat-1.6.1/res/values-v28/values-v28.xml",
                     "from": {
                         "startLines": "2,3,4,8",
                         "startColumns": "4,4,4,4",

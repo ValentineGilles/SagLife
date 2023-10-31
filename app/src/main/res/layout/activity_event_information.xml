@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Event_information">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageEvent"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:contentDescription="Event"
+            android:scaleType="fitXY"
+            android:src="@drawable/event" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:translationZ="2dp"
+            android:background="@drawable/layout_bg"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="74dp"
+                android:layout_height="wrap_content"
+                android:text="24 Sept."
+                android:textSize="30sp" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="60dp"
+                android:background="@color/black"
+                android:orientation="vertical"
+                android:layout_gravity="center"/>
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Party Barbie"
+                    android:textSize="24sp"
+                    android:textStyle="bold"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/baseline_access_time_24"
+                        app:tint="@color/material_dynamic_neutral80" />
+
+                    <Space
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="17h - 21h"
+                        android:textColor="@color/material_dynamic_neutral80"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_gravity="center"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/baseline_add_circle_24"
+                android:scaleType="fitXY"
+                app:tint="@color/white"
+                android:background="@drawable/roundcorner"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/descriptionEvent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in nibh in nisl sodales auctor. Cras porttitor, nibh eu sagittis dignissim, ante diam viverra justo, tempus eleifend libero ante id nunc. Ut congue interdum sapien. Nullam viverra neque et malesuada pharetra. Nam lobortis vel ipsum sed sodales. Curabitur malesuada laoreet diam eget semper. Vivamus lobortis id urna eget blandit. Vivamus non justo metus. Morbi pretium malesuada massa non ullamcorper. Morbi ac venenatis purus, eu rutrum sapien. Ut ultrices erat ut imperdiet ultrices. Morbi sodales tempor metus, aliquam aliquet sapien imperdiet sit amet. Vestibulum id consequat neque, ut fermentum lacus. Sed bibendum sapien eu ex malesuada tristique. Morbi in tempor ex. In condimentum dui quam, in lacinia mi porta eget."/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

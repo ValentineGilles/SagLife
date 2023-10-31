@@ -34,6 +34,7 @@
         android:padding="8dp">
 
         <TextView
+            android:id="@+id/dateEvent"
             android:layout_width="74dp"
             android:layout_height="wrap_content"
             android:text="24 Sept."
@@ -60,6 +61,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/nameEvent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Party Barbie"
@@ -86,6 +88,7 @@
                     android:layout_height="match_parent" />
 
                 <TextView
+                    android:id="@+id/horraireEvent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="17h - 21h"

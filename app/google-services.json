@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "577625699816",
+    "project_id": "saglife-94b7c",
+    "storage_bucket": "saglife-94b7c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577625699816:android:6fefcabefa90448f64e05d",
+        "android_client_info": {
+          "package_name": "com.example.saglife"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAibKETptXBaw9VstofVaZdVbKdOYzkmEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

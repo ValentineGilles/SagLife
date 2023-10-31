@@ -10,7 +10,13 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <string name="app_name">SagLife</string>
+    <string name="gcm_defaultSenderId" translatable="false">577625699816</string>
+    <string name="google_api_key" translatable="false">AIzaSyAibKETptXBaw9VstofVaZdVbKdOYzkmEU</string>
+    <string name="google_app_id" translatable="false">1:577625699816:android:6fefcabefa90448f64e05d</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAibKETptXBaw9VstofVaZdVbKdOYzkmEU</string>
+    <string name="google_storage_bucket" translatable="false">saglife-94b7c.appspot.com</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="project_id" translatable="false">saglife-94b7c</string>
     <string name="title_calendar">Evenements</string>
     <string name="title_forum">Forum</string>
     <string name="title_home">Home</string>
