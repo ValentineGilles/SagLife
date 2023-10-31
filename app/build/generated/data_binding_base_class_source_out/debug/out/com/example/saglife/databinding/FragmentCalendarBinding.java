@@ -4,7 +4,7 @@ package com.example.saglife.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,12 +20,12 @@ public final class FragmentCalendarBinding implements ViewBinding {
   private final ConstraintLayout rootView;
 
   @NonNull
-  public final TextView textCalendar;
+  public final ListView eventListView;
 
   private FragmentCalendarBinding(@NonNull ConstraintLayout rootView,
-      @NonNull TextView textCalendar) {
+      @NonNull ListView eventListView) {
     this.rootView = rootView;
-    this.textCalendar = textCalendar;
+    this.eventListView = eventListView;
   }
 
   @Override
@@ -55,13 +55,13 @@ public final class FragmentCalendarBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.text_calendar;
-      TextView textCalendar = ViewBindings.findChildViewById(rootView, id);
-      if (textCalendar == null) {
+      id = R.id.event_list_view;
+      ListView eventListView = ViewBindings.findChildViewById(rootView, id);
+      if (eventListView == null) {
         break missingId;
       }
 
-      return new FragmentCalendarBinding((ConstraintLayout) rootView, textCalendar);
+      return new FragmentCalendarBinding((ConstraintLayout) rootView, eventListView);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

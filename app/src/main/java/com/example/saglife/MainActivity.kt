@@ -30,6 +30,15 @@
     import com.example.saglife.screen.account.ProfileScreen
     import com.example.saglife.screen.account.RegistrationScreen
     import com.example.saglife.ui.theme.SagLifeTheme
+    import android.os.Bundle
+    import androidx.appcompat.app.AppCompatActivity
+    import androidx.navigation.findNavController
+    import androidx.navigation.ui.AppBarConfiguration
+    import androidx.navigation.ui.setupActionBarWithNavController
+    import androidx.navigation.ui.setupWithNavController
+    import com.example.saglife.databinding.ActivityMainBinding
+    import com.google.android.material.bottomnavigation.BottomNavigationView
+    import com.google.firebase.FirebaseApp
 
 
     class MainActivity : ComponentActivity() {
@@ -51,6 +60,10 @@
         @Composable
         fun MyApp(navController: NavHostController) {
             var selectedItem by remember { mutableStateOf(0) }
+        // Initialize Firebase
+        FirebaseApp.initializeApp(this)
+
+        val navView: BottomNavigationView = binding.navView
 
             // Définir une variable pour indiquer si les bars doivent être affichées
             val isTopBarVisible = remember { mutableStateOf(true) }

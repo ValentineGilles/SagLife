@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.saglife.app-mergeDebugResources-47:/values-ldltr-v21/values-ldltr-v21.xml",
+            "outputFile": "com.example.saglife.app-mergeDebugResources-58:/values-ldltr-v21/values-ldltr-v21.xml",
             "map": [
                 {
-                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/171c44968776a7c416268678501cf32f/transformed/appcompat-1.6.1/res/values-ldltr-v21/values-ldltr-v21.xml",
+                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/e5be0b8d68940c264c44d2852cbb4e6d/transformed/appcompat-1.6.1/res/values-ldltr-v21/values-ldltr-v21.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
