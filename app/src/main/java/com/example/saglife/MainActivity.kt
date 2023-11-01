@@ -1,6 +1,8 @@
     package com.example.saglife
 
     import Routes
+    import android.content.res.Configuration
+    import android.os.Build
     import com.example.saglife.screen.CalendarScreen
     import com.example.saglife.screen.ForumScreen
     import com.example.saglife.screen.HomeScreen
@@ -9,6 +11,7 @@
     import android.view.View
     import androidx.activity.compose.setContent
     import androidx.activity.ComponentActivity
+    import androidx.annotation.RequiresApi
     import androidx.compose.foundation.layout.padding
     import androidx.compose.material3.ExperimentalMaterial3Api
     import androidx.compose.material3.Scaffold
@@ -18,6 +21,7 @@
     import androidx.compose.runtime.remember
     import androidx.compose.runtime.setValue
     import androidx.compose.ui.Modifier
+    import androidx.compose.ui.tooling.preview.Preview
     import androidx.navigation.NavHostController
     import androidx.navigation.compose.NavHost
     import androidx.navigation.compose.composable
@@ -30,8 +34,10 @@
 
 
     class MainActivity : ComponentActivity() {
+        @RequiresApi(Build.VERSION_CODES.M)
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
+            actionBar?.hide();
             setContent {
                 SagLifeTheme {
                     val navController = rememberNavController()

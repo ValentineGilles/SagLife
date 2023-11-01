@@ -9,7 +9,6 @@
             android:icon="@mipmap/ic_saglife_launcher"
             android:label="@string/app_name"
             android:supportsRtl="true"
-            android:theme="@style/Theme.SagLife"
             android:enableOnBackInvokedCallback="true"
             tools:targetApi="tiramisu">
         <activity

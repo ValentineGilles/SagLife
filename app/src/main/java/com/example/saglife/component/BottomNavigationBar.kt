@@ -1,6 +1,7 @@
 package com.example.saglife.component
 
 import android.os.Bundle
+import android.text.style.BackgroundColorSpan
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,7 +26,8 @@ fun BottomNavigationBar(
     selectedItem: Int,
     onItemSelected: (Int) -> Unit
 ) {
-    BottomNavigation {
+    val colors = MaterialTheme.colorScheme
+    BottomNavigation(backgroundColor = colors.surface) {
 
         BottomNavigationItem(
             selected = selectedItem == 0,
