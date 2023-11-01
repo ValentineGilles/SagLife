@@ -29,6 +29,7 @@
     import com.example.saglife.component.BottomNavigationBar
     import com.example.saglife.screen.ForgotPasswordScreen
     import com.example.saglife.screen.LoginScreen
+    import com.example.saglife.screen.ProfileScreen
     import com.example.saglife.screen.RegistrationScreen
     import com.example.saglife.ui.theme.SagLifeTheme
 
@@ -60,7 +61,7 @@
             Scaffold(
                 topBar = {
                     if (isTopBarVisible.value) {
-                        CustomTopAppBar(navController, "Déconnexion", true)
+                        CustomTopAppBar(navController, "", false, true)
                     }
                 },
                 bottomBar = {
@@ -103,6 +104,13 @@
                         isBottomBarVisible.value = true
                         ForumScreen(navController = navController)
                     }
+
+                    composable(Routes.Profile.route) {
+                        isTopBarVisible.value = false
+                        isBottomBarVisible.value = true
+                        ProfileScreen(navController = navController)
+                    }
+
                     composable(Routes.Login.route) {
                         // Masque la TopBar et la BottomBar sur "Login"
                         isTopBarVisible.value = false

@@ -33,19 +33,19 @@ fun BottomNavigationBar(
             selected = selectedItem == 0,
             onClick = { onItemSelected(0) },
             icon = { Icon(imageVector = Icons.Default.Home, contentDescription = "Home") },
-            label = { Text(text = "Home") }
+            label = { Text(text = "Accueil") }
         )
         BottomNavigationItem(
             selected = selectedItem == 1,
             onClick = { onItemSelected(1) },
             icon = { Icon(imageVector = Icons.Default.DateRange, contentDescription = "Calendar") },
-            label = { Text(text = "Calendar") }
+            label = { Text(text = "Evenements") }
         )
         BottomNavigationItem(
             selected = selectedItem == 2,
             onClick = { onItemSelected(2) },
             icon = { Icon(imageVector = Icons.Default.Place, contentDescription = "Map") },
-            label = { Text(text = "Map") }
+            label = { Text(text = "Carte") }
         )
         BottomNavigationItem(
             selected = selectedItem == 3,
