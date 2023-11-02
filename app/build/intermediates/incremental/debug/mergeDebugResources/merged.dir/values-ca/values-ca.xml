@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">Ja tens un compte</string>
     <string name="fui_welcome_back_idp_prompt">Ja has utilitzat l\'adreça electrònica %1$s. Inicia la sessió amb %2$s per continuar.</string>
     <string name="fui_welcome_back_password_prompt_body">Ja has utilitzat l\'adreça electrònica %1$s per iniciar la sessió. Introdueix la contrasenya d\'aquest compte.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">Icona del quadre de diàleg</string>
     <string msgid="6827826412747255547" name="in_progress">"En curs"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Marcat parcialment"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"PM"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Mostra la descripció emergent"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Descripció emergent"</string>
+    <string name="wallet_buy_button_place_holder">Compra amb Google</string>
 </resources>

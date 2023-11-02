@@ -207,6 +207,7 @@
     <string name="fui_welcome_back_idp_header">لديك حساب حاليًا</string>
     <string name="fui_welcome_back_idp_prompt">لقد سبق أن استخدمت %1$s. سجّل الدخول باستخدام %2$s للمتابعة.</string>
     <string name="fui_welcome_back_password_prompt_body">لقد سبق أن استخدمت %1$s لتسجيل الدخول. يُرجى إدخال كلمة المرور لهذا الحساب.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">رمز مربع الحوار</string>
     <string msgid="6827826412747255547" name="in_progress">"قيد التقدم"</string>
     <string msgid="7933458017204019916" name="indeterminate">"تم وضع علامة في المربّع بشكل جزئي"</string>
@@ -298,4 +299,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"م"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"إظهار التلميح"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"تلميح"</string>
+    <string name="wallet_buy_button_place_holder">الشراء عبر Google</string>
 </resources>

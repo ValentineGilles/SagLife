@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">Anda sudah memiliki akun</string>
     <string name="fui_welcome_back_idp_prompt">Anda telah menggunakan %1$s. Login dengan %2$s untuk melanjutkan.</string>
     <string name="fui_welcome_back_password_prompt_body">Anda telah menggunakan %1$s untuk login. Masukkan sandi untuk akun tersebut.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">Ikon Dialog</string>
     <string msgid="6827826412747255547" name="in_progress">"Dalam proses"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Diperiksa sebagian"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"PM"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Tampilkan tooltip"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Tooltip"</string>
+    <string name="wallet_buy_button_place_holder">Beli dengan Google</string>
 </resources>

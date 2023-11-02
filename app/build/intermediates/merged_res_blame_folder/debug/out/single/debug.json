@@ -1,150 +1,258 @@
 [
     {
-        "merged": "com.example.saglife.app-merged_res-83:/xml_data_extraction_rules.xml.flat",
-        "source": "com.example.saglife.app-main-85:/xml/data_extraction_rules.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-hdpi_ic_saglife_purple_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-hdpi/ic_saglife_purple_launcher.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/drawable_event.jpg.flat",
-        "source": "com.example.saglife.app-main-85:/drawable/event.jpg"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-hdpi_ic_saglife_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-hdpi/ic_saglife_launcher.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-xxhdpi/ic_launcher_round.webp"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxxhdpi_ic_saglife_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxxhdpi/ic_saglife_launcher.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-xhdpi/ic_launcher_round.webp"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-hdpi_ic_saglife_purple_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-hdpi/ic_saglife_purple_launcher_round.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-hdpi/ic_launcher_round.webp"
+        "merged": "com.example.saglife.app-merged_res-85:/drawable_roundcorner.xml.flat",
+        "source": "com.example.saglife.app-main-87:/drawable/roundcorner.xml"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/drawable_baseline_access_time_24.xml.flat",
-        "source": "com.example.saglife.app-main-85:/drawable/baseline_access_time_24.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xhdpi_ic_saglife_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xhdpi/ic_saglife_launcher.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/layout_composant_event.xml.flat",
-        "source": "com.example.saglife.app-main-85:/layout/composant_event.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-mdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-mdpi/ic_launcher_round.webp"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-mdpi_ic_saglife_purple_launcher_foreground.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-mdpi/ic_saglife_purple_launcher_foreground.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/drawable_ic_map.xml.flat",
-        "source": "com.example.saglife.app-main-85:/drawable/ic_map.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/drawable_ic_profile.xml.flat",
+        "source": "com.example.saglife.app-main-87:/drawable/ic_profile.xml"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/drawable_ic_launcher_background.xml.flat",
-        "source": "com.example.saglife.app-main-85:/drawable/ic_launcher_background.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-anydpi-v33_ic_launcher.xml.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-anydpi-v33/ic_launcher.xml"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/drawable_layout_bg.xml.flat",
-        "source": "com.example.saglife.app-main-85:/drawable/layout_bg.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxxhdpi_ic_saglife_purple_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxxhdpi/ic_saglife_purple_launcher_round.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/layout_activity_login.xml.flat",
-        "source": "com.example.saglife.app-main-85:/layout/activity_login.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xhdpi_ic_saglife_purple_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xhdpi/ic_saglife_purple_launcher.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xhdpi_ic_saglife_launcher_foreground.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xhdpi/ic_saglife_launcher_foreground.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-hdpi/ic_launcher.webp"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxxhdpi_ic_saglife_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxxhdpi/ic_saglife_launcher_round.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-anydpi-v33_ic_launcher.xml.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-anydpi-v33/ic_launcher.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-mdpi_ic_saglife_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-mdpi/ic_saglife_launcher.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/menu_bottom_nav_menu.xml.flat",
-        "source": "com.example.saglife.app-main-85:/menu/bottom_nav_menu.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-anydpi-v26_ic_saglife_purple_launcher_round.xml.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-anydpi-v26/ic_saglife_purple_launcher_round.xml"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-xxhdpi/ic_launcher.webp"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-xhdpi/ic_launcher.webp"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xhdpi_ic_saglife_purple_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xhdpi/ic_saglife_purple_launcher_round.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/layout_activity_event_information.xml.flat",
-        "source": "com.example.saglife.app-main-85:/layout/activity_event_information.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-mdpi_ic_saglife_purple_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-mdpi/ic_saglife_purple_launcher_round.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-anydpi-v26/ic_launcher_round.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/drawable_event.jpg.flat",
+        "source": "com.example.saglife.app-main-87:/drawable/event.jpg"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "com.example.saglife.app-merged_res-85:/drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "com.example.saglife.app-main-87:/drawable-v24/ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/drawable_ic_home.xml.flat",
-        "source": "com.example.saglife.app-main-85:/drawable/ic_home.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xhdpi_ic_saglife_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xhdpi/ic_saglife_launcher_round.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/drawable_roundcorner.xml.flat",
-        "source": "com.example.saglife.app-main-85:/drawable/roundcorner.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-mdpi_ic_saglife_launcher_foreground.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-mdpi/ic_saglife_launcher_foreground.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/layout_activity_main.xml.flat",
-        "source": "com.example.saglife.app-main-85:/layout/activity_main.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-hdpi_ic_saglife_launcher_foreground.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-hdpi/ic_saglife_launcher_foreground.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/drawable_ic_logo.xml.flat",
-        "source": "com.example.saglife.app-main-85:/drawable/ic_logo.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.saglife.app-main-87:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/xml_backup_rules.xml.flat",
-        "source": "com.example.saglife.app-main-85:/xml/backup_rules.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-xxxhdpi/ic_launcher_round.webp"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-mdpi_ic_saglife_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-mdpi/ic_saglife_launcher_round.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/layout_fragment_map.xml.flat",
-        "source": "com.example.saglife.app-main-85:/layout/fragment_map.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/drawable_ic_forum.xml.flat",
-        "source": "com.example.saglife.app-main-85:/drawable/ic_forum.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-hdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/drawable_ic_calendar.xml.flat",
-        "source": "com.example.saglife.app-main-85:/drawable/ic_calendar.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/layout_activity_event_information.xml.flat",
+        "source": "com.example.saglife.app-main-87:/layout/activity_event_information.xml"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/layout_fragment_home.xml.flat",
-        "source": "com.example.saglife.app-main-85:/layout/fragment_home.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/layout_fragment_calendar.xml.flat",
-        "source": "com.example.saglife.app-main-85:/layout/fragment_calendar.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xhdpi_ic_saglife_purple_launcher_foreground.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xhdpi/ic_saglife_purple_launcher_foreground.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/layout_fragment_forum.xml.flat",
-        "source": "com.example.saglife.app-main-85:/layout/fragment_forum.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-anydpi-v26_ic_saglife_launcher.xml.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-anydpi-v26/ic_saglife_launcher.xml"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/drawable_baseline_add_circle_24.xml.flat",
-        "source": "com.example.saglife.app-main-85:/drawable/baseline_add_circle_24.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "com.example.saglife.app-main-85:/mipmap-mdpi/ic_launcher.webp"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-anydpi-v26_ic_saglife_purple_launcher.xml.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-anydpi-v26/ic_saglife_purple_launcher.xml"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/navigation_mobile_navigation.xml.flat",
-        "source": "com.example.saglife.app-main-85:/navigation/mobile_navigation.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-hdpi_ic_saglife_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-hdpi/ic_saglife_launcher_round.webp"
     },
     {
-        "merged": "com.example.saglife.app-merged_res-83:/drawable-v24_ic_launcher_foreground.xml.flat",
-        "source": "com.example.saglife.app-main-85:/drawable-v24/ic_launcher_foreground.xml"
+        "merged": "com.example.saglife.app-merged_res-85:/drawable_layout_bg.xml.flat",
+        "source": "com.example.saglife.app-main-87:/drawable/layout_bg.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxhdpi_ic_saglife_purple_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxhdpi/ic_saglife_purple_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.saglife.app-main-87:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/drawable_ic_logo.xml.flat",
+        "source": "com.example.saglife.app-main-87:/drawable/ic_logo.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/drawable_baseline_add_circle_24.xml.flat",
+        "source": "com.example.saglife.app-main-87:/drawable/baseline_add_circle_24.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/drawable_baseline_access_time_24.xml.flat",
+        "source": "com.example.saglife.app-main-87:/drawable/baseline_access_time_24.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxhdpi_ic_saglife_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxhdpi/ic_saglife_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxxhdpi_ic_saglife_purple_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxxhdpi/ic_saglife_purple_launcher.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxhdpi_ic_saglife_purple_launcher_foreground.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxhdpi/ic_saglife_purple_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/drawable_saglife_logo.png.flat",
+        "source": "com.example.saglife.app-main-87:/drawable/saglife_logo.png"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-mdpi_ic_saglife_purple_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-mdpi/ic_saglife_purple_launcher.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxxhdpi_ic_saglife_purple_launcher_foreground.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxxhdpi/ic_saglife_purple_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/drawable_saglife_logo_purple.png.flat",
+        "source": "com.example.saglife.app-main-87:/drawable/saglife_logo_purple.png"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/layout_fragment_calendar.xml.flat",
+        "source": "com.example.saglife.app-main-87:/layout/fragment_calendar.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxxhdpi_ic_saglife_launcher_foreground.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxxhdpi/ic_saglife_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/layout_composant_event.xml.flat",
+        "source": "com.example.saglife.app-main-87:/layout/composant_event.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/xml_backup_rules.xml.flat",
+        "source": "com.example.saglife.app-main-87:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxhdpi_ic_saglife_purple_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxhdpi/ic_saglife_purple_launcher.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxhdpi_ic_saglife_launcher_foreground.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxhdpi/ic_saglife_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-xxhdpi_ic_saglife_launcher.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-xxhdpi/ic_saglife_launcher.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/drawable_ic_logout.xml.flat",
+        "source": "com.example.saglife.app-main-87:/drawable/ic_logout.xml"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-hdpi_ic_saglife_purple_launcher_foreground.webp.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-hdpi/ic_saglife_purple_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.example.saglife.app-merged_res-85:/mipmap-anydpi-v26_ic_saglife_launcher_round.xml.flat",
+        "source": "com.example.saglife.app-main-87:/mipmap-anydpi-v26/ic_saglife_launcher_round.xml"
     }
 ]

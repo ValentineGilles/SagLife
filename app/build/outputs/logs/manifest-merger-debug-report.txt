@@ -24,19 +24,19 @@ MERGED from [com.google.firebase:firebase-analytics:21.4.0] /Users/sachamontel/.
 MERGED from [com.google.android.gms:play-services-measurement-api:21.4.0] /Users/sachamontel/.gradle/caches/transforms-3/083b1b4787ac9fe91a8f5388c48816ce/transformed/play-services-measurement-api-21.4.0/AndroidManifest.xml:17:1-37:12
 MERGED from [com.google.firebase:firebase-installations:17.2.0] /Users/sachamontel/.gradle/caches/transforms-3/cbe444e2a0c9bcec6f358b13496c39ca/transformed/firebase-installations-17.2.0/AndroidManifest.xml:2:1-24:12
 MERGED from [com.google.firebase:firebase-common-ktx:20.4.2] /Users/sachamontel/.gradle/caches/transforms-3/16d38241f3044a153db8093c2b34360e/transformed/firebase-common-ktx-20.4.2/AndroidManifest.xml:2:1-18:12
-MERGED from [androidx.compose.material3:material3:1.1.1] /Users/sachamontel/.gradle/caches/transforms-3/551d32c61ec36be25e3813c468ca4aed/transformed/material3-1.1.1/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.compose.foundation:foundation-layout-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/9a50e217b60737163b2c04ac04b2ec3f/transformed/foundation-layout-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material3:material3:1.1.2] /Users/sachamontel/.gradle/caches/transforms-3/ca53f140cb152e0564ecc66d999a1b60/transformed/material3-1.1.2/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.animation:animation-core-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/b56399de6a4cd60df9d216587069456d/transformed/animation-core-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.material:material-icons-core-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/624ad60f58d9261a4a8006213cdd82e5/transformed/material-icons-core-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.material:material-ripple-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/7ee66cb559a4bd827c67628da33bc092/transformed/material-ripple-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.foundation:foundation-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/9970419e92386d4986a6b5444b95ca40/transformed/foundation-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.animation:animation-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/fc451a91ccca0059d3c09445d33ac6e1/transformed/animation-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.animation:animation-core-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/b56399de6a4cd60df9d216587069456d/transformed/animation-core-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/9a50e217b60737163b2c04ac04b2ec3f/transformed/foundation-layout-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/9970419e92386d4986a6b5444b95ca40/transformed/foundation-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.ui:ui-tooling-data-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/fc7c325304921e55110314742d1cd690/transformed/ui-tooling-data-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.ui:ui-unit-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/931915374962779df55c526ec728272f/transformed/ui-unit-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.ui:ui-geometry-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/f2fe8e5eaa18b5cacdd7a763f5738d04/transformed/ui-geometry-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/3a98d8429b5a06be64133aa1d5415fb1/transformed/ui-tooling-preview-release/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.compose.ui:ui-util-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/8f3bb2d7e3fafc74c37425ac8d344116/transformed/ui-util-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.ui:ui-text-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/224765aef44a1f9ac80299b5a7bc91dd/transformed/ui-text-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/3a98d8429b5a06be64133aa1d5415fb1/transformed/ui-tooling-preview-release/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.compose.ui:ui-graphics-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/914b34c5965178151d83a7626c7c246c/transformed/ui-graphics-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.ui:ui-tooling-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/1a5689d179be19959af6116cf7b9f044/transformed/ui-tooling-release/AndroidManifest.xml:17:1-28:12
 MERGED from [androidx.compose.material:material-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/47d76ede9c9527c618e33b9624e115c8/transformed/material-release/AndroidManifest.xml:2:1-7:12
@@ -45,16 +45,19 @@ MERGED from [androidx.compose.ui:ui-test-manifest:1.5.4] /Users/sachamontel/.gra
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/sachamontel/.gradle/caches/transforms-3/8e86f1ce5a7f408136666708ad981d8a/transformed/constraintlayout-2.1.4/AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/sachamontel/.gradle/caches/transforms-3/e8abffb8d52e4dff2e4cd2b0ed1f88b6/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/sachamontel/.gradle/caches/transforms-3/8c90d596a34bf3bc5aeee390183a1067/transformed/appcompat-1.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.gms:play-services-wallet:19.2.1] /Users/sachamontel/.gradle/caches/transforms-3/af92afb0d67c11206ad4f9db15e8686f/transformed/play-services-wallet-19.2.1/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] /Users/sachamontel/.gradle/caches/transforms-3/4c38bd4746d6f148ffeed46d41228b68/transformed/viewpager2-1.0.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.lifecycle:lifecycle-extensions:2.2.0] /Users/sachamontel/.gradle/caches/transforms-3/da2940460684d5c541bd415233312358/transformed/lifecycle-extensions-2.2.0/AndroidManifest.xml:17:1-27:12
 MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /Users/sachamontel/.gradle/caches/transforms-3/3a1b26ead73b295a2c99dd7069a08f22/transformed/legacy-support-v4-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.android.gms:play-services-auth:20.3.0] /Users/sachamontel/.gradle/caches/transforms-3/087df347e72ddc71df89cee38be52d92/transformed/play-services-auth-20.3.0/AndroidManifest.xml:17:1-40:12
-MERGED from [androidx.fragment:fragment-ktx:1.6.0] /Users/sachamontel/.gradle/caches/transforms-3/7b026f431aefbb0abb64c89b6344fa66/transformed/fragment-ktx-1.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.gms:play-services-identity:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/fa2129a1b8eeec9e252bba0a3965c1c0/transformed/play-services-identity-18.0.1/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:17:1-44:12
 MERGED from [com.google.android.gms:play-services-auth-api-phone:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/7236d33e3fa4e2ca3f9028027f8eafea/transformed/play-services-auth-api-phone-18.0.1/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.gms:play-services-auth-base:18.0.4] /Users/sachamontel/.gradle/caches/transforms-3/ce7de7e3223a7072f9ddd16ee8ca7c9d/transformed/play-services-auth-base-18.0.4/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /Users/sachamontel/.gradle/caches/transforms-3/55e78b246d00991d18efdd57d8048edd/transformed/firebase-appcheck-interop-17.0.0/AndroidManifest.xml:15:1-25:12
 MERGED from [com.google.firebase:firebase-database-collection:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/06c5b5165db8258633ee5e1ae6365cca/transformed/firebase-database-collection-18.0.1/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.gms:play-services-base:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/599a90fc1ba84aa181b5474f920065c3/transformed/play-services-base-18.0.1/AndroidManifest.xml:16:1-24:12
+MERGED from [androidx.fragment:fragment-ktx:1.6.0] /Users/sachamontel/.gradle/caches/transforms-3/7b026f431aefbb0abb64c89b6344fa66/transformed/fragment-ktx-1.6.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/sachamontel/.gradle/caches/transforms-3/853fb873ecef7a2421e2f47084ea40a8/transformed/firebase-auth-interop-20.0.0/AndroidManifest.xml:2:1-10:12
 MERGED from [com.google.firebase:firebase-common:20.4.2] /Users/sachamontel/.gradle/caches/transforms-3/5eb8d5ce26235fe6d2134d367d033dc0/transformed/firebase-common-20.4.2/AndroidManifest.xml:15:1-41:12
 MERGED from [com.google.android.recaptcha:recaptcha:18.1.2] /Users/sachamontel/.gradle/caches/transforms-3/56ed84d482275a44e56acb726b005e55/transformed/recaptcha-18.1.2/AndroidManifest.xml:2:1-10:12
@@ -174,6 +177,10 @@ MERGED from [androidx.lifecycle:lifecycle-extensions:2.2.0] /Users/sachamontel/.
 MERGED from [androidx.lifecycle:lifecycle-extensions:2.2.0] /Users/sachamontel/.gradle/caches/transforms-3/da2940460684d5c541bd415233312358/transformed/lifecycle-extensions-2.2.0/AndroidManifest.xml:24:5-25:19
 MERGED from [com.google.android.gms:play-services-auth:20.3.0] /Users/sachamontel/.gradle/caches/transforms-3/087df347e72ddc71df89cee38be52d92/transformed/play-services-auth-20.3.0/AndroidManifest.xml:22:5-38:19
 MERGED from [com.google.android.gms:play-services-auth:20.3.0] /Users/sachamontel/.gradle/caches/transforms-3/087df347e72ddc71df89cee38be52d92/transformed/play-services-auth-20.3.0/AndroidManifest.xml:22:5-38:19
+MERGED from [com.google.android.gms:play-services-identity:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/fa2129a1b8eeec9e252bba0a3965c1c0/transformed/play-services-identity-18.0.1/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-identity:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/fa2129a1b8eeec9e252bba0a3965c1c0/transformed/play-services-identity-18.0.1/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:36:5-42:19
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:36:5-42:19
 MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /Users/sachamontel/.gradle/caches/transforms-3/55e78b246d00991d18efdd57d8048edd/transformed/firebase-appcheck-interop-17.0.0/AndroidManifest.xml:23:5-20
 MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /Users/sachamontel/.gradle/caches/transforms-3/55e78b246d00991d18efdd57d8048edd/transformed/firebase-appcheck-interop-17.0.0/AndroidManifest.xml:23:5-20
 MERGED from [com.google.android.gms:play-services-base:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/599a90fc1ba84aa181b5474f920065c3/transformed/play-services-base-18.0.1/AndroidManifest.xml:19:5-23:19
@@ -223,49 +230,49 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/sachamontel/.gradle/
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] /Users/sachamontel/.gradle/caches/transforms-3/bf1af649b36fc87661d1ed81807004bc/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:11:9-35
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:11:13-39
 	android:label
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:10:9-41
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:10:13-45
 	android:fullBackupContent
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:8:9-54
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:8:13-58
 	tools:targetApi
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:13:9-29
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:13:13-33
 	android:icon
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:9:9-43
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:9:13-62
 	android:allowBackup
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:6:9-35
-	android:theme
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:12:9-45
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:6:13-39
+	android:enableOnBackInvokedCallback
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:12:13-55
 	android:dataExtractionRules
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:7:9-65
-activity#com.example.saglife.Event
-ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:14:9-18:52
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:7:13-69
+activity#com.example.saglife.screen.Event
+ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:15:9-19:52
 	android:label
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:17:13-57
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:18:13-57
 	android:exported
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:16:13-37
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:17:13-37
 	android:theme
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:18:13-49
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:19:13-49
 	android:name
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:15:13-34
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:16:13-41
 activity#com.example.saglife.Event_information
-ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:19:9-21:40
+ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:20:9-22:40
 	android:exported
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:21:13-37
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:22:13-37
 	android:name
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:20:13-46
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:21:13-46
 activity#com.example.saglife.MainActivity
-ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:22:9-30:20
+ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:23:9-30:20
 	android:exported
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:24:13-36
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:25:13-36
 	android:name
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:23:13-41
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:24:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:25:13-29:29
+ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:26:13-29:29
 action#android.intent.action.MAIN
-ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:26:17-69
+ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:27:17-69
 	android:name
-		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:26:25-66
+		ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:27:25-66
 category#android.intent.category.LAUNCHER
 ADDED from /Users/sachamontel/Documents/GitHub/SagLifeApp/app/src/main/AndroidManifest.xml:28:17-77
 	android:name
@@ -314,32 +321,32 @@ MERGED from [com.google.firebase:firebase-installations:17.2.0] /Users/sachamont
 MERGED from [com.google.firebase:firebase-installations:17.2.0] /Users/sachamontel/.gradle/caches/transforms-3/cbe444e2a0c9bcec6f358b13496c39ca/transformed/firebase-installations-17.2.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-common-ktx:20.4.2] /Users/sachamontel/.gradle/caches/transforms-3/16d38241f3044a153db8093c2b34360e/transformed/firebase-common-ktx-20.4.2/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-common-ktx:20.4.2] /Users/sachamontel/.gradle/caches/transforms-3/16d38241f3044a153db8093c2b34360e/transformed/firebase-common-ktx-20.4.2/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material3:material3:1.1.1] /Users/sachamontel/.gradle/caches/transforms-3/551d32c61ec36be25e3813c468ca4aed/transformed/material3-1.1.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.material3:material3:1.1.1] /Users/sachamontel/.gradle/caches/transforms-3/551d32c61ec36be25e3813c468ca4aed/transformed/material3-1.1.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.foundation:foundation-layout-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/9a50e217b60737163b2c04ac04b2ec3f/transformed/foundation-layout-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.foundation:foundation-layout-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/9a50e217b60737163b2c04ac04b2ec3f/transformed/foundation-layout-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material3:material3:1.1.2] /Users/sachamontel/.gradle/caches/transforms-3/ca53f140cb152e0564ecc66d999a1b60/transformed/material3-1.1.2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material3:material3:1.1.2] /Users/sachamontel/.gradle/caches/transforms-3/ca53f140cb152e0564ecc66d999a1b60/transformed/material3-1.1.2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/b56399de6a4cd60df9d216587069456d/transformed/animation-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/b56399de6a4cd60df9d216587069456d/transformed/animation-core-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-icons-core-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/624ad60f58d9261a4a8006213cdd82e5/transformed/material-icons-core-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-icons-core-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/624ad60f58d9261a4a8006213cdd82e5/transformed/material-icons-core-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-ripple-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/7ee66cb559a4bd827c67628da33bc092/transformed/material-ripple-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-ripple-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/7ee66cb559a4bd827c67628da33bc092/transformed/material-ripple-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.foundation:foundation-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/9970419e92386d4986a6b5444b95ca40/transformed/foundation-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.foundation:foundation-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/9970419e92386d4986a6b5444b95ca40/transformed/foundation-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.animation:animation-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/fc451a91ccca0059d3c09445d33ac6e1/transformed/animation-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.animation:animation-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/fc451a91ccca0059d3c09445d33ac6e1/transformed/animation-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.animation:animation-core-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/b56399de6a4cd60df9d216587069456d/transformed/animation-core-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.animation:animation-core-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/b56399de6a4cd60df9d216587069456d/transformed/animation-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/9a50e217b60737163b2c04ac04b2ec3f/transformed/foundation-layout-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/9a50e217b60737163b2c04ac04b2ec3f/transformed/foundation-layout-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/9970419e92386d4986a6b5444b95ca40/transformed/foundation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/9970419e92386d4986a6b5444b95ca40/transformed/foundation-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.ui:ui-tooling-data-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/fc7c325304921e55110314742d1cd690/transformed/ui-tooling-data-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.ui:ui-tooling-data-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/fc7c325304921e55110314742d1cd690/transformed/ui-tooling-data-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.ui:ui-unit-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/931915374962779df55c526ec728272f/transformed/ui-unit-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.ui:ui-unit-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/931915374962779df55c526ec728272f/transformed/ui-unit-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.ui:ui-geometry-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/f2fe8e5eaa18b5cacdd7a763f5738d04/transformed/ui-geometry-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.ui:ui-geometry-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/f2fe8e5eaa18b5cacdd7a763f5738d04/transformed/ui-geometry-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/3a98d8429b5a06be64133aa1d5415fb1/transformed/ui-tooling-preview-release/AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/3a98d8429b5a06be64133aa1d5415fb1/transformed/ui-tooling-preview-release/AndroidManifest.xml:20:5-44
 MERGED from [androidx.compose.ui:ui-util-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/8f3bb2d7e3fafc74c37425ac8d344116/transformed/ui-util-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.ui:ui-util-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/8f3bb2d7e3fafc74c37425ac8d344116/transformed/ui-util-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.ui:ui-text-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/224765aef44a1f9ac80299b5a7bc91dd/transformed/ui-text-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.ui:ui-text-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/224765aef44a1f9ac80299b5a7bc91dd/transformed/ui-text-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/3a98d8429b5a06be64133aa1d5415fb1/transformed/ui-tooling-preview-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/3a98d8429b5a06be64133aa1d5415fb1/transformed/ui-tooling-preview-release/AndroidManifest.xml:20:5-44
 MERGED from [androidx.compose.ui:ui-graphics-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/914b34c5965178151d83a7626c7c246c/transformed/ui-graphics-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.ui:ui-graphics-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/914b34c5965178151d83a7626c7c246c/transformed/ui-graphics-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.ui:ui-tooling-android:1.5.4] /Users/sachamontel/.gradle/caches/transforms-3/1a5689d179be19959af6116cf7b9f044/transformed/ui-tooling-release/AndroidManifest.xml:20:5-44
@@ -356,6 +363,8 @@ MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/sachamontel/.g
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/sachamontel/.gradle/caches/transforms-3/e8abffb8d52e4dff2e4cd2b0ed1f88b6/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/sachamontel/.gradle/caches/transforms-3/8c90d596a34bf3bc5aeee390183a1067/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/sachamontel/.gradle/caches/transforms-3/8c90d596a34bf3bc5aeee390183a1067/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-wallet:19.2.1] /Users/sachamontel/.gradle/caches/transforms-3/af92afb0d67c11206ad4f9db15e8686f/transformed/play-services-wallet-19.2.1/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-wallet:19.2.1] /Users/sachamontel/.gradle/caches/transforms-3/af92afb0d67c11206ad4f9db15e8686f/transformed/play-services-wallet-19.2.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] /Users/sachamontel/.gradle/caches/transforms-3/4c38bd4746d6f148ffeed46d41228b68/transformed/viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] /Users/sachamontel/.gradle/caches/transforms-3/4c38bd4746d6f148ffeed46d41228b68/transformed/viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-extensions:2.2.0] /Users/sachamontel/.gradle/caches/transforms-3/da2940460684d5c541bd415233312358/transformed/lifecycle-extensions-2.2.0/AndroidManifest.xml:20:5-22:41
@@ -364,8 +373,10 @@ MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /Users/sachamontel/.gradle
 MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /Users/sachamontel/.gradle/caches/transforms-3/3a1b26ead73b295a2c99dd7069a08f22/transformed/legacy-support-v4-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-auth:20.3.0] /Users/sachamontel/.gradle/caches/transforms-3/087df347e72ddc71df89cee38be52d92/transformed/play-services-auth-20.3.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-auth:20.3.0] /Users/sachamontel/.gradle/caches/transforms-3/087df347e72ddc71df89cee38be52d92/transformed/play-services-auth-20.3.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.fragment:fragment-ktx:1.6.0] /Users/sachamontel/.gradle/caches/transforms-3/7b026f431aefbb0abb64c89b6344fa66/transformed/fragment-ktx-1.6.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.fragment:fragment-ktx:1.6.0] /Users/sachamontel/.gradle/caches/transforms-3/7b026f431aefbb0abb64c89b6344fa66/transformed/fragment-ktx-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-identity:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/fa2129a1b8eeec9e252bba0a3965c1c0/transformed/play-services-identity-18.0.1/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-identity:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/fa2129a1b8eeec9e252bba0a3965c1c0/transformed/play-services-identity-18.0.1/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-auth-api-phone:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/7236d33e3fa4e2ca3f9028027f8eafea/transformed/play-services-auth-api-phone-18.0.1/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-auth-api-phone:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/7236d33e3fa4e2ca3f9028027f8eafea/transformed/play-services-auth-api-phone-18.0.1/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-auth-base:18.0.4] /Users/sachamontel/.gradle/caches/transforms-3/ce7de7e3223a7072f9ddd16ee8ca7c9d/transformed/play-services-auth-base-18.0.4/AndroidManifest.xml:5:5-44
@@ -376,6 +387,8 @@ MERGED from [com.google.firebase:firebase-database-collection:18.0.1] /Users/sac
 MERGED from [com.google.firebase:firebase-database-collection:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/06c5b5165db8258633ee5e1ae6365cca/transformed/firebase-database-collection-18.0.1/AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.android.gms:play-services-base:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/599a90fc1ba84aa181b5474f920065c3/transformed/play-services-base-18.0.1/AndroidManifest.xml:18:5-43
 MERGED from [com.google.android.gms:play-services-base:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/599a90fc1ba84aa181b5474f920065c3/transformed/play-services-base-18.0.1/AndroidManifest.xml:18:5-43
+MERGED from [androidx.fragment:fragment-ktx:1.6.0] /Users/sachamontel/.gradle/caches/transforms-3/7b026f431aefbb0abb64c89b6344fa66/transformed/fragment-ktx-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment-ktx:1.6.0] /Users/sachamontel/.gradle/caches/transforms-3/7b026f431aefbb0abb64c89b6344fa66/transformed/fragment-ktx-1.6.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/sachamontel/.gradle/caches/transforms-3/853fb873ecef7a2421e2f47084ea40a8/transformed/firebase-auth-interop-20.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/sachamontel/.gradle/caches/transforms-3/853fb873ecef7a2421e2f47084ea40a8/transformed/firebase-auth-interop-20.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-common:20.4.2] /Users/sachamontel/.gradle/caches/transforms-3/5eb8d5ce26235fe6d2134d367d033dc0/transformed/firebase-common-20.4.2/AndroidManifest.xml:19:5-44
@@ -544,6 +557,8 @@ MERGED from [com.google.android.gms:play-services-measurement-api:21.4.0] /Users
 MERGED from [com.google.android.gms:play-services-measurement-api:21.4.0] /Users/sachamontel/.gradle/caches/transforms-3/083b1b4787ac9fe91a8f5388c48816ce/transformed/play-services-measurement-api-21.4.0/AndroidManifest.xml:23:5-79
 MERGED from [com.google.firebase:firebase-installations:17.2.0] /Users/sachamontel/.gradle/caches/transforms-3/cbe444e2a0c9bcec6f358b13496c39ca/transformed/firebase-installations-17.2.0/AndroidManifest.xml:7:5-79
 MERGED from [com.google.firebase:firebase-installations:17.2.0] /Users/sachamontel/.gradle/caches/transforms-3/cbe444e2a0c9bcec6f358b13496c39ca/transformed/firebase-installations-17.2.0/AndroidManifest.xml:7:5-79
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:23:5-79
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:23:5-79
 MERGED from [com.google.android.recaptcha:recaptcha:18.1.2] /Users/sachamontel/.gradle/caches/transforms-3/56ed84d482275a44e56acb726b005e55/transformed/recaptcha-18.1.2/AndroidManifest.xml:8:5-79
 MERGED from [com.google.android.recaptcha:recaptcha:18.1.2] /Users/sachamontel/.gradle/caches/transforms-3/56ed84d482275a44e56acb726b005e55/transformed/recaptcha-18.1.2/AndroidManifest.xml:8:5-79
 MERGED from [com.google.android.gms:play-services-measurement:21.4.0] /Users/sachamontel/.gradle/caches/transforms-3/224cff9d30513b2669039ba7e6f82875/transformed/play-services-measurement-21.4.0/AndroidManifest.xml:24:5-79
@@ -566,6 +581,8 @@ MERGED from [com.google.android.gms:play-services-measurement-api:21.4.0] /Users
 MERGED from [com.google.android.gms:play-services-measurement-api:21.4.0] /Users/sachamontel/.gradle/caches/transforms-3/083b1b4787ac9fe91a8f5388c48816ce/transformed/play-services-measurement-api-21.4.0/AndroidManifest.xml:22:5-67
 MERGED from [com.google.firebase:firebase-installations:17.2.0] /Users/sachamontel/.gradle/caches/transforms-3/cbe444e2a0c9bcec6f358b13496c39ca/transformed/firebase-installations-17.2.0/AndroidManifest.xml:8:5-67
 MERGED from [com.google.firebase:firebase-installations:17.2.0] /Users/sachamontel/.gradle/caches/transforms-3/cbe444e2a0c9bcec6f358b13496c39ca/transformed/firebase-installations-17.2.0/AndroidManifest.xml:8:5-67
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:24:5-67
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:24:5-67
 MERGED from [com.google.android.recaptcha:recaptcha:18.1.2] /Users/sachamontel/.gradle/caches/transforms-3/56ed84d482275a44e56acb726b005e55/transformed/recaptcha-18.1.2/AndroidManifest.xml:7:5-67
 MERGED from [com.google.android.recaptcha:recaptcha:18.1.2] /Users/sachamontel/.gradle/caches/transforms-3/56ed84d482275a44e56acb726b005e55/transformed/recaptcha-18.1.2/AndroidManifest.xml:7:5-67
 MERGED from [com.google.android.gms:play-services-measurement:21.4.0] /Users/sachamontel/.gradle/caches/transforms-3/224cff9d30513b2669039ba7e6f82875/transformed/play-services-measurement-21.4.0/AndroidManifest.xml:23:5-67
@@ -578,6 +595,8 @@ MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.4.0] /U
 		ADDED from [com.firebaseui:firebase-ui-auth:8.0.2] /Users/sachamontel/.gradle/caches/transforms-3/fe71cddbc95cac8deffa5a6ca5efebff/transformed/firebase-ui-auth-8.0.2/AndroidManifest.xml:11:22-64
 queries
 ADDED from [com.firebaseui:firebase-ui-auth:8.0.2] /Users/sachamontel/.gradle/caches/transforms-3/fe71cddbc95cac8deffa5a6ca5efebff/transformed/firebase-ui-auth-8.0.2/AndroidManifest.xml:15:5-23:15
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:30:5-34:15
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:30:5-34:15
 intent#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+data:scheme:http
 ADDED from [com.firebaseui:firebase-ui-auth:8.0.2] /Users/sachamontel/.gradle/caches/transforms-3/fe71cddbc95cac8deffa5a6ca5efebff/transformed/firebase-ui-auth-8.0.2/AndroidManifest.xml:16:9-22:18
 action#android.intent.action.VIEW
@@ -910,6 +929,22 @@ ADDED from [com.google.android.gms:play-services-auth:20.3.0] /Users/sachamontel
 		ADDED from [com.google.android.gms:play-services-auth:20.3.0] /Users/sachamontel/.gradle/caches/transforms-3/087df347e72ddc71df89cee38be52d92/transformed/play-services-auth-20.3.0/AndroidManifest.xml:36:13-107
 	android:name
 		ADDED from [com.google.android.gms:play-services-auth:20.3.0] /Users/sachamontel/.gradle/caches/transforms-3/087df347e72ddc71df89cee38be52d92/transformed/play-services-auth-20.3.0/AndroidManifest.xml:34:13-89
+uses-feature#0x00020000
+ADDED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:26:5-28:35
+	android:glEsVersion
+		ADDED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:27:9-41
+	android:required
+		ADDED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:28:9-32
+package#com.google.android.apps.maps
+ADDED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:33:9-64
+	android:name
+		ADDED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:33:18-61
+uses-library#org.apache.http.legacy
+ADDED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:39:9-41:40
+	android:required
+		ADDED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:41:13-37
+	android:name
+		ADDED from [com.google.android.gms:play-services-maps:18.0.2] /Users/sachamontel/.gradle/caches/transforms-3/966867e510f2af36b3eb83b1862436dc/transformed/play-services-maps-18.0.2/AndroidManifest.xml:40:13-50
 activity#com.google.android.gms.common.api.GoogleApiActivity
 ADDED from [com.google.android.gms:play-services-base:18.0.1] /Users/sachamontel/.gradle/caches/transforms-3/599a90fc1ba84aa181b5474f920065c3/transformed/play-services-base-18.0.1/AndroidManifest.xml:20:9-22:45
 	android:exported

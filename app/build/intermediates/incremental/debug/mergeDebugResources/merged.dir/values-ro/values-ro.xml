@@ -204,6 +204,7 @@
     <string name="fui_welcome_back_idp_header">Aveți deja un cont</string>
     <string name="fui_welcome_back_idp_prompt">Ați folosit deja %1$s. Pentru a continua, conectați-vă cu %2$s.</string>
     <string name="fui_welcome_back_password_prompt_body">Ați folosit deja %1$s pentru a vă conecta. Introduceți parola acestui cont.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">Pictogramă de dialog</string>
     <string msgid="6827826412747255547" name="in_progress">"În curs"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Bifată parțial"</string>
@@ -295,4 +296,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"p.m."</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Afișează balonul explicativ"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Balon explicativ"</string>
+    <string name="wallet_buy_button_place_holder">Buy with Google</string>
 </resources>

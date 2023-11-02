@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">ನೀವು ಈಗಾಗಲೇ ಖಾತೆಯನ್ನು ಹೊಂದಿರುವಿರಿ</string>
     <string name="fui_welcome_back_idp_prompt">ನೀವು ಈಗಾಗಲೇ %1$s ಅನ್ನು ಬಳಸುತ್ತಿರುವಿರಿ. ಮುಂದುವರಿಸಲು %2$s ಜೊತೆ ಸೈನ್ ಇನ್ ಮಾಡಿ.</string>
     <string name="fui_welcome_back_password_prompt_body">ನೀವು ಈಗಾಗಲೇ ಸೈನ್ ಇನ್ ಮಾಡಲು %1$sನ್ನು ಬಳಸಿದ್ದೀರಿ. ಆ ಖಾತೆಗೆ ಸೈನ್ ಇನ್ ಆಗಲು ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ನಮೂದಿಸಿ.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">ಡೈಲಾಗ್ ಐಕಾನ್</string>
     <string msgid="6827826412747255547" name="in_progress">"ಪ್ರಗತಿಯಲ್ಲಿದೆ"</string>
     <string msgid="7933458017204019916" name="indeterminate">"ಭಾಗಶಃ ಪರೀಕ್ಷಿಸಲಾಗಿದೆ"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"PM"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"ಟೂಲ್‌ಟಿಪ್ ಅನ್ನು ತೋರಿಸಿ"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"ಟೂಲ್‌ಟಿಪ್"</string>
+    <string name="wallet_buy_button_place_holder">Google ನಲ್ಲಿ ಖರೀದಿಸಿ</string>
 </resources>

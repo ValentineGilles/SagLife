@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">您已經有帳戶</string>
     <string name="fui_welcome_back_idp_prompt">目前您用於登入的帳戶是 %1$s。 如要繼續，請使用 %2$s 帳戶登入。</string>
     <string name="fui_welcome_back_password_prompt_body">您已使用 %1$s 登入。請輸入這個帳戶的密碼。</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">對話框圖示</string>
     <string msgid="6827826412747255547" name="in_progress">"進行中"</string>
     <string msgid="7933458017204019916" name="indeterminate">"部分剔咗"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"下午"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"顯示提示"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"提示"</string>
+    <string name="wallet_buy_button_place_holder">透過 Google 購物</string>
 </resources>

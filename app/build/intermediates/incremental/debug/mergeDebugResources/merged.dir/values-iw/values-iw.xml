@@ -204,6 +204,7 @@
     <string name="fui_welcome_back_idp_header">כבר יש לך חשבון</string>
     <string name="fui_welcome_back_idp_prompt">כבר השתמשת בכתובת %1$s. כדי להמשיך, עליך להיכנס באמצעות %2$s.</string>
     <string name="fui_welcome_back_password_prompt_body">כבר השתמשת בכתובת %1$s. כדי להיכנס. עליך להזין את הסיסמה לחשבון המשויך אליה.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">סמל לתיבת דו-שיח</string>
     <string msgid="6827826412747255547" name="in_progress">"בתהליך"</string>
     <string msgid="7933458017204019916" name="indeterminate">"מסומנת חלקית"</string>
@@ -295,4 +296,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"PM"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"הצגת הסבר קצר"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"הסבר קצר"</string>
+    <string name="wallet_buy_button_place_holder">קנה בעזרת Google</string>
 </resources>

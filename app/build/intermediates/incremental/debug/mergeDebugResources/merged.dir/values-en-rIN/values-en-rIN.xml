@@ -171,6 +171,7 @@
     <string name="fui_welcome_back_idp_header">You already have an account</string>
     <string name="fui_welcome_back_idp_prompt">You\'ve already used %1$s. Sign in with %2$s to continue.</string>
     <string name="fui_welcome_back_password_prompt_body">You\'ve already used %1$s to sign in. Enter your password for that account.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string msgid="6827826412747255547" name="in_progress">"In progress"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Partially ticked"</string>
     <string msgid="6301633601645100427" name="nav_app_bar_navigate_up_description">"Navigate up"</string>
@@ -204,4 +205,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"PM"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Show tooltip"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Tooltip"</string>
+    <string name="wallet_buy_button_place_holder">Buy with Google</string>
 </resources>

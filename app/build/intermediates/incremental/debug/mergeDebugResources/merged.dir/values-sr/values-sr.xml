@@ -204,6 +204,7 @@
     <string name="fui_welcome_back_idp_header">Већ имате налог</string>
     <string name="fui_welcome_back_idp_prompt">Већ сте користили адресу %1$s. Пријавите се преко %2$s-а да бисте наставили.</string>
     <string name="fui_welcome_back_password_prompt_body">Већ сте користили адресу %1$s за пријављивање. Унесите лозинку за тај налог.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">Икона дијалога</string>
     <string msgid="6827826412747255547" name="in_progress">"У току"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Делимично означено"</string>
@@ -295,4 +296,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"по"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Прикажи објашњење"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Објашњење"</string>
+    <string name="wallet_buy_button_place_holder">Купи помоћу Google-а</string>
 </resources>

@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">Zaten bir hesabınız var</string>
     <string name="fui_welcome_back_idp_prompt">%1$s adresini zaten kullandınız. Devam etmek için %2$s ile oturum açın.</string>
     <string name="fui_welcome_back_password_prompt_body">%1$s adresini oturum açmak için zaten kullandınız. Bu hesap için şifrenizi girin.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">İletişim kutusu simgesi</string>
     <string msgid="6827826412747255547" name="in_progress">"Devam ediyor"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Kısmi olarak kontrol edildi"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"ÖS"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Araç ipucunu göster"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"İpucu"</string>
+    <string name="wallet_buy_button_place_holder">Google ile satın al</string>
 </resources>

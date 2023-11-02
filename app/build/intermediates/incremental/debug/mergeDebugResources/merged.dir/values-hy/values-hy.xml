@@ -113,6 +113,7 @@
     <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"Պատճենել հղումը"</string>
     <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"Բացել դիտարկիչում"</string>
     <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"Կիսվել հղումով"</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">Երկխոսության պատուհանի պատկերակ</string>
     <string msgid="6827826412747255547" name="in_progress">"Ընթացքում է"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Մասնակի նշված"</string>
@@ -204,4 +205,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"PM"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Ցուցադրել հուշում"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Հուշակ"</string>
+    <string name="wallet_buy_button_place_holder">Գնել Google-ի միջոցով</string>
 </resources>

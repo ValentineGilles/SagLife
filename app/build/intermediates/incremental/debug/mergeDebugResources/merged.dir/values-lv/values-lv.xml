@@ -204,6 +204,7 @@
     <string name="fui_welcome_back_idp_header">Jums jau ir konts</string>
     <string name="fui_welcome_back_idp_prompt">Esat jau izmantojis e-pasta adresi %1$s. Pierakstieties pakalpojumā %2$s, lai turpinātu.</string>
     <string name="fui_welcome_back_password_prompt_body">Esat jau izmantojis e-pasta adresi %1$s, lai pierakstītos. Ievadiet šī konta paroli.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">Dialoglodziņa ikona</string>
     <string msgid="6827826412747255547" name="in_progress">"Notiek apstrāde"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Daļēji atzīmēta"</string>
@@ -295,4 +296,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"PM"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Rādīt rīka padomu"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Rīka padoms"</string>
+    <string name="wallet_buy_button_place_holder">Iegādāties, izmantojot Google</string>
 </resources>

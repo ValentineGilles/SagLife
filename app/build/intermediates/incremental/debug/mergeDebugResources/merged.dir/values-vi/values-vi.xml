@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">Bạn đã có tài khoản</string>
     <string name="fui_welcome_back_idp_prompt">Bạn đã sử dụng %1$s. Đăng nhập bằng %2$s để tiếp tục.</string>
     <string name="fui_welcome_back_password_prompt_body">Bạn đã sử dụng %1$s để đăng nhập. Hãy nhập mật khẩu của bạn cho tài khoản đó.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">Biểu tượng hộp thoại</string>
     <string msgid="6827826412747255547" name="in_progress">"Đang thực hiện"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Đã kiểm tra một phần"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"CH"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Hiển thị chú giải công cụ"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Chú giải công cụ"</string>
+    <string name="wallet_buy_button_place_holder">Mua hàng bằng Google</string>
 </resources>

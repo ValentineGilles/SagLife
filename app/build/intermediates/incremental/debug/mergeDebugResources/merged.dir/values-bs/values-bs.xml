@@ -114,6 +114,7 @@
     <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"Kopiraj link"</string>
     <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"Otvori u pregledniku"</string>
     <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"Dijeli link"</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">ikona dijaloškog okvira</string>
     <string msgid="6827826412747255547" name="in_progress">"U toku"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Djelimično označeno"</string>
@@ -205,4 +206,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"poslijepodne"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Prikaži skočni opis"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Skočni opis"</string>
+    <string name="wallet_buy_button_place_holder">Kupite putem Googlea</string>
 </resources>
