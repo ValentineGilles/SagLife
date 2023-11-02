@@ -1,4 +1,5 @@
 package com.example.saglife.screen
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.saglife.R
 import com.example.saglife.models.EventItem
 import com.google.firebase.Firebase
@@ -37,8 +39,7 @@ import com.google.firebase.firestore.firestore
 import java.util.Date
 
 @Composable
-fun CalendarScreen() {
-
+fun CalendarScreen(navController : NavHostController) {
 
     var events by remember { mutableStateOf(mutableListOf<EventItem>()) }
 
@@ -54,6 +55,7 @@ fun CalendarScreen() {
             eventItems.add(EventItem(name, dateStart, dateEnd,description, photoPath))
         }
         events=eventItems
+
     }
 
     LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {

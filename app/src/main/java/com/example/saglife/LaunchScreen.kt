@@ -1,30 +1,28 @@
-package com.example.saglife.screen
+package com.example.saglife
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.compose.ui.res.painterResource
 
 @Composable
-fun ForumScreen(navController : NavHostController) {
+fun LaunchScreen() {
     Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Forum",
-            fontSize = 20.sp
+        Image(
+            painter = painterResource(id = R.drawable.saglife_logo), // Remplacez "logo" par le nom de votre fichier de logo
+            contentDescription = "Logo de l'application"
         )
     }
-
 }
