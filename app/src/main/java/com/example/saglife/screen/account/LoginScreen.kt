@@ -1,4 +1,4 @@
-package com.example.saglife.screen
+package com.example.saglife.screen.account
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,10 +15,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material3.Button
-import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -48,7 +46,7 @@ fun LoginScreen(navController: NavHostController) {
     var username by remember { mutableStateOf(TextFieldValue()) }
     var password by remember { mutableStateOf(TextFieldValue()) }
 
-    Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
+    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         ClickableText(
             text = AnnotatedString("S'inscrire"),
             modifier = Modifier
@@ -59,7 +57,8 @@ fun LoginScreen(navController: NavHostController) {
             style = TextStyle(
                 fontSize = 14.sp,
                 fontFamily = FontFamily.Default,
-                textDecoration = TextDecoration.Underline
+                textDecoration = TextDecoration.Underline,
+                color = MaterialTheme.colorScheme.onBackground
             )
         )
     }
@@ -119,7 +118,8 @@ fun LoginScreen(navController: NavHostController) {
             onClick = { navController.navigate("forgotten") },
             style = TextStyle(
                 fontSize = 14.sp,
-                fontFamily = FontFamily.Default
+                fontFamily = FontFamily.Default,
+                color = MaterialTheme.colorScheme.onBackground
             )
         )
     }

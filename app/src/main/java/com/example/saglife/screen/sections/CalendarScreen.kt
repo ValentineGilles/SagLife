@@ -1,4 +1,4 @@
-package com.example.saglife.screen
+package com.example.saglife.screen.sections
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,14 +15,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
 @Composable
-fun ForumScreen(navController : NavHostController) {
+fun CalendarScreen(navController : NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Forum",
+            text = "Evenements",
             fontSize = 20.sp
         )
     }

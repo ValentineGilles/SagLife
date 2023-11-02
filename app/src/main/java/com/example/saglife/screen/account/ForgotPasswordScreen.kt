@@ -1,4 +1,4 @@
-package com.example.saglife.screen
+package com.example.saglife.screen.account
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -14,9 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,14 +32,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.saglife.CustomTopAppBar
 import com.example.saglife.R
 
 @Composable
@@ -53,26 +50,8 @@ fun ForgotPasswordScreen(navController: NavHostController) {
 @Composable
 fun ScaffoldWithTopBarForgotPass(navController: NavHostController) {
     Scaffold(
-        topBar = {
-            CustomTopAppBar(navController, "Mot de passe oublié", true, false)
-        }, content = {
+           content = {
             var email by remember { mutableStateOf(TextFieldValue()) }
-
-            Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
-                ClickableText(
-                    text = AnnotatedString("S'inscrire"),
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(20.dp),
-                    onClick = {navController.navigate("registration")
-                    },
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily.Default,
-                        textDecoration = TextDecoration.Underline
-                    )
-                )
-            }
 
             Column(
                 modifier = Modifier
@@ -93,7 +72,7 @@ fun ScaffoldWithTopBarForgotPass(navController: NavHostController) {
 
                 //Text(text = "Réinitialiser le mot de passe", style = TextStyle(fontSize = 20.sp), modifier = Modifier.padding(bottom = 16.dp))
 
-                //Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 TextField(
                     label = { Text(text = "Adresse e-mail") },
                     value = email,

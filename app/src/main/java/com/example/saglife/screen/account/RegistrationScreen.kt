@@ -1,4 +1,4 @@
-package com.example.saglife.screen
+package com.example.saglife.screen.account
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -35,7 +36,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.saglife.CustomTopAppBar
 import com.example.saglife.R
 
 @Composable
@@ -49,9 +49,6 @@ fun RegistrationScreen(navController: NavHostController) {
 @Composable
 fun ScaffoldWithTopBar(navController: NavHostController) {
     Scaffold(
-        topBar = {
-            CustomTopAppBar(navController, "Inscription", true, false)
-        },
         content = {
             var username by remember { mutableStateOf(TextFieldValue()) }
             var password by remember { mutableStateOf(TextFieldValue()) }
@@ -59,13 +56,17 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
             var firstname by remember { mutableStateOf(TextFieldValue()) }
             var lastname by remember { mutableStateOf(TextFieldValue()) }
 
-            Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+
+                ) {
             }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(60.dp)
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState())
+                    ,
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -86,6 +87,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                     value = firstname,
                     onValueChange = { firstname = it },
                     modifier = Modifier.fillMaxWidth()
+                        .padding(start = 60.dp, end = 60.dp)
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -95,6 +97,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                     value = lastname,
                     onValueChange = { lastname = it },
                     modifier = Modifier.fillMaxWidth()
+                        .padding(start = 60.dp, end = 60.dp)
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -104,6 +107,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                     value = username,
                     onValueChange = { username = it },
                     modifier = Modifier.fillMaxWidth()
+                        .padding(start = 60.dp, end = 60.dp)
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -113,6 +117,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                     value = email,
                     onValueChange = { email = it },
                     modifier = Modifier.fillMaxWidth()
+                        .padding(start = 60.dp, end = 60.dp)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 TextField(
@@ -122,6 +127,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     onValueChange = { password = it },
                     modifier = Modifier.fillMaxWidth()
+                        .padding(start = 60.dp, end = 60.dp)
                 )
                 Spacer(modifier = Modifier.height(20.dp))
 
