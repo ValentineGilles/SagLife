@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.saglife.app-mergeDebugResources-58:/values-w320dp-land-v13/values-w320dp-land-v13.xml",
+            "outputFile": "com.example.saglife.app-mergeDebugResources-81:/values-w320dp-land-v13/values-w320dp-land-v13.xml",
             "map": [
                 {
-                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/dcc406f52a9e8c63cec66d29da7a3ff5/transformed/material-1.10.0/res/values-w320dp-land-v13/values-w320dp-land-v13.xml",
+                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/517963999b88f9f6178947ea19e54c4e/transformed/material-1.10.0/res/values-w320dp-land-v13/values-w320dp-land-v13.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

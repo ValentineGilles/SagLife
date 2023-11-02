@@ -21,4 +21,5 @@ fun ForumScreen() {
             fontSize = 20.sp
         )
     }
+
 }

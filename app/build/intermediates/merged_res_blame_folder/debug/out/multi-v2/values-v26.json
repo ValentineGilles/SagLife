@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.saglife.app-mergeDebugResources-58:/values-v26/values-v26.xml",
+            "outputFile": "com.example.saglife.app-mergeDebugResources-81:/values-v26/values-v26.xml",
             "map": [
                 {
-                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/92499a3cd2b9604f1385e115be596f9e/transformed/firebase-ui-auth-8.0.2/res/values-v26/values-v26.xml",
+                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/fe71cddbc95cac8deffa5a6ca5efebff/transformed/firebase-ui-auth-8.0.2/res/values-v26/values-v26.xml",
                     "from": {
                         "startLines": "2,6,10,14",
                         "startColumns": "4,4,4,4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/e5be0b8d68940c264c44d2852cbb4e6d/transformed/appcompat-1.6.1/res/values-v26/values-v26.xml",
+                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/8c90d596a34bf3bc5aeee390183a1067/transformed/appcompat-1.6.1/res/values-v26/values-v26.xml",
                     "from": {
                         "startLines": "2,3,4,8,12,16",
                         "startColumns": "4,4,4,4,4,4",
