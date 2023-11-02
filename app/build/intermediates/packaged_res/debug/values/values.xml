@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="ic_saglife_launcher_background">#FFFFFF</color>
+    <color name="ic_saglife_purple_launcher_background">#FFFFFF</color>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <item name="login_activity" type="id"/>
@@ -21,27 +16,14 @@
     <string name="project_id" translatable="false">saglife-94b7c</string>
     <string name="title_activity_bottom_navigation_bar">bottomNavigationBar</string>
     <string name="title_activity_calendar_screen">CalendarScreen</string>
-    <string name="title_activity_event">Event</string>
     <string name="title_activity_events_screen">EventsScreen</string>
     <string name="title_activity_forum_screen">ForumScreen</string>
     <string name="title_activity_home_screen">HomeScreen</string>
+    <string name="title_activity_refactor_screen">RefactorScreen</string>
     <string name="title_activity_routes">Routes</string>
     <string name="title_activity_screen_main">ScreenMain</string>
     <string name="title_calendar">Evenements</string>
     <string name="title_forum">Forum</string>
     <string name="title_home">Home</string>
     <string name="title_map">Map</string>
-    <style name="Theme.SagLife" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        
-    </style>
 </resources>

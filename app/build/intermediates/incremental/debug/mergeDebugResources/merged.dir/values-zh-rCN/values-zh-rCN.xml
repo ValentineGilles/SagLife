@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">您已经有帐号了</string>
     <string name="fui_welcome_back_idp_prompt">您已经使用了 %1$s。请使用 %2$s 帐号登录以继续操作。</string>
     <string name="fui_welcome_back_password_prompt_body">您已经使用 %1$s 登录了，请输入该帐号的密码。</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">对话框图标</string>
     <string msgid="6827826412747255547" name="in_progress">"进行中"</string>
     <string msgid="7933458017204019916" name="indeterminate">"部分选中"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"下午"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"显示提示"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"提示"</string>
+    <string name="wallet_buy_button_place_holder">通过 Google 购买</string>
 </resources>

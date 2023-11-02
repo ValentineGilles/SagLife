@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">Sinulla on jo tili.</string>
     <string name="fui_welcome_back_idp_prompt">Olet jo käyttänyt osoitetta %1$s. Jatka kirjautumalla palvelun %2$s kautta.</string>
     <string name="fui_welcome_back_password_prompt_body">Olet jo käyttänyt osoitetta %1$s kirjautumiseen. Anna kyseisen tilin salasana.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">Valintaikkunan kuvake</string>
     <string msgid="6827826412747255547" name="in_progress">"Kesken"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Osittain tarkistettu"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"IP"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Näytä vihjeteksti"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Vihjeteksti"</string>
+    <string name="wallet_buy_button_place_holder">Maksa Googlen kautta</string>
 </resources>

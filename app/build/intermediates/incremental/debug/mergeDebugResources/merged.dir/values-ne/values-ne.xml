@@ -113,6 +113,7 @@
     <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"लिंक प्रतिलिपि गर्नुहोस्"</string>
     <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"ब्राउजरमा खोल्नुहोस्"</string>
     <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"लिंक सेयर गर्नुहोस्"</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">संवादको आइकन</string>
     <string msgid="6827826412747255547" name="in_progress">"काम हुँदै छ"</string>
     <string msgid="7933458017204019916" name="indeterminate">"आंशिक रूपमा जाँच गरिएको"</string>
@@ -204,4 +205,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"PM"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"टुलटिप देखाइयोस्"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"टुलटिप"</string>
+    <string name="wallet_buy_button_place_holder">Google मार्फत किन्नुहोस्</string>
 </resources>

@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">คุณมีบัญชีอยู่แล้ว</string>
     <string name="fui_welcome_back_idp_prompt">คุณใช้ %1$s อยู่แล้ว ลงชื่อเข้าใช้ด้วย %2$s เพื่อดำเนินการต่อ</string>
     <string name="fui_welcome_back_password_prompt_body">คุณใช้ %1$s ในการลงชื่อเข้าใช้อยู่แล้ว โปรดป้อนรหัสผ่านสำหรับบัญชีดังกล่าว</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">ไอคอนกล่องโต้ตอบ</string>
     <string msgid="6827826412747255547" name="in_progress">"กำลังดำเนินการ"</string>
     <string msgid="7933458017204019916" name="indeterminate">"เลือกบางส่วน"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"PM"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"แสดงเคล็ดลับเครื่องมือ"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"เคล็ดลับเครื่องมือ"</string>
+    <string name="wallet_buy_button_place_holder">ซื้อด้วย Google</string>
 </resources>

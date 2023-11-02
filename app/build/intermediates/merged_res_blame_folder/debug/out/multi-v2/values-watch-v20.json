@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.saglife.app-mergeDebugResources-81:/values-watch-v20/values-watch-v20.xml",
+            "outputFile": "com.example.saglife.app-mergeDebugResources-83:/values-watch-v20/values-watch-v20.xml",
             "map": [
                 {
                     "source": "/Users/sachamontel/.gradle/caches/transforms-3/087df347e72ddc71df89cee38be52d92/transformed/play-services-auth-20.3.0/res/values-watch-v20/values.xml",

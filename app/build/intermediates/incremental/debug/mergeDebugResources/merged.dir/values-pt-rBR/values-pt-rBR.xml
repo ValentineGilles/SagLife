@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">Você já tem uma conta</string>
     <string name="fui_welcome_back_idp_prompt">Você já usou o e-mail %1$s. Faça login com o %2$s para continuar.</string>
     <string name="fui_welcome_back_password_prompt_body">Você já usou o e-mail %1$s para fazer login. Insira a senha dessa conta.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">Ícone de caixa de diálogo</string>
     <string msgid="6827826412747255547" name="in_progress">"Em andamento"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Parcialmente selecionada"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"PM"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Mostrar dica"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Dica"</string>
+    <string name="wallet_buy_button_place_holder">Comprar com o Google</string>
 </resources>

@@ -113,6 +113,7 @@
     <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"Шилтемени көчүрүү"</string>
     <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"Серепчиден ачуу"</string>
     <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"Шилтемени бөлүшүү"</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">Диалог сүрөтчөсү</string>
     <string msgid="6827826412747255547" name="in_progress">"Аткарылууда"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Жарым-жартылай текшерилди"</string>
@@ -204,4 +205,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"түштөн кийин"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Калкып чыгуучу кеңешти көрсөтүү"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Калкып чыгуучу кеңеш"</string>
+    <string name="wallet_buy_button_place_holder">Google аркылуу сатып алуу</string>
 </resources>

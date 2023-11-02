@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">از قبل حسابی دارید</string>
     <string name="fui_welcome_back_idp_prompt">قبلاً از %1$s استفاده کرده‌اید. برای ادامه، با %2$s وارد سیستم شوید.</string>
     <string name="fui_welcome_back_password_prompt_body">قبلاً از %1$s برای ورود به سیستم استفاده کرده‌اید. گذرواژه این حساب را وارد کنید.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">نماد کادر گفتگو</string>
     <string msgid="6827826412747255547" name="in_progress">"درحال انجام"</string>
     <string msgid="7933458017204019916" name="indeterminate">"برخی موارد علامت‌گذاری شده است"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"ب.ظ."</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"نمایش نکته‌ابزار"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"نکته‌ابزار"</string>
+    <string name="wallet_buy_button_place_holder">خرید با Google</string>
 </resources>

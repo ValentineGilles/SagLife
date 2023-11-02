@@ -104,6 +104,7 @@
     <string name="fui_welcome_back_idp_header">Ya tienes una cuenta</string>
     <string name="fui_welcome_back_idp_prompt">Ya usaste %1$s. Accede con %2$s para continuar.</string>
     <string name="fui_welcome_back_password_prompt_body">Ya usaste %1$s para acceder. Ingresa la contraseña correspondiente.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">Ícono de diálogo</string>
     <string name="item_view_role_description">Pestaña</string>
     <string name="material_clock_toggle_content_description">Selecciona a.m. o p.m.</string>
@@ -162,4 +163,5 @@
     <string name="mtrl_timepicker_cancel">Cancelar</string>
     <string name="mtrl_timepicker_confirm">Aceptar</string>
     <string name="password_toggle_content_description">Mostrar contraseña</string>
+    <string name="wallet_buy_button_place_holder">Comprar con Google</string>
 </resources>

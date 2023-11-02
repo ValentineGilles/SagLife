@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">আপনার আগে থেকেই একটি অ্যাকাউন্ট আছে</string>
     <string name="fui_welcome_back_idp_prompt">আপনি %1$s আগেই ব্যবহার করেছেন। চালিয়ে যেতে %2$s দিয়ে সাইন-ইন করুন।</string>
     <string name="fui_welcome_back_password_prompt_body">আপনি আগেই %1$s দিয়ে সাইন-ইন করেছেন। সেই অ্যাকাউন্টের জন্য পাসওয়ার্ডটি লিখুন।</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">ডায়ালগ আইকন</string>
     <string msgid="6827826412747255547" name="in_progress">"কাজ চলছে"</string>
     <string msgid="7933458017204019916" name="indeterminate">"কয়েকটি বিকল্প বেছে নেওয়া হয়েছে"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"PM"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"টুলটিপ দেখান"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"টুলটিপ"</string>
+    <string name="wallet_buy_button_place_holder">Google ব্যবহার করে কিনুন</string>
 </resources>

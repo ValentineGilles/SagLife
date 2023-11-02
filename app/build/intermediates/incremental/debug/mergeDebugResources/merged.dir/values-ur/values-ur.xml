@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">آپ کے پاس پہلے سے ہی ایک اکاؤنٹ موجود ہے</string>
     <string name="fui_welcome_back_idp_prompt">آپ نے پہلے ہی %1$s استعمال کر لیا ہے۔ جاری رکھنے کے لیے %2$s کے ساتھ سائن ان کریں۔</string>
     <string name="fui_welcome_back_password_prompt_body">آپ نے پہلے ہی %1$s استعمال کر لیا ہے سائن کرنے کے لیے۔ اس کاؤنٹ کے لیے اپنا پاس ورڈ درج کریں۔</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">ڈائیلاگ کا آئیکن</string>
     <string msgid="6827826412747255547" name="in_progress">"پیشرفت میں"</string>
     <string msgid="7933458017204019916" name="indeterminate">"جزوی طور پر چیک کردہ"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"بعد از دوپہر"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"ٹول ٹپ دکھائیں"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"ٹول ٹپ"</string>
+    <string name="wallet_buy_button_place_holder">Google کے ساتھ خریدیں</string>
 </resources>

@@ -205,6 +205,7 @@
     <string name="fui_welcome_back_idp_header">Masz już konto</string>
     <string name="fui_welcome_back_idp_prompt">Adres %1$s został już przez Ciebie użyty. Aby kontynuować, zaloguj się przez: %2$s.</string>
     <string name="fui_welcome_back_password_prompt_body">Adres %1$s został już przez Ciebie użyty do logowania. Wpisz hasło tego konta.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">Ikona okna</string>
     <string msgid="6827826412747255547" name="in_progress">"W toku"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Częściowo zaznaczone"</string>
@@ -296,4 +297,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"PM"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"Pokaż etykietkę"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"Etykietka"</string>
+    <string name="wallet_buy_button_place_holder">Kup to z Google</string>
 </resources>

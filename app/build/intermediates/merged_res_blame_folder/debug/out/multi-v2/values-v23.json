@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.saglife.app-mergeDebugResources-81:/values-v23/values-v23.xml",
+            "outputFile": "com.example.saglife.app-mergeDebugResources-83:/values-v23/values-v23.xml",
             "map": [
                 {
                     "source": "/Users/sachamontel/.gradle/caches/transforms-3/01e036f64021e9d40fb6ccdf4d9bee57/transformed/cardview-1.0.0/res/values-v23/values-v23.xml",

@@ -203,6 +203,7 @@
     <string name="fui_welcome_back_idp_header">계정이 이미 있음</string>
     <string name="fui_welcome_back_idp_prompt">%1$s을(를) 이미 사용하고 있습니다. 계속하려면 %2$s(으)로 로그인하세요.</string>
     <string name="fui_welcome_back_password_prompt_body">이미 %1$s을(를) 사용하여 로그인했습니다. 해당 계정의 비밀번호를 입력하세요.</string>
+    <string name="gpay_logo_description">Google Pay</string>
     <string name="icon_content_description">대화상자 아이콘</string>
     <string msgid="6827826412747255547" name="in_progress">"진행 중"</string>
     <string msgid="7933458017204019916" name="indeterminate">"일부 선택됨"</string>
@@ -294,4 +295,5 @@
     <string msgid="2232702812657998674" name="time_picker_pm">"오후"</string>
     <string msgid="2732804537909054941" name="tooltip_long_press_label">"도움말 표시"</string>
     <string msgid="8191239805703103845" name="tooltip_pane_description">"도움말"</string>
+    <string name="wallet_buy_button_place_holder">Google로 구매</string>
 </resources>
