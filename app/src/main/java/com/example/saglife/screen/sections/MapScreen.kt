@@ -28,4 +28,5 @@ fun MapScreen(navController : NavHostController) {
             fontSize = 20.sp
         )
     }
+
 }

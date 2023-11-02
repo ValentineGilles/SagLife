@@ -15,5 +15,6 @@ class Event_information : AppCompatActivity() {
 
 
 
+
     }
 }

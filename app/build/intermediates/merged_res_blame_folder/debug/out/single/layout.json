@@ -1,38 +1,34 @@
 [
     {
-        "merged": "com.example.saglife.app-mergeDebugResources-59:/layout/composant_event.xml",
-        "source": "com.example.saglife.app-main-62:/layout/composant_event.xml"
+        "merged": "com.example.saglife.app-mergeDebugResources-82:/layout/activity_event_information.xml",
+        "source": "com.example.saglife.app-main-85:/layout/activity_event_information.xml"
     },
     {
-        "merged": "com.example.saglife.app-mergeDebugResources-59:/layout/activity_event.xml",
-        "source": "com.example.saglife.app-main-62:/layout/activity_event.xml"
+        "merged": "com.example.saglife.app-mergeDebugResources-82:/layout/fragment_calendar.xml",
+        "source": "com.example.saglife.app-main-85:/layout/fragment_calendar.xml"
     },
     {
-        "merged": "com.example.saglife.app-mergeDebugResources-59:/layout/fragment_home.xml",
-        "source": "com.example.saglife.app-main-62:/layout/fragment_home.xml"
+        "merged": "com.example.saglife.app-mergeDebugResources-82:/layout/fragment_home.xml",
+        "source": "com.example.saglife.app-main-85:/layout/fragment_home.xml"
     },
     {
-        "merged": "com.example.saglife.app-mergeDebugResources-59:/layout/fragment_map.xml",
-        "source": "com.example.saglife.app-main-62:/layout/fragment_map.xml"
+        "merged": "com.example.saglife.app-mergeDebugResources-82:/layout/fragment_map.xml",
+        "source": "com.example.saglife.app-main-85:/layout/fragment_map.xml"
     },
     {
-        "merged": "com.example.saglife.app-mergeDebugResources-59:/layout/activity_main.xml",
-        "source": "com.example.saglife.app-main-62:/layout/activity_main.xml"
+        "merged": "com.example.saglife.app-mergeDebugResources-82:/layout/composant_event.xml",
+        "source": "com.example.saglife.app-main-85:/layout/composant_event.xml"
     },
     {
-        "merged": "com.example.saglife.app-mergeDebugResources-59:/layout/activity_event_information.xml",
-        "source": "com.example.saglife.app-main-62:/layout/activity_event_information.xml"
+        "merged": "com.example.saglife.app-mergeDebugResources-82:/layout/fragment_forum.xml",
+        "source": "com.example.saglife.app-main-85:/layout/fragment_forum.xml"
     },
     {
-        "merged": "com.example.saglife.app-mergeDebugResources-59:/layout/fragment_forum.xml",
-        "source": "com.example.saglife.app-main-62:/layout/fragment_forum.xml"
+        "merged": "com.example.saglife.app-mergeDebugResources-82:/layout/activity_login.xml",
+        "source": "com.example.saglife.app-main-85:/layout/activity_login.xml"
     },
     {
-        "merged": "com.example.saglife.app-mergeDebugResources-59:/layout/activity_login.xml",
-        "source": "com.example.saglife.app-main-62:/layout/activity_login.xml"
-    },
-    {
-        "merged": "com.example.saglife.app-mergeDebugResources-59:/layout/fragment_calendar.xml",
-        "source": "com.example.saglife.app-main-62:/layout/fragment_calendar.xml"
+        "merged": "com.example.saglife.app-mergeDebugResources-82:/layout/activity_main.xml",
+        "source": "com.example.saglife.app-main-85:/layout/activity_main.xml"
     }
 ]
