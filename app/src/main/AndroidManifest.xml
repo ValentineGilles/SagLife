@@ -12,8 +12,10 @@
         android:theme="@style/Theme.SagLife"
         tools:targetApi="33">
         <activity
-            android:name=".Event"
-            android:exported="false" />
+            android:name=".screen.Event"
+            android:exported="false"
+            android:label="@string/title_activity_event"
+            android:theme="@style/Theme.SagLife" />
         <activity
             android:name=".Event_information"
             android:exported="false" />
