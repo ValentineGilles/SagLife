@@ -57,8 +57,6 @@
     @Composable
     fun MyApp(navController: NavHostController) {
         var selectedItem by remember { mutableStateOf(0) }
-        val eventItems = getEventsFromFirebase()
-
         Scaffold(
             bottomBar = {
                 BottomNavigationBar(selectedItem) {
@@ -78,28 +76,9 @@
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable("home") { HomeScreen() }
-                composable("calendar") { CalendarScreen(eventItems )}
+                composable("calendar") { CalendarScreen()}
                 composable("map") { MapScreen() }
                 composable("forum") { ForumScreen() }
             }
         }
-    }
-
-    fun getEventsFromFirebase(): MutableList<EventItem> {
-        val db = Firebase.firestore
-
-        var eventItems = mutableListOf<EventItem>()
-
-        db.collection("event").get().addOnSuccessListener { result ->
-            for (document in result) {
-                println("${document.id} => ${document.data}")
-                val name = document.get("Name").toString()
-                val dateStart = Date()
-                val dateEnd = Date()
-                val description = document.get("Description").toString()
-                val photoPath = document.get("Photo").toString()
-                eventItems.add(EventItem(name, dateStart, dateEnd,description, photoPath))
-            }
-        }
-        return eventItems
     }

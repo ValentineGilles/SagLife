@@ -12,7 +12,7 @@
         android:theme="@style/Theme.SagLife"
         tools:targetApi="31">
         <activity
-            android:name=".Event"
+            android:name=".screen.Event"
             android:exported="false"
             android:label="@string/title_activity_event"
             android:theme="@style/Theme.SagLife" />
