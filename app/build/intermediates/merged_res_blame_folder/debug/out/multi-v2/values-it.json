@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.saglife.app-mergeDebugResources-83:/values-it/values-it.xml",
+            "outputFile": "com.example.saglife.app-mergeDebugResources-84:/values-it/values-it.xml",
             "map": [
                 {
                     "source": "/Users/sachamontel/.gradle/caches/transforms-3/fe71cddbc95cac8deffa5a6ca5efebff/transformed/firebase-ui-auth-8.0.2/res/values-it/values-it.xml",

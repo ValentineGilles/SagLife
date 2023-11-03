@@ -1,14 +1,10 @@
 [
     {
-        "merged": "com.example.saglife.app-mergeDebugResources-84:/layout/activity_event_information.xml",
-        "source": "com.example.saglife.app-main-87:/layout/activity_event_information.xml"
+        "merged": "com.example.saglife.app-mergeDebugResources-85:/layout/activity_event_information.xml",
+        "source": "com.example.saglife.app-main-88:/layout/activity_event_information.xml"
     },
     {
-        "merged": "com.example.saglife.app-mergeDebugResources-84:/layout/composant_event.xml",
-        "source": "com.example.saglife.app-main-87:/layout/composant_event.xml"
-    },
-    {
-        "merged": "com.example.saglife.app-mergeDebugResources-84:/layout/fragment_calendar.xml",
-        "source": "com.example.saglife.app-main-87:/layout/fragment_calendar.xml"
+        "merged": "com.example.saglife.app-mergeDebugResources-85:/layout/composant_event.xml",
+        "source": "com.example.saglife.app-main-88:/layout/composant_event.xml"
     }
 ]

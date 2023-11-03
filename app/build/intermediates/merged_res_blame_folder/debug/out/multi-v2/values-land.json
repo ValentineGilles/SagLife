@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.saglife.app-mergeDebugResources-83:/values-land/values-land.xml",
+            "outputFile": "com.example.saglife.app-mergeDebugResources-84:/values-land/values-land.xml",
             "map": [
                 {
                     "source": "/Users/sachamontel/.gradle/caches/transforms-3/8c90d596a34bf3bc5aeee390183a1067/transformed/appcompat-1.6.1/res/values-land/values-land.xml",

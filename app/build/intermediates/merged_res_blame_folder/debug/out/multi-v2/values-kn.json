@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.saglife.app-mergeDebugResources-83:/values-kn/values-kn.xml",
+            "outputFile": "com.example.saglife.app-mergeDebugResources-84:/values-kn/values-kn.xml",
             "map": [
                 {
                     "source": "/Users/sachamontel/.gradle/caches/transforms-3/af92afb0d67c11206ad4f9db15e8686f/transformed/play-services-wallet-19.2.1/res/values-kn/values.xml",

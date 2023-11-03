@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.saglife.app-mergeDebugResources-83:/values-w360dp-port-v13/values-w360dp-port-v13.xml",
+            "outputFile": "com.example.saglife.app-mergeDebugResources-84:/values-w360dp-port-v13/values-w360dp-port-v13.xml",
             "map": [
                 {
                     "source": "/Users/sachamontel/.gradle/caches/transforms-3/517963999b88f9f6178947ea19e54c4e/transformed/material-1.10.0/res/values-w360dp-port-v13/values-w360dp-port-v13.xml",

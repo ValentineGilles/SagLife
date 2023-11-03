@@ -13,14 +13,6 @@
             tools:targetApi="33">
 
         <activity
-            android:name=".screen.Event"
-            android:exported="false"
-            android:label="@string/title_activity_event"
-            android:theme="@style/Theme.SagLife" />
-        <activity
-            android:name=".Event_information"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

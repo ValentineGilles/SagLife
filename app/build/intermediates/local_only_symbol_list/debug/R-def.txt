@@ -19,7 +19,6 @@ drawable saglife_logo_purple
 id cardEvent
 id dateEvent
 id descriptionEvent
-id event_list_view
 id horraireEvent
 id imageEvent
 id login_activity
@@ -27,7 +26,6 @@ id main_activity
 id nameEvent
 layout activity_event_information
 layout composant_event
-layout fragment_calendar
 mipmap ic_launcher
 mipmap ic_launcher_round
 mipmap ic_saglife_launcher
