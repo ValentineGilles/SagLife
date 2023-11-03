@@ -2,6 +2,7 @@ package com.example.saglife.screen.sections
 
 import androidx.compose.foundation.background
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,10 +37,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.saglife.R
 import com.example.saglife.models.EventItem
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
+import java.sql.Timestamp
 import java.util.Date
 
 @Composable
@@ -52,9 +57,10 @@ fun CalendarScreen() {
     var eventItems = mutableListOf<EventItem>()
     db.collection("event").get().addOnSuccessListener { result ->
         for (document in result) {
+
             val name = document.get("Name").toString()
-            val dateStart = Date()
-            val dateEnd = Date()
+            val dateStart : Date = document.getDate("Date_start")!!
+            val dateEnd = document.getDate("Date_stop")!!
             val description = document.get("Description").toString()
             val photoPath = document.get("Photo").toString()
             eventItems.add(EventItem(name, dateStart, dateEnd,description, photoPath))
@@ -64,7 +70,7 @@ fun CalendarScreen() {
 
     LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
         items(events) { event ->
-            EventComposant(event = event)
+            EventComposant(event = event, navController = navController)
         }
     }
 }
@@ -72,22 +78,38 @@ fun CalendarScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventComposant(event : EventItem){
+fun EventComposant(event : EventItem,navController : NavHostController){
+    var storage = Firebase.storage
+    var storageReference = storage.getReference("images/").child(event.photoPath)
+    var urlImage : Uri? by remember { mutableStateOf(null) }
+    storageReference.downloadUrl.addOnSuccessListener { url-> urlImage = url}
+
+
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
-        ),modifier = Modifier.fillMaxWidth().height(200.dp).padding(16.dp), onClick = {}) {
+        ),modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .padding(16.dp), onClick = {navController.navigate(Routes.Event.route)}) {
         Box(
             contentAlignment = Alignment.BottomCenter
         ){
-            Image(
+            if(urlImage==null)Image(
             painter = painterResource(id = R.drawable.event),
-            contentDescription = "null", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth()
-        )
-            ElevatedCard (modifier = Modifier.fillMaxWidth().height(80.dp).padding(8.dp)) {
+            contentDescription = "null", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth(),
+
+        )else
+            AsyncImage(
+                model = urlImage,contentDescription = "null", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth(),
+            )
+            ElevatedCard (modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+                .padding(8.dp)) {
                 Row(verticalAlignment= Alignment.CenterVertically){
                 Box(modifier = Modifier.width(80.dp)){
-                    Text(text = " 17 Nov.", fontSize = 24.sp, modifier = Modifier.align(
+                    Text(text = event.getDay(), fontSize = 24.sp, modifier = Modifier.align(
                     Alignment.Center), textAlign= TextAlign.Center)}
                     Spacer(
                         Modifier
@@ -105,7 +127,7 @@ fun EventComposant(event : EventItem){
                             .width(8.dp)
                     )
                 Column { Text(text = event.name, fontSize = 24.sp, fontWeight = FontWeight.Bold)
-                    Text(text = "17h - 22h")}
+                    Text(text = event.getTime())}
             } }
 
             }
@@ -117,7 +139,7 @@ fun EventComposant(event : EventItem){
 @Preview
 @Composable
 fun Preview() {
-    EventComposant(EventItem("Party Barbie", Date(), Date(), "blabla", "photo"))
+    //EventComposant(EventItem("Party Barbie", Date(), Date(), "blabla", "photo"))
 }
 
 fun getEventsFromFirebase(): MutableList<EventItem> {

@@ -43,7 +43,6 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="60dp"
-                android:background="@color/black"
                 android:orientation="vertical"
                 android:layout_gravity="center"/>
 
@@ -101,7 +100,6 @@
                 android:layout_height="48dp"
                 android:src="@drawable/baseline_add_circle_24"
                 android:scaleType="fitXY"
-                app:tint="@color/white"
                 android:background="@drawable/roundcorner"
                 />
 

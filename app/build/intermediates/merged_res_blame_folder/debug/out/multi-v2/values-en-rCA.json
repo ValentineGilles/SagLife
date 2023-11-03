@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.saglife.app-mergeDebugResources-83:/values-en-rCA/values-en-rCA.xml",
+            "outputFile": "com.example.saglife.app-mergeDebugResources-84:/values-en-rCA/values-en-rCA.xml",
             "map": [
                 {
                     "source": "/Users/sachamontel/.gradle/caches/transforms-3/ca53f140cb152e0564ecc66d999a1b60/transformed/material3-1.1.2/res/values-en-rCA/values-en-rCA.xml",

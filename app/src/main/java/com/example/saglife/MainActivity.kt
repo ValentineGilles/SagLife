@@ -1,59 +1,51 @@
-    package com.example.saglife
+package com.example.saglife
 
-    import Routes
-    import android.os.Build
-    import com.example.saglife.screen.sections.CalendarScreen
-    import com.example.saglife.screen.sections.ForumScreen
-    import com.example.saglife.screen.sections.HomeScreen
-    import com.example.saglife.screen.sections.MapScreen
-    import android.os.Bundle
-    import androidx.activity.compose.setContent
-    import androidx.activity.ComponentActivity
-    import androidx.annotation.RequiresApi
-    import androidx.compose.foundation.layout.padding
-    import androidx.compose.material3.ExperimentalMaterial3Api
-    import androidx.compose.material3.Scaffold
-    import androidx.compose.runtime.Composable
-    import androidx.compose.runtime.getValue
-    import androidx.compose.runtime.mutableStateOf
-    import androidx.compose.runtime.remember
-    import androidx.compose.runtime.setValue
-    import androidx.compose.ui.Modifier
-    import androidx.navigation.NavHostController
-    import androidx.navigation.compose.NavHost
-    import androidx.navigation.compose.composable
-    import androidx.navigation.compose.rememberNavController
-    import com.example.saglife.component.BottomNavigationBar
-    import com.example.saglife.screen.LaunchScreen
-    import com.example.saglife.screen.account.ForgotPasswordScreen
-    import com.example.saglife.screen.account.LoginScreen
-    import com.example.saglife.screen.account.ProfileScreen
-    import com.example.saglife.screen.account.RegistrationScreen
-    import com.example.saglife.ui.theme.SagLifeTheme
-    import android.os.Bundle
-    import androidx.appcompat.app.AppCompatActivity
-    import androidx.navigation.findNavController
-    import androidx.navigation.ui.AppBarConfiguration
-    import androidx.navigation.ui.setupActionBarWithNavController
-    import androidx.navigation.ui.setupWithNavController
-    import com.example.saglife.databinding.ActivityMainBinding
-    import com.google.android.material.bottomnavigation.BottomNavigationView
-    import com.google.firebase.FirebaseApp
+import Routes
+import android.os.Build
+import com.example.saglife.screen.CalendarScreen
+import com.example.saglife.screen.ForumScreen
+import com.example.saglife.screen.HomeScreen
+import com.example.saglife.screen.MapScreen
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.activity.ComponentActivity
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.saglife.component.BottomNavigationBar
+import com.example.saglife.screen.EventScreen
+import com.example.saglife.screen.ForgotPasswordScreen
+import com.example.saglife.screen.LoginScreen
+import com.example.saglife.screen.ProfileScreen
+import com.example.saglife.screen.RegistrationScreen
+import com.example.saglife.ui.theme.SagLifeTheme
 
 
-    class MainActivity : ComponentActivity() {
-        @RequiresApi(Build.VERSION_CODES.M)
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            actionBar?.hide();
-            setContent {
-                SagLifeTheme {
-                    val navController = rememberNavController()
-                    MyApp(navController)
-                }
-
+class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        actionBar?.hide();
+        setContent {
+            SagLifeTheme {
+                val navController = rememberNavController()
+                MyApp(navController)
             }
+
         }
+    }
 
 
         @OptIn(ExperimentalMaterial3Api::class)
@@ -70,7 +62,7 @@
             val isTopBarBack = remember { mutableStateOf(true) }
             val isBottomBarVisible = remember { mutableStateOf(true) }
 
-            Scaffold(
+        Scaffold(
                 topBar = {
                     if (isTopBarVisible.value) {
                         if (isTopBarBack.value)
@@ -95,71 +87,66 @@
                         }
                     }
                 }
-            ) { innerPadding ->
-                NavHost(
+        ) { innerPadding ->
+            NavHost(
                     navController = navController,
                     startDestination = Routes.Login.route,
                     modifier = Modifier.padding(innerPadding)
-                ) {
-                    composable(Routes.Home.route) {
-                        // Affiche la TopBar et la BottomBar sur "Home"
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = true
-                        isTopBarBack.value = false
-                        HomeScreen(navController = navController)
-                    }
-                    composable(Routes.Calendar.route) {
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = true
-                        isTopBarBack.value = false
-                        CalendarScreen(navController = navController)
-                    }
-                    composable(Routes.Map.route) {
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = true
-                        isTopBarBack.value = false
-                        MapScreen(navController = navController)
-                    }
-                    composable(Routes.Forum.route) {
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = true
-                        isTopBarBack.value = false
-                        ForumScreen(navController = navController)
-                    }
+            ) {
+                composable(Routes.Home.route) {
+                    // Affiche la TopBar et la BottomBar sur "Home"
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    HomeScreen(navController = navController)
+                }
+                composable(Routes.Calendar.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    CalendarScreen(navController = navController)
+                }
+                composable(Routes.Map.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    MapScreen(navController = navController)
+                }
+                composable(Routes.Forum.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    ForumScreen(navController = navController)
+                }
 
-                    composable(Routes.Profile.route) {
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = true
-                        isTopBarBack.value = true
-                        ProfileScreen(navController = navController)
-                    }
+                composable(Routes.Profile.route) {
+                    isTopBarVisible.value = false
+                    isBottomBarVisible.value = true
+                    ProfileScreen(navController = navController)
+                }
 
-                    composable(Routes.Login.route) {
-                        // Masque la TopBar et la BottomBar sur "Login"
-                        isTopBarVisible.value = false
-                        isBottomBarVisible.value = false
-                        isTopBarBack.value = false
-                        LoginScreen(
+                composable(Routes.Login.route) {
+                    // Masque la TopBar et la BottomBar sur "Login"
+                    isTopBarVisible.value = false
+                    isBottomBarVisible.value = false
+                    LoginScreen(
                             navController = navController
-                        )
-                    }
+                    )
+                }
 
-                    composable(Routes.Registration.route) {
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = false
-                        isTopBarBack.value = true
-                        RegistrationScreen(navController = navController)
-                    }
+                composable(Routes.Registration.route) {
+                    isTopBarVisible.value = false
+                    isBottomBarVisible.value = false
+                    RegistrationScreen(navController = navController)
+                }
 
-                    composable(Routes.Forgotten.route) { navBackStack ->
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = false
-                        isTopBarBack.value = true
-                        ForgotPasswordScreen(navController = navController)
-                    }
+                composable(Routes.Forgotten.route) { navBackStack ->
+                    isTopBarVisible.value = false
+                    isBottomBarVisible.value = false
+                    ForgotPasswordScreen(navController = navController)
+                }
+                composable(Routes.Event.route) {
+                    isTopBarVisible.value = false
+                    isBottomBarVisible.value = false
+                    EventScreen(navController = navController)
                 }
             }
         }
     }
-
-
+}
