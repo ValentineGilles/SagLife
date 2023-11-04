@@ -5,7 +5,7 @@ import com.google.firebase.storage.storage
 import kotlinx.coroutines.tasks.await
 import java.util.Date
 
-class EventItem (val name : String, val dateStart : Date, val dateEnd : Date, val description : String, val photoPath : String){
+class EventItem (val id:String,val name : String, val dateStart : Date, val dateEnd : Date, val description : String, val photoPath : String){
 
     fun getDay(): String{
         return dateStart.date.toString() + " "+ getMonth()

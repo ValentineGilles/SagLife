@@ -63,7 +63,7 @@ fun CalendarScreen() {
             val dateEnd = document.getDate("Date_stop")!!
             val description = document.get("Description").toString()
             val photoPath = document.get("Photo").toString()
-            eventItems.add(EventItem(name, dateStart, dateEnd,description, photoPath))
+            eventItems.add(EventItem(document.id,name, dateStart, dateEnd,description, photoPath))
         }
         events=eventItems
     }
@@ -91,7 +91,7 @@ fun EventComposant(event : EventItem,navController : NavHostController){
         ),modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
-            .padding(16.dp), onClick = {navController.navigate(Routes.Event.route)}) {
+            .padding(16.dp), onClick = {navController.navigate("event/${event.id}")}) {
         Box(
             contentAlignment = Alignment.BottomCenter
         ){
@@ -136,27 +136,4 @@ fun EventComposant(event : EventItem,navController : NavHostController){
 
 }
 
-@Preview
-@Composable
-fun Preview() {
-    //EventComposant(EventItem("Party Barbie", Date(), Date(), "blabla", "photo"))
-}
 
-fun getEventsFromFirebase(): MutableList<EventItem> {
-    val db = Firebase.firestore
-
-    var eventItems = mutableListOf<EventItem>()
-
-    db.collection("event").get().addOnSuccessListener { result ->
-        for (document in result) {
-            println("EVENTTTT ${document.id} => ${document.data}")
-            val name = document.get("Name").toString()
-            val dateStart = Date()
-            val dateEnd = Date()
-            val description = document.get("Description").toString()
-            val photoPath = document.get("Photo").toString()
-            eventItems.add(EventItem(name, dateStart, dateEnd,description, photoPath))
-        }
-    }
-    return eventItems
-}
