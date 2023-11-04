@@ -130,10 +130,10 @@ class MainActivity : ComponentActivity() {
                     isBottomBarVisible.value = false
                     ForgotPasswordScreen(navController = navController)
                 }
-                composable(Routes.Event.route) {
+                composable(Routes.Event.route) {backStackEntry ->
                     isTopBarVisible.value = false
                     isBottomBarVisible.value = false
-                    EventScreen(navController = navController)
+                    EventScreen(navController = navController,backStackEntry.arguments?.getString("id"))
                 }
             }
         }
