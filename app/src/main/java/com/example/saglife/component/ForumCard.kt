@@ -87,7 +87,6 @@ fun ForumCard(icon: Int, titre: String, auteur: String, Nb: Int, date: String) {
                             fontSize = 10.sp,
                             letterSpacing = 0.sp
                         ),
-                        color = Color.Black
                     )
                     Text(
                         text = date,
@@ -95,7 +94,6 @@ fun ForumCard(icon: Int, titre: String, auteur: String, Nb: Int, date: String) {
                             fontSize = 10.sp,
                             letterSpacing = 0.sp
                         ),
-                        color = Color.Gray
                     )
                 }
             }
