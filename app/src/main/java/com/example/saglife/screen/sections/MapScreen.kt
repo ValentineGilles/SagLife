@@ -1,4 +1,4 @@
-package com.example.saglife.screen
+package com.example.saglife.screen.sections
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,17 +13,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.saglife.ui.theme.Purple40
 
 @Composable
-fun ForumScreen(navController : NavHostController) {
+fun MapScreen(navController : NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
         Text(
-            text = "Forum",
+            text = "Map",
             fontSize = 20.sp
         )
     }
+
 }

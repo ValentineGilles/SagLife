@@ -1,4 +1,4 @@
-package com.example.saglife.screen
+package com.example.saglife.screen.sections
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
