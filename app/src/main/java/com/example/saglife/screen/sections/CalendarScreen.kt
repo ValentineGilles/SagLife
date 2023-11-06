@@ -1,7 +1,6 @@
 package com.example.saglife.screen.sections
 
-import androidx.compose.foundation.background
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -9,9 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,7 +30,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -44,9 +39,9 @@ import com.example.saglife.models.EventItem
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
-import java.sql.Timestamp
 import java.util.Date
 
+@SuppressLint("MutableCollectionMutableState")
 @Composable
 fun CalendarScreen(navController : NavHostController) {
 
@@ -54,7 +49,7 @@ fun CalendarScreen(navController : NavHostController) {
     var events by remember { mutableStateOf(mutableListOf<EventItem>()) }
 
     val db = Firebase.firestore
-    var eventItems = mutableListOf<EventItem>()
+    val eventItems = mutableListOf<EventItem>()
     db.collection("event").get().addOnSuccessListener { result ->
         for (document in result) {
 
@@ -79,8 +74,8 @@ fun CalendarScreen(navController : NavHostController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventComposant(event : EventItem,navController : NavHostController){
-    var storage = Firebase.storage
-    var storageReference = storage.getReference("images/").child(event.photoPath)
+    val storage = Firebase.storage
+    val storageReference = storage.getReference("images/").child(event.photoPath)
     var urlImage : Uri? by remember { mutableStateOf(null) }
     storageReference.downloadUrl.addOnSuccessListener { url-> urlImage = url}
 

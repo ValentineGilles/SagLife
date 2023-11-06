@@ -14,17 +14,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import org.w3c.dom.Text
+import com.example.saglife.models.ForumFilterItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterChip(filtername : String) {
+fun FilterChip(filtername: ForumFilterItem) {
     var selected by remember { mutableStateOf(false) }
 
     FilterChip(
         onClick = { selected = !selected },
         label = {
-            Text(filtername)
+            Text(filtername.name)
         },
         selected = selected,
         leadingIcon = if (selected) {
