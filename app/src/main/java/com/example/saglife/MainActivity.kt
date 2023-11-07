@@ -24,7 +24,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.saglife.component.BottomNavigationBar
-import com.example.saglife.screen.EventScreen
+import com.example.saglife.component.ForumPage
+import com.example.saglife.component.EventScreen
 import com.example.saglife.screen.account.ForgotPasswordScreen
 import com.example.saglife.screen.account.LoginScreen
 import com.example.saglife.screen.account.ProfileScreen
@@ -151,6 +152,16 @@ class MainActivity : ComponentActivity() {
                     isBottomBarVisible.value = false
                     isTopBarBack.value = true
                     EventScreen(navController = navController,backStackEntry.arguments?.getString("id"))
+                }
+
+                composable(Routes.ForumPage.route) { backStackEntry ->
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = false
+                    isTopBarBack.value = true
+                    ForumPage(
+                        navController = navController,
+                        backStackEntry.arguments?.getString("id")
+                    )
                 }
             }
         }

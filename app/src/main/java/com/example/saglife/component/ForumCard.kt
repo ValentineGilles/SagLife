@@ -2,6 +2,7 @@ package com.example.saglife
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,12 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,19 +26,26 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.util.Date
+import androidx.navigation.NavHostController
 
 @Composable
-fun ForumCard(icon: Int, titre: String, auteur: String, Nb: Int, date: String) {
+fun ForumCard(data: Map<String, Any>, navController: NavHostController) {
+    val icon = data["icon"] as Int
+    val title = data["title"] as String
+    val author = data["author"] as String
+    val nb = data["nb"] as Int
+    val date = data["date"] as String
+    val id = data["id"] as String
+
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
         ),
-        modifier = Modifier.fillMaxWidth().shadow(4.dp, shape = RoundedCornerShape(8.dp))
+        modifier = Modifier.fillMaxWidth().shadow(4.dp, shape = RoundedCornerShape(8.dp)).clickable {
+            navController.navigate("forum/$id")
+        }
     ) {
         Row(
             modifier = Modifier
@@ -67,10 +72,10 @@ fun ForumCard(icon: Int, titre: String, auteur: String, Nb: Int, date: String) {
                     .padding(start = 16.dp)
             ) {
                 Text(
-                    text = titre,
+                    text = title,
                     style = MaterialTheme.typography.titleSmall)
                 Text(
-                    text = auteur,
+                    text = author,
                     style = TextStyle(
                         fontSize = 12.sp,
                         letterSpacing = 0.sp
@@ -82,7 +87,7 @@ fun ForumCard(icon: Int, titre: String, auteur: String, Nb: Int, date: String) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "$Nb réponse(s)",
+                        text = "$nb réponse(s)",
                         style = TextStyle(
                             fontSize = 10.sp,
                             letterSpacing = 0.sp
