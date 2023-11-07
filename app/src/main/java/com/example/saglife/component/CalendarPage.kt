@@ -1,4 +1,4 @@
-package com.example.saglife.screen
+package com.example.saglife.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

@@ -1,6 +1,7 @@
 package com.example.saglife.screen.sections
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -54,14 +55,16 @@ fun ForumScreen(navController : NavHostController) {
             "title" to "Titre 1",
             "author" to "Auteur 1",
             "nb" to 10,
-            "date" to "01/11/2023"
+            "date" to "01/11/2023",
+            "id" to "1"
         ),
         mapOf(
             "icon" to R.drawable.ic_profile,
             "title" to "Titre 2",
             "author" to "Auteur 2",
             "nb" to 20,
-            "date" to "02/11/2023"
+            "date" to "02/11/2023",
+            "id" to "2"
         ),
     )
 
@@ -80,17 +83,17 @@ fun ForumScreen(navController : NavHostController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(16.dp)
+                .clickable {navController.navigate("ForumPage")},
+            horizontalAlignment = Alignment.CenterHorizontally,
+
         ) {
             LazyColumn {
                 items(forumDataList) { data ->
+
                     ForumCard(
-                        data["icon"] as Int,
-                        data["title"] as String,
-                        data["author"] as String,
-                        data["nb"] as Int,
-                        data["date"] as String
+                        navController = navController,
+                        data = data
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
