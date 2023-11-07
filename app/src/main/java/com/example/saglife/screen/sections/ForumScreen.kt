@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,12 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.saglife.ForumCard
-import com.example.saglife.R
 import com.example.saglife.component.FilterChip
 import com.example.saglife.models.ForumFilterItem
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
-import android.util.Log
+import com.example.saglife.models.ForumPostItem
+import java.util.Date
 
 @SuppressLint("MutableCollectionMutableState", "LogNotTimber")
 @Composable
@@ -43,13 +42,28 @@ fun ForumScreen(navController : NavHostController) {
         }
         filterList = forumfilter
     }
-
         .addOnFailureListener { e ->
-            println("Erreur lors de la récupération des données : $e")
+            println("Erreur lors de la récupération des données des filtres de post : $e")
         }
 
-    //val filterList = listOf("Tout", "Immigration", "Assurance", "Autre filtre", "Encore un filtre", "Dernier filtre")
-    val forumDataList = listOf(
+    val forumpost = mutableListOf<ForumPostItem>()
+    var ForumPostList by remember { mutableStateOf(mutableListOf<ForumPostItem>()) }
+
+    db.collection("forum").get().addOnSuccessListener { result ->
+        for (document in result) {
+            val date : Date = document.getDate("Date")!!
+            val author = document.get("Author").toString()
+            val icon= document.get("Icon").toString()
+            val title= document.get("Title").toString()
+            val nb= document.get("Nb").toString().toIntOrNull() ?: 0
+            forumpost.add(ForumPostItem(document.id,author, date, icon, title, nb))
+        }
+        ForumPostList = forumpost
+    }
+        .addOnFailureListener { e ->
+            println("Erreur lors de la récupération des données des posts: $e")
+        }
+    /*val forumDataList = listOf(
         mapOf(
             "icon" to R.drawable.ic_profile,
             "title" to "Titre 1",
@@ -66,7 +80,7 @@ fun ForumScreen(navController : NavHostController) {
             "date" to "02/11/2023",
             "id" to "2"
         ),
-    )
+    )*/
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -89,7 +103,7 @@ fun ForumScreen(navController : NavHostController) {
 
         ) {
             LazyColumn {
-                items(forumDataList) { data ->
+                items(ForumPostList) { data ->
 
                     ForumCard(
                         navController = navController,

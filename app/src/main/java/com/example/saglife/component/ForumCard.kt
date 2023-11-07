@@ -1,6 +1,7 @@
 package com.example.saglife
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,20 +25,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.saglife.models.ForumPostItem
 
+@SuppressLint("DiscouragedApi")
 @Composable
-fun ForumCard(data: Map<String, Any>, navController: NavHostController) {
-    val icon = data["icon"] as Int
-    val title = data["title"] as String
-    val author = data["author"] as String
-    val nb = data["nb"] as Int
-    val date = data["date"] as String
-    val id = data["id"] as String
+fun ForumCard(data: ForumPostItem, navController: NavHostController) {
+    val icon = data.icon
+    val title = data.title
+    val author = data.author
+    val nb = data.nb
+    val date = data.getDay()
+    val hour = data.getTime()
+    val id = data.id
+    val context = LocalContext.current
 
     Card(
         colors = CardDefaults.cardColors(
@@ -55,7 +61,7 @@ fun ForumCard(data: Map<String, Any>, navController: NavHostController) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(icon),
+                painter = painterResource(context.resources.getIdentifier(icon, "drawable", context.packageName)),
                 contentDescription = "Forum",
                 modifier = Modifier.size(40.dp)
             )
@@ -94,7 +100,7 @@ fun ForumCard(data: Map<String, Any>, navController: NavHostController) {
                         ),
                     )
                     Text(
-                        text = date,
+                        text = "$date à $hour",
                         style = TextStyle(
                             fontSize = 10.sp,
                             letterSpacing = 0.sp
