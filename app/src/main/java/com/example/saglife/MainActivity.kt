@@ -28,6 +28,7 @@ import com.example.saglife.component.BottomNavigationBar
 import com.example.saglife.screen.EventScreen
 import com.example.saglife.screen.ForgotPasswordScreen
 import com.example.saglife.screen.LoginScreen
+import com.example.saglife.screen.MapInfoScreen
 import com.example.saglife.screen.ProfileScreen
 import com.example.saglife.screen.RegistrationScreen
 import com.example.saglife.ui.theme.SagLifeTheme
@@ -134,6 +135,11 @@ class MainActivity : ComponentActivity() {
                     isTopBarVisible.value = false
                     isBottomBarVisible.value = false
                     EventScreen(navController = navController,backStackEntry.arguments?.getString("id"))
+                }
+                composable(Routes.MapInfo.route) {backStackEntry ->
+                    isTopBarVisible.value = false
+                    isBottomBarVisible.value = false
+                    MapInfoScreen(navController = navController,backStackEntry.arguments?.getString("id"))
                 }
             }
         }
