@@ -20,8 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.saglife.ForumCard
-import com.example.saglife.component.FilterChip
+import com.example.saglife.component.forum.ForumCard
+import com.example.saglife.component.forum.FilterChip
 import com.example.saglife.models.ForumFilterItem
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore

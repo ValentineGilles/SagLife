@@ -1,4 +1,4 @@
-package com.example.saglife
+package com.example.saglife.component.forum
 
 
 import android.annotation.SuppressLint

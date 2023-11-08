@@ -1,4 +1,4 @@
-package com.example.saglife.component
+package com.example.saglife.component.calendar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

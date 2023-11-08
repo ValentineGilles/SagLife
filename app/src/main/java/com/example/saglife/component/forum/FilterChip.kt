@@ -1,4 +1,4 @@
-package com.example.saglife.component
+package com.example.saglife.component.forum
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons

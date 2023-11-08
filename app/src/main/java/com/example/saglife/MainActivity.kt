@@ -23,9 +23,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.saglife.component.BottomNavigationBar
-import com.example.saglife.component.ForumPage
-import com.example.saglife.component.EventScreen
+import com.example.saglife.component.navbars.BottomNavigationBar
+import com.example.saglife.component.forum.ForumPage
+import com.example.saglife.component.calendar.EventScreen
+import com.example.saglife.component.navbars.CustomTopAppBar
 import com.example.saglife.screen.account.ForgotPasswordScreen
 import com.example.saglife.screen.account.LoginScreen
 import com.example.saglife.screen.account.ProfileScreen
@@ -141,7 +142,7 @@ class MainActivity : ComponentActivity() {
                         RegistrationScreen(navController = navController)
                     }
 
-                    composable(Routes.Forgotten.route) { navBackStack ->
+                    composable(Routes.Forgotten.route) {
                         isTopBarVisible.value = true
                         isBottomBarVisible.value = false
                         isTopBarBack.value = true
