@@ -40,12 +40,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.saglife.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
+
+private val auth: FirebaseAuth = Firebase.auth
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
-    var username by remember { mutableStateOf(TextFieldValue()) }
-    var password by remember { mutableStateOf(TextFieldValue()) }
+    var email by remember { mutableStateOf(TextFieldValue("saglifeapp@gmail.com")) }
+    var password by remember { mutableStateOf(TextFieldValue("UserTest")) }
 
     Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         ClickableText(
@@ -83,9 +92,9 @@ fun LoginScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
-            label = { Text(text = "Nom d'utilisateur") },
-            value = username,
-            onValueChange = { username = it },
+            label = { Text(text = "Adresse e-mail") },
+            value = email,
+            onValueChange = { email = it },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -101,10 +110,7 @@ fun LoginScreen(navController: NavHostController) {
 
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
-                onClick = {
-                    if (isValidLogin(username.text, password.text)) {
-                        navController.navigate(Routes.Home.route)
-                    }
+                onClick = {isValidLogin(email.text, password.text, navController)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -128,7 +134,21 @@ fun LoginScreen(navController: NavHostController) {
 
 
 
-fun isValidLogin(username: String, password: String): Boolean {
-    //return username == "test" && password =="test"
-    return true
+fun isValidLogin(email: String, password: String, navController: NavHostController) {
+    auth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Authentification réussie, naviguez vers l'écran d'accueil
+                navController.navigate(Routes.Home.route)
+            } else {
+                val exception = task.exception
+                if (exception != null) {
+                    // Afficher l'origine de l'erreur
+                    println("Échec lors de la connexion : ${exception.message}")
+                } else {
+                    // Si l'exception est null, affichez un message générique
+                    println("Échec lors de la connexion")
+                }
+            }
+        }
 }

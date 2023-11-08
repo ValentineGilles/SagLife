@@ -9,12 +9,5 @@ class Event_information : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_information)
-
-
-
-
-
-
-
     }
 }

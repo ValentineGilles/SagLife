@@ -38,6 +38,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.saglife.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
+private val auth: FirebaseAuth = Firebase.auth
 
 @Composable
 fun ForgotPasswordScreen(navController: NavHostController) {
@@ -85,6 +90,25 @@ fun ScaffoldWithTopBarForgotPass(navController: NavHostController) {
                 Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                     Button(
                         onClick = {
+                            // Récupère l'adresse e-mail de l'utilisateur depuis le champ TextField
+                            val userEmail = email.text
+
+                            if (userEmail.isNotEmpty()) {
+                                // Utilise la fonction sendPasswordResetEmail pour envoyer un e-mail de réinitialisation
+                                auth.sendPasswordResetEmail(userEmail)
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            // E-mail de réinitialisation envoyé avec succès
+                                            println("E-mail de réinitialisation envoyé avec succès")
+                                        } else {
+                                            // Erreur lors de l'envoi de l'e-mail de réinitialisation
+                                            println("Erreur lors de l'envoi de l'e-mail de réinitialisation : ${task.exception?.message}")
+                                        }
+                                    }
+                            } else {
+                                // L'utilisateur n'a pas saisi d'adresse e-mail
+                                println("Veuillez saisir une adresse e-mail")
+                            }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
