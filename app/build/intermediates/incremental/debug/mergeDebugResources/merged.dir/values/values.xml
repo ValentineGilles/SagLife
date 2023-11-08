@@ -2432,6 +2432,7 @@
     <string name="time_picker_pm">PM</string>
     <string name="title_activity_bottom_navigation_bar">bottomNavigationBar</string>
     <string name="title_activity_calendar_screen">CalendarScreen</string>
+    <string name="title_activity_event">Event</string>
     <string name="title_activity_events_screen">EventsScreen</string>
     <string name="title_activity_forum_screen">ForumScreen</string>
     <string name="title_activity_home_screen">HomeScreen</string>

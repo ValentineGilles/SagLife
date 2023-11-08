@@ -4508,6 +4508,7 @@ string time_picker_period_toggle_description
 string time_picker_pm
 string title_activity_bottom_navigation_bar
 string title_activity_calendar_screen
+string title_activity_event
 string title_activity_events_screen
 string title_activity_forum_screen
 string title_activity_home_screen

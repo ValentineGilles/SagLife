@@ -44,6 +44,7 @@ string hello_blank_fragment
 string project_id
 string title_activity_bottom_navigation_bar
 string title_activity_calendar_screen
+string title_activity_event
 string title_activity_events_screen
 string title_activity_forum_screen
 string title_activity_home_screen
