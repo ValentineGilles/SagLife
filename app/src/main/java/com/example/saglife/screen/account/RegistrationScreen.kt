@@ -37,6 +37,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.saglife.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
+
+private val auth: FirebaseAuth = Firebase.auth
 
 @Composable
 fun RegistrationScreen(navController: NavHostController) {
@@ -53,8 +60,8 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
             var username by remember { mutableStateOf(TextFieldValue()) }
             var password by remember { mutableStateOf(TextFieldValue()) }
             var email by remember { mutableStateOf(TextFieldValue()) }
-            var firstname by remember { mutableStateOf(TextFieldValue()) }
-            var lastname by remember { mutableStateOf(TextFieldValue()) }
+            /*var firstname by remember { mutableStateOf(TextFieldValue()) }
+            var lastname by remember { mutableStateOf(TextFieldValue()) }*/
 
             Box(modifier = Modifier
                 .fillMaxSize()
@@ -82,7 +89,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                TextField(
+                /*TextField(
                     label = { Text(text = "Prénom") },
                     value = firstname,
                     onValueChange = { firstname = it },
@@ -100,7 +107,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                         .padding(start = 60.dp, end = 60.dp)
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(20.dp))*/
 
                 TextField(
                     label = { Text(text = "Nom d'utilisateur") },
@@ -133,7 +140,9 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
 
                 Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                     Button(
-                        onClick = {},
+                        onClick = {
+                            val usernameText = username.text
+                            signUpWithFirebase(email.text, password.text, usernameText, navController)},
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
@@ -144,4 +153,33 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
             } }
 
         })
+}
+
+
+// Fonction pour créer un utilisateur avec Firebase
+fun signUpWithFirebase(email: String, password: String, username: String, navController: NavHostController) {
+    auth.createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // L'utilisateur a été créé avec succès
+                val user = auth.currentUser
+                val userProfileChangeRequest = UserProfileChangeRequest.Builder()
+                    .setDisplayName(username)
+                    .build()
+                user?.updateProfile(userProfileChangeRequest)
+                    ?.addOnCompleteListener { profileUpdateTask ->
+                        if (profileUpdateTask.isSuccessful) {
+                            navController.navigate("login")
+                        } else {
+                            // La mise à jour du pseudo a échoué
+                            val errorMessage = profileUpdateTask.exception?.message
+                            println("Echec de l'ajout du pseudo: $errorMessage")
+                        }
+                    }
+            } else {
+                // La création de l'utilisateur a échoué
+                val errorMessage = task.exception?.message
+                println("Echec de l'ajout de l'utilisateur: $errorMessage")
+            }
+        }
 }

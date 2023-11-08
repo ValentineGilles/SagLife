@@ -63,24 +63,6 @@ fun ForumScreen(navController : NavHostController) {
         .addOnFailureListener { e ->
             println("Erreur lors de la récupération des données des posts: $e")
         }
-    /*val forumDataList = listOf(
-        mapOf(
-            "icon" to R.drawable.ic_profile,
-            "title" to "Titre 1",
-            "author" to "Auteur 1",
-            "nb" to 10,
-            "date" to "01/11/2023",
-            "id" to "1"
-        ),
-        mapOf(
-            "icon" to R.drawable.ic_profile,
-            "title" to "Titre 2",
-            "author" to "Auteur 2",
-            "nb" to 20,
-            "date" to "02/11/2023",
-            "id" to "2"
-        ),
-    )*/
 
     Column(
         modifier = Modifier.fillMaxSize(),

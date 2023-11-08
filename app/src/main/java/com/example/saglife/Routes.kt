@@ -1,5 +1,5 @@
 sealed class Routes(val route: String) {
-    object Login : Routes("Login")
+    object Login : Routes("login")
     object Registration : Routes("registration")
     object Forgotten : Routes("forgotten")
     object Home : Routes("home")
