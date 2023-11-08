@@ -1,16 +1,13 @@
-package com.example.saglife
-import androidx.compose.foundation.background
+package com.example.saglife.component.navbars
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -19,6 +16,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.saglife.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
+private val auth: FirebaseAuth = Firebase.auth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +57,13 @@ fun CustomTopAppBar(
         actions = {
             if (showProfileIcon) {
                 Spacer(modifier = Modifier.width(16.dp))
+                val username = auth.currentUser?.displayName
+                if(username != null)
+                {
+                    Text(text=username)
+                }
                 IconButton(onClick = { navController.navigate(Routes.Profile.route) }) {
+
                     Icon(
                         painter = painterResource(id = R.drawable.ic_profile),
                         contentDescription = "Profil",

@@ -144,6 +144,12 @@ replay_pid*
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,kotlin
 
-local.properties
+
 build/*
+app/build/*
+.gradle/*
+.idea/*
+
+# End of https://www.toptal.com/developers/gitignore/api/intellij,kotlin
+local.properties
 

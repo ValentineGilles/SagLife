@@ -1,4 +1,4 @@
-package com.example.saglife.screen
+package com.example.saglife.screen.sections
 
 import android.graphics.Paint.Align
 import android.net.Uri
@@ -170,4 +170,5 @@ fun MapComposant(map : MapItem, navController : NavHostController){
     }
 
 }
+
 

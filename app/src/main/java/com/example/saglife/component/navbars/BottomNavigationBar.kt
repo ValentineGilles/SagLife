@@ -1,4 +1,4 @@
-package com.example.saglife.component
+package com.example.saglife.component.navbars
 
 import android.os.Bundle
 import android.text.style.BackgroundColorSpan

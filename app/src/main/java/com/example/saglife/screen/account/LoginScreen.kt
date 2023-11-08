@@ -1,4 +1,4 @@
-package com.example.saglife.screen
+package com.example.saglife.screen.account
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,10 +15,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material3.Button
-import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -37,18 +35,28 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.saglife.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
+
+private val auth: FirebaseAuth = Firebase.auth
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
-    var username by remember { mutableStateOf(TextFieldValue()) }
-    var password by remember { mutableStateOf(TextFieldValue()) }
+    var email by remember { mutableStateOf(TextFieldValue("saglifeapp@gmail.com")) }
+    var password by remember { mutableStateOf(TextFieldValue("UserTest")) }
 
-    Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
+    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         ClickableText(
             text = AnnotatedString("S'inscrire"),
             modifier = Modifier
@@ -59,7 +67,8 @@ fun LoginScreen(navController: NavHostController) {
             style = TextStyle(
                 fontSize = 14.sp,
                 fontFamily = FontFamily.Default,
-                textDecoration = TextDecoration.Underline
+                textDecoration = TextDecoration.Underline,
+                color = MaterialTheme.colorScheme.onBackground
             )
         )
     }
@@ -83,9 +92,9 @@ fun LoginScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
-            label = { Text(text = "Nom d'utilisateur") },
-            value = username,
-            onValueChange = { username = it },
+            label = { Text(text = "Adresse e-mail") },
+            value = email,
+            onValueChange = { email = it },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -101,10 +110,7 @@ fun LoginScreen(navController: NavHostController) {
 
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
-                onClick = {
-                    if (isValidLogin(username.text, password.text)) {
-                        navController.navigate(Routes.Home.route)
-                    }
+                onClick = {isValidLogin(email.text, password.text, navController)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -119,7 +125,8 @@ fun LoginScreen(navController: NavHostController) {
             onClick = { navController.navigate("forgotten") },
             style = TextStyle(
                 fontSize = 14.sp,
-                fontFamily = FontFamily.Default
+                fontFamily = FontFamily.Default,
+                color = MaterialTheme.colorScheme.onBackground
             )
         )
     }
@@ -127,7 +134,21 @@ fun LoginScreen(navController: NavHostController) {
 
 
 
-fun isValidLogin(username: String, password: String): Boolean {
-    //return username == "test" && password =="test"
-    return true
+fun isValidLogin(email: String, password: String, navController: NavHostController) {
+    auth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Authentification réussie, naviguez vers l'écran d'accueil
+                navController.navigate(Routes.Home.route)
+            } else {
+                val exception = task.exception
+                if (exception != null) {
+                    // Afficher l'origine de l'erreur
+                    println("Échec lors de la connexion : ${exception.message}")
+                } else {
+                    // Si l'exception est null, affichez un message générique
+                    println("Échec lors de la connexion")
+                }
+            }
+        }
 }

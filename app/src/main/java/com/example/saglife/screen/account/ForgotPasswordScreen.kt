@@ -1,4 +1,4 @@
-package com.example.saglife.screen
+package com.example.saglife.screen.account
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -13,9 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -28,39 +29,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.saglife.CustomTopAppBar
 import com.example.saglife.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
+private val auth: FirebaseAuth = Firebase.auth
 
 @Composable
-fun RegistrationScreen(navController: NavHostController) {
+fun ForgotPasswordScreen(navController: NavHostController) {
     Box(modifier = Modifier.fillMaxSize()) {
-        ScaffoldWithTopBar(navController)
+        ScaffoldWithTopBarForgotPass(navController)
     }
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScaffoldWithTopBar(navController: NavHostController) {
+fun ScaffoldWithTopBarForgotPass(navController: NavHostController) {
     Scaffold(
-        topBar = {
-            CustomTopAppBar(navController, "Inscription", true, false)
-        },
-        content = {
-            var username by remember { mutableStateOf(TextFieldValue()) }
-            var password by remember { mutableStateOf(TextFieldValue()) }
+           content = {
             var email by remember { mutableStateOf(TextFieldValue()) }
-            var firstname by remember { mutableStateOf(TextFieldValue()) }
-            var lastname by remember { mutableStateOf(TextFieldValue()) }
 
-            Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
-            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -73,69 +70,54 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                     painter = painterResource(id = R.drawable.saglife_logo_purple),
                     contentDescription = "Logo de l'application",
                     modifier = Modifier
-                        .width(120.dp)
-                        .height(120.dp)
+                        .width(200.dp)
+                        .height(200.dp)
                 )
-
-                Text(text = "Inscription", style = TextStyle(fontSize = 20.sp), modifier = Modifier.padding(bottom = 16.dp))
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                TextField(
-                    label = { Text(text = "Prénom") },
-                    value = firstname,
-                    onValueChange = { firstname = it },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
                 Spacer(modifier = Modifier.height(20.dp))
 
-                TextField(
-                    label = { Text(text = "Nom") },
-                    value = lastname,
-                    onValueChange = { lastname = it },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                //Text(text = "Réinitialiser le mot de passe", style = TextStyle(fontSize = 20.sp), modifier = Modifier.padding(bottom = 16.dp))
 
                 Spacer(modifier = Modifier.height(20.dp))
-
                 TextField(
-                    label = { Text(text = "Nom d'utilisateur") },
-                    value = username,
-                    onValueChange = { username = it },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                TextField(
-                    label = { Text(text = "Adresse E-mail") },
+                    label = { Text(text = "Adresse e-mail") },
                     value = email,
                     onValueChange = { email = it },
                     modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(16.dp))
-                TextField(
-                    label = { Text(text = "Mot de passe") },
-                    value = password,
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    onValueChange = { password = it },
-                    modifier = Modifier.fillMaxWidth()
-                )
+
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                     Button(
-                        onClick = {},
+                        onClick = {
+                            // Récupère l'adresse e-mail de l'utilisateur depuis le champ TextField
+                            val userEmail = email.text
+
+                            if (userEmail.isNotEmpty()) {
+                                // Utilise la fonction sendPasswordResetEmail pour envoyer un e-mail de réinitialisation
+                                auth.sendPasswordResetEmail(userEmail)
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            // E-mail de réinitialisation envoyé avec succès
+                                            println("E-mail de réinitialisation envoyé avec succès")
+                                        } else {
+                                            // Erreur lors de l'envoi de l'e-mail de réinitialisation
+                                            println("Erreur lors de l'envoi de l'e-mail de réinitialisation : ${task.exception?.message}")
+                                        }
+                                    }
+                            } else {
+                                // L'utilisateur n'a pas saisi d'adresse e-mail
+                                println("Veuillez saisir une adresse e-mail")
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
                     ) {
-                        Text(text = "S'inscrire", color = Color.White)
+                        Text(text = "Réinitialiser", color = Color.White)
                     }
+                }
 
-            } }
-
+            }
         })
 }

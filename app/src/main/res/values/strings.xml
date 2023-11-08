@@ -14,4 +14,5 @@
     <string name="title_activity_routes">Routes</string>
     <string name="title_activity_screen_main">ScreenMain</string>
     <string name="title_activity_refactor_screen">RefactorScreen</string>
+    <string name="title_activity_event">Event</string>
 </resources>

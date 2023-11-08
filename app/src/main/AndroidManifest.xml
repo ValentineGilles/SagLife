@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-            android:allowBackup="true"
-            android:dataExtractionRules="@xml/data_extraction_rules"
-            android:fullBackupContent="@xml/backup_rules"
-            android:icon="@mipmap/ic_saglife_purple_launcher"
-            android:label="@string/app_name"
-            android:supportsRtl="true"
-            android:enableOnBackInvokedCallback="true"
-            tools:targetApi="33">
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_saglife_purple_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        tools:targetApi="33">
+
 
         <activity
             android:name=".MainActivity"
@@ -20,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

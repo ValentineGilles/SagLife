@@ -1,14 +1,15 @@
 package com.example.saglife.models
+
 import java.util.Date
 
-class EventItem (val id:String,val name : String, val dateStart : Date, val dateEnd : Date, val description : String, val photoPath : String){
+class ForumPostItem(val id:String, val author:String, val date: Date, val icon:String, val title:String, val nb:Int) {
 
     fun getDay(): String{
-        return dateStart.date.toString() + " "+ getMonth()
+        return date.date.toString() + " "+ getMonth()
     }
 
     private fun getMonth() : String{
-        return when(dateStart.month){
+        return when(date.month){
             1-> "Janv."
             2-> "Févr."
             3-> "Mars"
@@ -25,9 +26,6 @@ class EventItem (val id:String,val name : String, val dateStart : Date, val date
     }
 
     fun getTime(): String{
-        return dateStart.hours.toString()+"h"+dateStart.minutes.toString().padStart(2, '0')+" - "+dateEnd.hours.toString()+"h"+dateEnd.minutes.toString().padStart(2, '0')
+        return date.hours.toString()+"h"+date.minutes.toString().padStart(2, '0')
     }
-
-
-
 }
