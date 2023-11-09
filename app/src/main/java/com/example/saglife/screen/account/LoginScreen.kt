@@ -110,7 +110,8 @@ fun LoginScreen(navController: NavHostController) {
 
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
-                onClick = {isValidLogin(email.text, password.text, navController)
+                onClick = {
+                        isValidLogin(email.text, password.text, navController)
                 },
                 modifier = Modifier
                     .fillMaxWidth()

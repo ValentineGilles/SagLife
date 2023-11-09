@@ -45,7 +45,6 @@ import java.util.Date
 @Composable
 fun CalendarScreen(navController : NavHostController) {
 
-
     var events by remember { mutableStateOf(mutableListOf<EventItem>()) }
 
     val db = Firebase.firestore

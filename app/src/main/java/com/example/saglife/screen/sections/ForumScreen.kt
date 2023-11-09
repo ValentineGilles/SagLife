@@ -56,7 +56,9 @@ fun ForumScreen(navController : NavHostController) {
             val icon= document.get("Icon").toString()
             val title= document.get("Title").toString()
             val nb= document.get("Nb").toString().toIntOrNull() ?: 0
-            forumpost.add(ForumPostItem(document.id,author, date, icon, title, nb))
+            val description = document.get("Description").toString()
+
+            forumpost.add(ForumPostItem(document.id,author, date, icon, title, nb, description))
         }
         ForumPostList = forumpost
     }

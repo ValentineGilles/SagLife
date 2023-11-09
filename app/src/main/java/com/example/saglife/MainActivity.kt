@@ -33,7 +33,11 @@ import com.example.saglife.screen.account.ProfileScreen
 import com.example.saglife.screen.account.RegistrationScreen
 import com.example.saglife.ui.theme.SagLifeTheme
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
+private val auth: FirebaseAuth = Firebase.auth
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
@@ -53,6 +57,16 @@ class MainActivity : ComponentActivity() {
         @OptIn(ExperimentalMaterial3Api::class)
         @Composable
         fun MyApp(navController: NavHostController) {
+            val currentUser = auth.currentUser
+            var startpage = ""
+            println("current user : $currentUser")
+            if (currentUser != null) {
+                startpage = Routes.Home.route
+            }
+            else
+            {
+                startpage = Routes.Login.route
+            }
             var selectedItem by remember { mutableStateOf(0) }
             // Initialize Firebase
             FirebaseApp.initializeApp(this)
@@ -89,7 +103,7 @@ class MainActivity : ComponentActivity() {
             ) { innerPadding ->
                 NavHost(
                     navController = navController,
-                    startDestination = Routes.Login.route,
+                    startDestination = startpage,
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     composable(Routes.Home.route) {
@@ -159,10 +173,7 @@ class MainActivity : ComponentActivity() {
                     isTopBarVisible.value = true
                     isBottomBarVisible.value = false
                     isTopBarBack.value = true
-                    ForumPage(
-                        navController = navController,
-                        backStackEntry.arguments?.getString("id")
-                    )
+                    ForumPage(navController = navController, backStackEntry.arguments?.getString("id"))
                 }
             }
         }
