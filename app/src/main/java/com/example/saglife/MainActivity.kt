@@ -171,7 +171,7 @@ class MainActivity : ComponentActivity() {
 
                 composable(Routes.ForumPage.route) { backStackEntry ->
                     isTopBarVisible.value = true
-                    isBottomBarVisible.value = false
+                    isBottomBarVisible.value = true
                     isTopBarBack.value = true
                     ForumPage(navController = navController, backStackEntry.arguments?.getString("id"))
                 }

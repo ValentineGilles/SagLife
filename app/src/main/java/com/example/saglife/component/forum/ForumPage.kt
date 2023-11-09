@@ -57,19 +57,13 @@ data class ItemData(
 @SuppressLint("MutableCollectionMutableState", "DiscouragedApi")
 @Composable
 fun ForumPage(navController: NavHostController, id: String?) {
-    val context = LocalContext.current
 
     var showFullDescription by remember { mutableStateOf(false) }
-
-    /*val dataList = listOf(
-        ItemData(R.drawable.ic_profile, "Auteur 1", "01/11/2023", "12:30", "Commentaire 1"),
-        ItemData(R.drawable.ic_profile, "Auteur 2", "02/11/2023", "14:45", "Commentaire 2"),
-        ItemData(R.drawable.ic_profile, "Auteur 3", "03/11/2023", "16:20", "Commentaire 3")
-    )*/
-
     var forumpost by remember { mutableStateOf(ForumPostItem("", "", Date(), "", "", 0, "")) }
 
     val db = Firebase.firestore
+
+    // Récupération du post
     if (id != null) {
         db.collection("forum").document(id).get().addOnSuccessListener { document ->
             val date: Date = document.getDate("Date")!!
@@ -114,9 +108,10 @@ fun ForumPage(navController: NavHostController, id: String?) {
     }
 
 
-
-        Column {
-
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        item {
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface,
@@ -158,8 +153,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
                         text = forumpost.title,
                         style = MaterialTheme.typography.titleLarge,
                         textAlign = TextAlign.Center,
-
-                        )
+                    )
                 }
                 Row(
                     modifier = Modifier
@@ -169,8 +163,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
                             end = 30.dp,
                             bottom = 30.dp
                         )
-                )
-                {
+                ) {
                     if (showFullDescription || forumpost.description.length < 500) {
                         Text(
                             text = forumpost.description,
@@ -184,10 +177,8 @@ fun ForumPage(navController: NavHostController, id: String?) {
                             ), // Limite la description à 500 caractères
                             textAlign = TextAlign.Justify
                         )
-
                     }
                 }
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -196,8 +187,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
                             end = 30.dp,
                             bottom = 30.dp
                         )
-                )
-                {
+                ) {
                     if (forumpost.description.length > 500) {
                         if (showFullDescription) {
                             Text(
@@ -216,55 +206,55 @@ fun ForumPage(navController: NavHostController, id: String?) {
                                     .clickable { showFullDescription = true }
                                     .fillMaxWidth(),
                                 style = TextStyle(textDecoration = TextDecoration.Underline)
-
                             )
                         }
                     }
                 }
-
             }
+        }
+
+        item {
             Text(
                 text = "Commentaires",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
             )
+        }
 
-            LazyColumn {
-                items(CommentsPostList) { item ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 16.dp, start = 16.dp, bottom = 5.dp)
-                            .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                        ),
+        items(CommentsPostList) { item ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 16.dp, start = 16.dp, bottom = 16.dp)
+                    .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_profile),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(40.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = item.author)
-                            }
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(text = "Date: ${item.getDay()}, Hour: ${item.getTime()}")
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(text = item.comment)
-                        }
+                        Icon(
+                            painter = painterResource(R.drawable.ic_profile),
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = item.author)
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = "Date: ${item.getDay()}, Hour: ${item.getTime()}")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = item.comment)
                 }
             }
         }
+    }
 
 }
