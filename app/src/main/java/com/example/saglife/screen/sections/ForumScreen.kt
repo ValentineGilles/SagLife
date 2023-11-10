@@ -32,6 +32,7 @@ import java.util.Date
 @Composable
 fun ForumScreen(navController : NavHostController) {
 
+    var selectedFilters by remember { mutableStateOf(emptyList<String>()) }
     var filterList by remember { mutableStateOf(mutableListOf<ForumFilterItem>()) }
     val db = Firebase.firestore
     val forumfilter = mutableListOf<ForumFilterItem>()
@@ -57,14 +58,19 @@ fun ForumScreen(navController : NavHostController) {
             val title= document.get("Title").toString()
             val nb= document.get("Nb").toString().toIntOrNull() ?: 0
             val description = document.get("Description").toString()
+            val filter = document.get("Filter").toString()
 
-            forumpost.add(ForumPostItem(document.id,author, date, icon, title, nb, description))
+            forumpost.add(ForumPostItem(document.id,author, date, icon, title, nb, filter, description))
         }
         ForumPostList = forumpost
+
     }
         .addOnFailureListener { e ->
             println("Erreur lors de la récupération des données des posts: $e")
         }
+
+
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -74,15 +80,39 @@ fun ForumScreen(navController : NavHostController) {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(filterList) { filter ->
-                FilterChip(filter)
+                FilterChip(
+                    onClick = { filterName ->
+                        if (selectedFilters.contains(filterName)) {
+                            selectedFilters = selectedFilters.filter { it != filterName }
+                            println("Test selectedFilters : $selectedFilters")
+                        } else {
+                            selectedFilters = selectedFilters + filterName
+                            println("Test selectedFilters : $selectedFilters")
+                        }
+                        println("Test forumpost : $forumpost")
+                        ForumPostList = if (selectedFilters.isEmpty()) {
+                            println("Test Empty")
+                            forumpost
+                        } else {
+                            println("Test not Empty)")
+                            forumpost.filter { post ->
+                                // Vérifier si un des filtres sélectionnés est dans la liste de filtres du post
+                                selectedFilters.any { filterName ->
+                                    post.filter.contains(filterName)
+                                }
+                            }.toMutableList()
+                        }
+                        println("Test forumpostlist : $ForumPostList")
+
+                    },
+                    filter)
             }
         }
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
-                .clickable {navController.navigate("ForumPage")},
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
 
         ) {

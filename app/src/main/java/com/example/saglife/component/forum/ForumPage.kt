@@ -59,7 +59,7 @@ data class ItemData(
 fun ForumPage(navController: NavHostController, id: String?) {
 
     var showFullDescription by remember { mutableStateOf(false) }
-    var forumpost by remember { mutableStateOf(ForumPostItem("", "", Date(), "", "", 0, "")) }
+    var forumpost by remember { mutableStateOf(ForumPostItem("", "", Date(), "", "", 0, "","")) }
 
     val db = Firebase.firestore
 
@@ -73,7 +73,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
             val nb = document.get("Nb").toString().toIntOrNull() ?: 0
             val description = document.get("Description").toString()
 
-            forumpost = ForumPostItem(document.id, author, date, icon, title, nb, description)
+            forumpost = ForumPostItem(document.id, author, date, icon, title, nb, "", description)
         }
             .addOnFailureListener { e ->
                 println("Erreur lors de la récupération des données des posts: $e")
@@ -247,9 +247,13 @@ fun ForumPage(navController: NavHostController, id: String?) {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(text = item.author)
+
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = "${item.getDay()} à ${item.getTime()}",
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.End)
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = "Date: ${item.getDay()}, Hour: ${item.getTime()}")
+
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(text = item.comment)
                 }
