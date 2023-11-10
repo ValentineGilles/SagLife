@@ -18,11 +18,12 @@ import com.example.saglife.models.ForumFilterItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterChip(filtername: ForumFilterItem) {
+fun FilterChip(onClick: (String) -> Unit, filtername: ForumFilterItem) {
     var selected by remember { mutableStateOf(false) }
 
     FilterChip(
-        onClick = { selected = !selected },
+        onClick = { selected = !selected
+                    onClick(filtername.name)},
         label = {
             Text(filtername.name)
         },

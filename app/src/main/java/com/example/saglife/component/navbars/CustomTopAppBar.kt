@@ -46,7 +46,9 @@ fun CustomTopAppBar(
             }
             else
             {
-                IconButton(onClick = { navController.navigate(Routes.Login.route) }) {
+                IconButton(onClick = {
+                    auth.signOut()
+                    navController.navigate(Routes.Login.route) }) {
                     Icon(
                         painter = painterResource(R.drawable.ic_logout),
                         contentDescription = "Log out"
