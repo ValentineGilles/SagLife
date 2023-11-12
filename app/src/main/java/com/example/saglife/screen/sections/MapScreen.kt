@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -50,6 +51,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.saglife.R
+import com.example.saglife.component.calendar.FilterChip
+import com.example.saglife.models.EventItem
 import com.example.saglife.models.MapItem
 import com.example.saglife.ui.theme.Purple40
 import com.google.firebase.Firebase
@@ -59,31 +62,83 @@ import java.util.Date
 
 @Composable
 fun MapScreen(navController : NavHostController) {
-    var maps by remember { mutableStateOf(mutableListOf<MapItem>()) }
+
+    var selectedFilters by remember { mutableStateOf(mutableListOf<String>()) }
+    var filterList by remember { mutableStateOf(mutableListOf<String>()) }
 
     val db = Firebase.firestore
-    var mapItems = mutableListOf<MapItem>()
+
+    db.collection("filter_map").get().addOnSuccessListener { result ->
+        val filters = mutableListOf<String>()
+        for (document in result) {
+            val name = document.getString("Name")!!
+            filters.add(name)
+        }
+        filterList = filters
+    }
+        .addOnFailureListener { e ->
+            println("Erreur lors de la récupération des données des filtres : $e")
+        }
+
+    var mapsFiltered by remember { mutableStateOf(mutableListOf<MapItem>()) }
+    var allMaps = mutableListOf<MapItem>()
+
     db.collection("map").get().addOnSuccessListener { result ->
         for (document in result) {
-
             val name = document.getString("Name")!!
             val adresse = document.getString("Adresse")!!
-            val categorie = document.getString("Categorie")!!
+            val filter = document.getString("Filter")!!
             val description = document.getString("Description")!!
             val photoPath = document.getString("Photo")!!
-            mapItems.add(MapItem(document.id,name, adresse, categorie,description, photoPath))
+            allMaps.add(MapItem(document.id, name, adresse, filter, description, photoPath))
         }
-        maps=mapItems
+        mapsFiltered = allMaps
 
     }
+    Column(modifier = Modifier.fillMaxSize()) {
+        LazyRow(
+            modifier = Modifier.padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(filterList) { filter ->
+                FilterChip(
+                    onClick = { filterName ->
 
+                        if (selectedFilters.contains(filterName)) {
+                            selectedFilters.remove(filterName)
+                        } else {
+                            selectedFilters.add(filterName)
+                        }
+                        if (selectedFilters.isNotEmpty()) {
+                            mapsFiltered = filterMapItems(selectedFilters, allMaps)
+                        } else {
+                            mapsFiltered = allMaps
+                        }
+
+
+                    },
+                    filter
+                )
+            }
+        }
     LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
-        items(maps) { map ->
+        items(mapsFiltered) { map ->
             MapComposant(map = map, navController = navController)
         }
     }
 }
+}
 
+// Fonction qui prend en paramètre une liste de String filters et une liste de EventItem (val id:String,val name : String, val dateStart : Date, val dateEnd : Date, val description : String, val photoPath : String, val filter : String). La fonction doit filtrer la liste de EventItem en ne retournant que les élément ou l'un des Strings de la liste filters est égale au champ val filter : String.
+fun filterMapItems(filters: List<String>, mapItems: List<MapItem>): MutableList<MapItem> {
+    val filteredMapItems = mutableListOf<MapItem>()
+    for (mapItem in mapItems) {
+        if (filters.any { it == mapItem.filter }) {
+            filteredMapItems.add(mapItem)
+        }
+    }
+    return filteredMapItems
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -105,7 +160,6 @@ fun MapComposant(map : MapItem, navController : NavHostController){
         Box(
             contentAlignment = Alignment.BottomCenter
         ){
-            val urlImage = null;
             if(urlImage==null) Image(
                 painter = painterResource(id = R.drawable.event),
                 contentDescription = "null", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth(),
@@ -151,7 +205,7 @@ fun MapComposant(map : MapItem, navController : NavHostController){
                                 Modifier
                                     .width(8.dp)
                             )
-                            Text(text = map.categorie, fontSize = 12.sp, textAlign= TextAlign.Center)
+                            Text(text = map.filter, fontSize = 12.sp, textAlign= TextAlign.Center)
 
                         }
                     }

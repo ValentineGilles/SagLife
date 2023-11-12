@@ -1,4 +1,5 @@
 package com.example.saglife.component.calendar
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,18 +31,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.saglife.R
 import com.example.saglife.models.EventItem
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
 import java.util.Date
 
 
 @Composable
 fun EventScreen(navController: NavHostController, id : String?) {
 
-    var event by remember { mutableStateOf(EventItem("id","Evénement", Date(), Date(),"Description...","event.jpg")) }
-
+    var event by remember { mutableStateOf(EventItem("id","Evénement", Date(), Date(),"Description...","event.jpg","Catégorie")) }
+    var urlImage: Uri? by remember { mutableStateOf(null) }
 
     val db = Firebase.firestore
     if(id!=null) {
@@ -52,18 +55,32 @@ fun EventScreen(navController: NavHostController, id : String?) {
             val dateEnd = document.getDate("Date_stop")!!
             val description = document.get("Description").toString()
             val photoPath = document.get("Photo").toString()
-            event = EventItem(document.id,name, dateStart, dateEnd,description, photoPath)
+            val filter = document.get("Filter").toString()
+            event = EventItem(document.id,name, dateStart, dateEnd,description, photoPath, filter)
         }
+        val storage = Firebase.storage
+        val storageReference = storage.getReference("images/").child(event.photoPath)
+
+        storageReference.downloadUrl.addOnSuccessListener { url -> urlImage = url }
     }
 
 
 
     Column (
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
-    ){ Image(
+    ){ if (urlImage == null) Image(
         painter = painterResource(id = R.drawable.event),
-        contentDescription = "null", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth()
-    )
+        contentDescription = "null",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier.fillMaxWidth(),
+
+        ) else
+        AsyncImage(
+            model = urlImage,
+            contentDescription = "null",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxWidth(),
+        )
         ElevatedCard (modifier = Modifier.fillMaxWidth().height(80.dp).padding(8.dp)) {
             Row(verticalAlignment= Alignment.CenterVertically){
                 Box(modifier = Modifier.width(80.dp)){
@@ -93,6 +110,8 @@ fun EventScreen(navController: NavHostController, id : String?) {
 
 }
 }
+
+
 
 @Preview
 @Composable

@@ -1,7 +1,7 @@
 package com.example.saglife.models
 import java.util.Date
 
-class EventItem (val id:String,val name : String, val dateStart : Date, val dateEnd : Date, val description : String, val photoPath : String){
+class EventItem (val id:String,val name : String, val dateStart : Date, val dateEnd : Date, val description : String, val photoPath : String, val filter : String){
 
     fun getDay(): String{
         return dateStart.date.toString() + " "+ getMonth()
