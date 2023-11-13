@@ -2,10 +2,11 @@ package com.example.saglife
 
 import Routes
 import android.os.Build
-import com.example.saglife.screen.sections.CalendarScreen
-import com.example.saglife.screen.sections.ForumScreen
-import com.example.saglife.screen.sections.HomeScreen
-import com.example.saglife.screen.sections.MapScreen
+
+import com.example.saglife.screen.calendar.CalendarScreen
+import com.example.saglife.screen.forum.ForumScreen
+import com.example.saglife.screen.home.HomeScreen
+import com.example.saglife.screen.map.MapScreen
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.ComponentActivity
@@ -23,16 +24,22 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.saglife.component.navbars.BottomNavigationBar
-import com.example.saglife.component.forum.ForumPage
-import com.example.saglife.component.calendar.EventScreen
-import com.example.saglife.component.navbars.CustomTopAppBar
+import com.example.saglife.screen.navbars.BottomNavigationBar
+import com.example.saglife.screen.forum.ForumPage
+import com.example.saglife.screen.calendar.EventScreen
+import com.example.saglife.screen.navbars.CustomTopAppBar
+import com.example.saglife.screen.map.MapInfoScreen
 import com.example.saglife.screen.account.ForgotPasswordScreen
 import com.example.saglife.screen.account.LoginScreen
 import com.example.saglife.screen.account.ProfileScreen
 import com.example.saglife.screen.account.RegistrationScreen
 import com.example.saglife.ui.theme.SagLifeTheme
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
+private val auth: FirebaseAuth = Firebase.auth
 
 
 class MainActivity : ComponentActivity() {
@@ -49,10 +56,19 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
         @OptIn(ExperimentalMaterial3Api::class)
         @Composable
         fun MyApp(navController: NavHostController) {
+            val currentUser = auth.currentUser
+            var startpage = ""
+            println("current user : $currentUser")
+            if (currentUser != null) {
+                startpage = Routes.Home.route
+            }
+            else
+            {
+                startpage = Routes.Login.route
+            }
             var selectedItem by remember { mutableStateOf(0) }
             // Initialize Firebase
             FirebaseApp.initializeApp(this)
@@ -61,7 +77,7 @@ class MainActivity : ComponentActivity() {
             val isTopBarBack = remember { mutableStateOf(true) }
             val isBottomBarVisible = remember { mutableStateOf(true) }
 
-            Scaffold(
+        Scaffold(
                 topBar = {
                     if (isTopBarVisible.value) {
                         if (isTopBarBack.value)
@@ -86,11 +102,12 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-            ) { innerPadding ->
-                NavHost(
+        ) { innerPadding ->
+            NavHost(
                     navController = navController,
-                    startDestination = Routes.Login.route,
+                    startDestination = startpage,
                     modifier = Modifier.padding(innerPadding)
+
                 ) {
                     composable(Routes.Home.route) {
                         // Affiche la TopBar et la BottomBar sur "Home"
@@ -132,9 +149,18 @@ class MainActivity : ComponentActivity() {
                         isTopBarBack.value = false
                         LoginScreen(
                             navController = navController
-                        )
-                    }
+                    )
+                }
 
+
+                composable(Routes.MapInfo.route) { backStackEntry ->
+                    isTopBarVisible.value = false
+                    isBottomBarVisible.value = false
+                    MapInfoScreen(
+                        navController = navController,
+                        backStackEntry.arguments?.getString("id")
+                    )
+                }
                     composable(Routes.Registration.route) {
                         isTopBarVisible.value = true
                         isBottomBarVisible.value = false
@@ -157,14 +183,12 @@ class MainActivity : ComponentActivity() {
 
                 composable(Routes.ForumPage.route) { backStackEntry ->
                     isTopBarVisible.value = true
-                    isBottomBarVisible.value = false
+                    isBottomBarVisible.value = true
                     isTopBarBack.value = true
-                    ForumPage(
-                        navController = navController,
-                        backStackEntry.arguments?.getString("id")
-                    )
+                    ForumPage(navController = navController, backStackEntry.arguments?.getString("id"))
                 }
             }
         }
     }
 }
+

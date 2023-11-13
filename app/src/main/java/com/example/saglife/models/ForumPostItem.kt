@@ -2,7 +2,7 @@ package com.example.saglife.models
 
 import java.util.Date
 
-class ForumPostItem(val id:String, val author:String, val date: Date, val icon:String, val title:String, val nb:Int) {
+class ForumPostItem(val id:String, val author:String, val date: Date, val icon:String, val title:String, val nb:Int, val filter: String, val description:String) {
 
     fun getDay(): String{
         return date.date.toString() + " "+ getMonth()

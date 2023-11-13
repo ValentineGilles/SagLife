@@ -26,4 +26,5 @@ fun LaunchScreen() {
             contentDescription = "Logo de l'application"
         )
     }
+
 }
