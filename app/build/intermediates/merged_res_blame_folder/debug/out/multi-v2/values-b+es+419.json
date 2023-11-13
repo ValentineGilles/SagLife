@@ -4,7 +4,7 @@
             "outputFile": "com.example.saglife.app-mergeDebugResources-84:/values-b+es+419/values-b+es+419.xml",
             "map": [
                 {
-                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/d14da9bd5ca77a674e521270e96f05c1/transformed/firebase-ui-auth-8.0.2/res/values-b+es+419/values-b+es+419.xml",
+                    "source": "C:\\Users\\Valentine\\.gradle\\caches\\transforms-3\\d14da9bd5ca77a674e521270e96f05c1\\transformed\\firebase-ui-auth-8.0.2\\res\\values-b+es+419\\values-b+es+419.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/f50a01442270ceeeaf89dc7dac389af0/transformed/material-1.10.0/res/values-b+es+419/values-b+es+419.xml",
+                    "source": "C:\\Users\\Valentine\\.gradle\\caches\\transforms-3\\f50a01442270ceeeaf89dc7dac389af0\\transformed\\material-1.10.0\\res\\values-b+es+419\\values-b+es+419.xml",
                     "from": {
                         "startLines": "2,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -40,7 +40,7 @@
                     }
                 },
                 {
-                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/d2c6b1455f33756d63ddec78ba54836f/transformed/play-services-wallet-19.2.1/res/values-b+es+419/values.xml",
+                    "source": "C:\\Users\\Valentine\\.gradle\\caches\\transforms-3\\d2c6b1455f33756d63ddec78ba54836f\\transformed\\play-services-wallet-19.2.1\\res\\values-b+es+419\\values.xml",
                     "from": {
                         "startLines": "4,5",
                         "startColumns": "0,0",

@@ -4,7 +4,7 @@
             "outputFile": "com.example.saglife.app-mergeDebugResources-84:/values-v18/values-v18.xml",
             "map": [
                 {
-                    "source": "/Users/sachamontel/.gradle/caches/transforms-3/be5d311cf62f12c2495137075d2c917b/transformed/appcompat-1.6.1/res/values-v18/values-v18.xml",
+                    "source": "C:\\Users\\Valentine\\.gradle\\caches\\transforms-3\\be5d311cf62f12c2495137075d2c917b\\transformed\\appcompat-1.6.1\\res\\values-v18\\values-v18.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
