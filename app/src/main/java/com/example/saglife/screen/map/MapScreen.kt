@@ -28,6 +28,7 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,36 +55,42 @@ fun MapScreen(navController : NavHostController) {
 
     var selectedFilters by remember { mutableStateOf(mutableListOf<String>()) }
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
-
-    val db = Firebase.firestore
-
-    db.collection("filter_map").get().addOnSuccessListener { result ->
-        val filters = mutableListOf<String>()
-        for (document in result) {
-            val name = document.getString("Name")!!
-            filters.add(name)
-        }
-        filterList = filters
-    }
-        .addOnFailureListener { e ->
-            println("Erreur lors de la récupération des données des filtres : $e")
-        }
-
+    var postLoaded by remember { mutableStateOf(false) }
     var mapsFiltered by remember { mutableStateOf(mutableListOf<MapItem>()) }
     var allMaps = mutableListOf<MapItem>()
 
-    db.collection("map").get().addOnSuccessListener { result ->
-        for (document in result) {
-            val name = document.getString("Name")!!
-            val adresse = document.getString("Adresse")!!
-            val filter = document.getString("Filter")!!
-            val description = document.getString("Description")!!
-            val photoPath = document.getString("Photo")!!
-            allMaps.add(MapItem(document.id, name, adresse, filter, description, photoPath))
-        }
-        mapsFiltered = allMaps
+    val db = Firebase.firestore
 
-    }
+
+    LaunchedEffect(postLoaded) {
+        if (!postLoaded) {
+            db.collection("filter_map").get().addOnSuccessListener { result ->
+                val filters = mutableListOf<String>()
+                for (document in result) {
+                    val name = document.getString("Name")!!
+                    filters.add(name)
+                }
+                filterList = filters
+            }
+                .addOnFailureListener { e ->
+                    println("Erreur lors de la récupération des données des filtres : $e")
+                }
+
+
+            db.collection("map").get().addOnSuccessListener { result ->
+                for (document in result) {
+                    val name = document.getString("Name")!!
+                    val adresse = document.getString("Adresse")!!
+                    val filter = document.getString("Filter")!!
+                    val description = document.getString("Description")!!
+                    val photoPath = document.getString("Photo")!!
+                    allMaps.add(MapItem(document.id, name, adresse, filter, description, photoPath))
+                }
+                mapsFiltered = allMaps
+
+            }
+        }}
+
     Column(modifier = Modifier.fillMaxSize()) {
         LazyRow(
             modifier = Modifier.padding(8.dp),

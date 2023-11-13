@@ -81,7 +81,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
         )
     }
 
-    var comments = mutableListOf<MapComment>()
+    var comments by remember{  mutableStateOf(mutableListOf<MapComment>())}
 
     val db = Firebase.firestore
     if (id != null) {
@@ -96,6 +96,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
 
         db.collection("map").document(id).collection("comments").get().addOnSuccessListener { result ->
             for (document in result) {
+                println(document.data)
                 val author = document.getString("Author")!!
                 val comment = document.getString("Comment")!!
                 val date = document.getDate("Date")!!

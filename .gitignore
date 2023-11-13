@@ -153,3 +153,7 @@ app/build/*
 # End of https://www.toptal.com/developers/gitignore/api/intellij,kotlin
 local.properties
 
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/file-system.probe
+.gradle/file-system.probe
+.gradle/file-system.probe
