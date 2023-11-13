@@ -36,6 +36,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -80,36 +81,44 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
             )
         )
     }
-
+    var urlImage : Uri? by remember { mutableStateOf(null) }
+    var postLoaded by remember { mutableStateOf(false) }
     var comments by remember{  mutableStateOf(mutableListOf<MapComment>())}
 
     val db = Firebase.firestore
-    if (id != null) {
-        db.collection("map").document(id).get().addOnSuccessListener { document ->
-            val name = document.getString("Name")!!
-            val adresse = document.getString("Adresse")!!
-            val filter = document.getString("Filter")!!
-            val description = document.getString("Description")!!
-            val photoPath = document.getString("Photo")!!
-            map = MapItem(document.id, name, adresse, filter, description, photoPath)
-        }
+    LaunchedEffect(postLoaded) {
+        if (!postLoaded) {
+            if (id != null) {
+                db.collection("map").document(id).get().addOnSuccessListener { document ->
+                    val name = document.getString("Name")!!
+                    val adresse = document.getString("Adresse")!!
+                    val filter = document.getString("Filter")!!
+                    val description = document.getString("Description")!!
+                    val photoPath = document.getString("Photo")!!
+                    map = MapItem(document.id, name, adresse, filter, description, photoPath)
+                }
 
-        db.collection("map").document(id).collection("comments").get().addOnSuccessListener { result ->
-            for (document in result) {
-                println(document.data)
-                val author = document.getString("Author")!!
-                val comment = document.getString("Comment")!!
-                val date = document.getDate("Date")!!
-                val note = document.getDouble("Note")!!.toInt()
-                comments.add(MapComment(author, comment, date, note))
+                db.collection("map").document(id).collection("comments").get().addOnSuccessListener { result ->
+                    var allComments = mutableListOf<MapComment>()
+                    for (document in result) {
+                        println(document.data)
+                        val author = document.getString("Author")!!
+                        val comment = document.getString("Comment")!!
+                        val date = document.getDate("Date")!!
+                        val note = document.getDouble("Note")!!.toInt()
+                        allComments.add(MapComment(author, comment, date, note))
+                    }
+                    comments=allComments
+                }
             }
-        }
-    }
 
-    var storage = Firebase.storage
-    var storageReference = storage.getReference("images/").child(map.photoPath)
-    var urlImage : Uri? by remember { mutableStateOf(null) }
-    storageReference.downloadUrl.addOnSuccessListener { url-> urlImage = url}
+            var storage = Firebase.storage
+            var storageReference = storage.getReference("images/").child(map.photoPath)
+            storageReference.downloadUrl.addOnSuccessListener { url-> urlImage = url}
+
+        }
+        }
+
 
 
 
