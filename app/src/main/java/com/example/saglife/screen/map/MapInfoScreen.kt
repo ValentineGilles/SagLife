@@ -1,6 +1,7 @@
 package com.example.saglife.screen.map
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -50,6 +54,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.saglife.R
 import com.example.saglife.models.EventItem
+import com.example.saglife.models.MapComment
 import com.example.saglife.models.MapItem
 import com.example.saglife.ui.theme.Purple40
 import com.example.saglife.ui.theme.Purple80
@@ -76,6 +81,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
         )
     }
 
+    var comments = mutableListOf<MapComment>()
 
     val db = Firebase.firestore
     if (id != null) {
@@ -86,6 +92,16 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
             val description = document.getString("Description")!!
             val photoPath = document.getString("Photo")!!
             map = MapItem(document.id, name, adresse, filter, description, photoPath)
+        }
+
+        db.collection("map").document(id).collection("comments").get().addOnSuccessListener { result ->
+            for (document in result) {
+                val author = document.getString("Author")!!
+                val comment = document.getString("Comment")!!
+                val date = document.getDate("Date")!!
+                val note = document.getDouble("Note")!!.toInt()
+                comments.add(MapComment(author, comment, date, note))
+            }
         }
     }
 
@@ -182,7 +198,27 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                 .fillMaxWidth()  //fill the max width
                 .height(1.dp).padding(start = 16.dp, end = 16.dp)
         )
+        LazyRow() {
+            items(comments) { comment ->
+                Comment()
+            }
+        }
     }
+}
+
+@Composable
+fun Comment(){
+    val star = 3
+    Surface (color = PurpleGrey40,shape = RoundedCornerShape(8)){ Column (modifier = Modifier.padding(8.dp)){ Row (modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween){ Text(text = "Author", fontWeight = FontWeight.Bold)
+        Text(text = "18 janvier 2022", color = Purple80)}
+        Row { for (i in 1..star)Icon(imageVector = Icons.Default.Star, contentDescription = null)
+            for (i in star+1..5)Icon(imageVector = Icons.TwoTone.Star, contentDescription = null) }
+        Spacer(
+            Modifier
+                .height(8.dp)
+        )
+        Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquam quis turpis eu volutpat. Proin nisi risus, accumsan sit amet mauris a, cursus mattis sem. Nunc ut mi lorem. Curabitur at arcu ullamcorper, elementum nibh at, facilisis est.",textAlign = TextAlign.Justify)
+    } }
 }
 @Preview
 @Composable
