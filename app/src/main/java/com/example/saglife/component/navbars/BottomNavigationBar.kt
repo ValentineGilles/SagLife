@@ -33,25 +33,25 @@ fun BottomNavigationBar(
             selected = selectedItem == 0,
             onClick = { onItemSelected(0) },
             icon = { Icon(imageVector = Icons.Default.Home, contentDescription = "Home") },
-            label = { Text(text = "Accueil") }
+            label = { Text(text = "Accueil", style = MaterialTheme.typography.bodySmall) }
         )
         BottomNavigationItem(
             selected = selectedItem == 1,
             onClick = { onItemSelected(1) },
             icon = { Icon(imageVector = Icons.Default.DateRange, contentDescription = "Calendar") },
-            label = { Text(text = "Evenements") }
+            label = { Text(text = "Evenements", style = MaterialTheme.typography.bodySmall) }
         )
         BottomNavigationItem(
             selected = selectedItem == 2,
             onClick = { onItemSelected(2) },
             icon = { Icon(imageVector = Icons.Default.Place, contentDescription = "Map") },
-            label = { Text(text = "Carte") }
+            label = { Text(text = "Carte", style = MaterialTheme.typography.bodySmall) }
         )
         BottomNavigationItem(
             selected = selectedItem == 3,
             onClick = { onItemSelected(3) },
             icon = { Icon(imageVector = Icons.Default.MailOutline, contentDescription = "Forum") },
-            label = { Text(text = "Forum") }
+            label = { Text(text = "Forum", style = MaterialTheme.typography.bodySmall) }
         )
     }
 }
