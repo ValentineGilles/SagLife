@@ -1,6 +1,7 @@
 package com.example.saglife.component.forum
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,11 +22,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -82,6 +86,7 @@ fun insertIntoFirebase(forumId: String, author: String, commentText: String, dat
         }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("MutableCollectionMutableState", "DiscouragedApi")
 @Composable
 fun ForumPage(navController: NavHostController, id: String?) {
@@ -218,7 +223,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
                                 text = "$date à $hour",
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.End,
-
+                                style = MaterialTheme.typography.bodySmall
                                 )
                         }
                         Row(
@@ -349,17 +354,22 @@ fun ForumPage(navController: NavHostController, id: String?) {
                     }
                 }
             }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
                     .align(Alignment.BottomStart)
+                    .background(MaterialTheme.colorScheme.surface),
             ) {
                 // Affichage du champ de texte pour ajouter un commentaire
                 TextField(
                     label = { Text(text = "Votre commentaire...") },
                     value = comment,
                     onValueChange = { comment = it },
+                    colors = TextFieldDefaults.textFieldColors(
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        containerColor = MaterialTheme.colorScheme.surface),
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth(),
