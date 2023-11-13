@@ -157,3 +157,4 @@ local.properties
 .gradle/file-system.probe
 .gradle/file-system.probe
 .gradle/file-system.probe
+.idea/gradle.xml
