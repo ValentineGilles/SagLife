@@ -21,6 +21,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -32,6 +36,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.saglife.models.ForumPostItem
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.AggregateQuerySnapshot
+import com.google.firebase.firestore.AggregateSource
+import com.google.firebase.firestore.firestore
+
 
 @SuppressLint("DiscouragedApi")
 @Composable
@@ -44,6 +53,29 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
     val hour = data.getTime()
     val id = data.id
     val context = LocalContext.current
+
+    val db = Firebase.firestore
+
+    val nb_comments = db.collection("forum").document(id).collection("comments").count()
+
+    var snapshot: AggregateQuerySnapshot? = null
+    var nb_com by remember { mutableStateOf(0) }
+
+    nb_comments.get(AggregateSource.SERVER).addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            snapshot = task.result
+        } else {
+            task.exception?.message?.let {
+                print("Count : $it")
+            }
+
+        }
+        nb_com = (snapshot?.count ?: 0).toInt()
+    }
+        .addOnFailureListener { e ->
+            println("Erreur lors du comptage des commentaires : $e")
+        }
+
 
     Card(
         colors = CardDefaults.cardColors(
@@ -93,7 +125,7 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "$nb réponse(s)",
+                        text = "$nb_com réponse(s)",
                         style = TextStyle(
                             fontSize = 10.sp,
                             letterSpacing = 0.sp

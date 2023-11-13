@@ -143,7 +143,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
     LaunchedEffect(id, postLoaded) {
         if (id != null && !postLoaded) {
             db.collection("forum").document(id).collection("comments")
-                .orderBy("Date", Query.Direction.DESCENDING)
+                .orderBy("Date", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener { querySnapshot ->
                     for (document in querySnapshot) {
@@ -176,7 +176,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
         ) {
             LaunchedEffect(refreshing) {
                 if (refreshing) {
-                    delay(1000) // Simule une attente de 2 secondes
+                    delay(1000) // Simule une attente de 1 seconde
                     refreshing = false
                     postLoaded = false
                     commentsLoaded = false
