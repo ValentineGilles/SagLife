@@ -18,13 +18,11 @@ drawable saglife_logo
 drawable saglife_logo_purple
 id cardEvent
 id dateEvent
-id descriptionEvent
 id horraireEvent
 id imageEvent
 id login_activity
 id main_activity
 id nameEvent
-layout activity_event_information
 layout composant_event
 mipmap ic_launcher
 mipmap ic_launcher_round

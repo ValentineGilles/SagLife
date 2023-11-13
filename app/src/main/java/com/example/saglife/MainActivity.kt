@@ -3,10 +3,10 @@ package com.example.saglife
 import Routes
 import android.os.Build
 
-import com.example.saglife.screen.sections.CalendarScreen
-import com.example.saglife.screen.sections.ForumScreen
-import com.example.saglife.screen.sections.HomeScreen
-import com.example.saglife.screen.sections.MapScreen
+import com.example.saglife.screen.calendar.CalendarScreen
+import com.example.saglife.screen.forum.ForumScreen
+import com.example.saglife.screen.home.HomeScreen
+import com.example.saglife.screen.map.MapScreen
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.ComponentActivity
@@ -24,11 +24,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.saglife.component.navbars.BottomNavigationBar
-import com.example.saglife.component.forum.ForumPage
-import com.example.saglife.component.calendar.EventScreen
-import com.example.saglife.component.navbars.CustomTopAppBar
-import com.example.saglife.screen.MapInfoScreen
+import com.example.saglife.screen.navbars.BottomNavigationBar
+import com.example.saglife.screen.forum.ForumPage
+import com.example.saglife.screen.calendar.EventScreen
+import com.example.saglife.screen.navbars.CustomTopAppBar
+import com.example.saglife.screen.map.MapInfoScreen
 import com.example.saglife.screen.account.ForgotPasswordScreen
 import com.example.saglife.screen.account.LoginScreen
 import com.example.saglife.screen.account.ProfileScreen
@@ -148,7 +148,6 @@ class MainActivity : ComponentActivity() {
                         isBottomBarVisible.value = false
                         isTopBarBack.value = false
                         LoginScreen(
-
                             navController = navController
                     )
                 }

@@ -3457,7 +3457,6 @@ id decor_content_parent
 id default_activity_button
 id deltaRelative
 id dependency_ordering
-id descriptionEvent
 id design_bottom_sheet
 id design_menu_item_action_area
 id design_menu_item_action_area_stub
@@ -4007,7 +4006,6 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
-layout activity_event_information
 layout browser_actions_context_menu_page
 layout browser_actions_context_menu_row
 layout composant_event

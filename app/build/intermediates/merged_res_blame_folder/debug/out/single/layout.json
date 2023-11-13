@@ -1,10 +1,14 @@
 [
     {
+        "merged": "C:\\Users\\Valentine\\.gradle\\daemon\\8.0\\com.example.saglife.app-mergeDebugResources-85:\\layout\\activity_event_information.xml",
+        "source": "C:\\Users\\Valentine\\.gradle\\daemon\\8.0\\com.example.saglife.app-main-88:\\layout\\activity_event_information.xml"
+    },
+    {
         "merged": "com.example.saglife.app-mergeDebugResources-85:/layout/activity_event_information.xml",
         "source": "com.example.saglife.app-main-88:/layout/activity_event_information.xml"
     },
     {
-        "merged": "com.example.saglife.app-mergeDebugResources-85:/layout/composant_event.xml",
-        "source": "com.example.saglife.app-main-88:/layout/composant_event.xml"
+        "merged": "C:\\Users\\Valentine\\.gradle\\daemon\\8.0\\com.example.saglife.app-mergeDebugResources-85:\\layout\\composant_event.xml",
+        "source": "C:\\Users\\Valentine\\.gradle\\daemon\\8.0\\com.example.saglife.app-main-88:\\layout\\composant_event.xml"
     }
 ]
