@@ -10,5 +10,5 @@ sealed class Routes(val route: String) {
     object Event : Routes("event/{id}")
     object MapInfo : Routes("mapInfo/{id}")
     object ForumPage : Routes("forum/{id}")
-
+    object ForumCreatePost : Routes("forum/createpost")
 }
