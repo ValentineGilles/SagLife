@@ -137,7 +137,7 @@ fun ForumCreatePost(navController: NavHostController) {
         Button(
             onClick = {
                 // Enregistrez le nouveau post dans la base de données ou effectuez d'autres actions nécessaires
-                val newPost = auth.currentUser?.displayName?.let {
+                val newPost = auth.currentUser?.uid?.let {
                     ForumPostItem(
                         id = UUID.randomUUID().toString(),
                         author = it,

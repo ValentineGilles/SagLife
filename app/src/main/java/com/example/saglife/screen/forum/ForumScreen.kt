@@ -27,13 +27,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.saglife.database.getUsernameFromUid
 import com.example.saglife.models.ForumFilterItem
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.example.saglife.models.ForumPostItem
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.delay
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import java.util.Date
 
 
@@ -72,7 +76,7 @@ fun ForumScreen(navController: NavHostController) {
     val forumpost = mutableListOf<ForumPostItem>()
     var ForumPostList by remember { mutableStateOf(mutableListOf<ForumPostItem>()) }
 
-    db.collection("forum").get().addOnSuccessListener { result ->
+    db.collection("forum").orderBy("Date", Query.Direction.DESCENDING).get().addOnSuccessListener { result ->
         for (document in result) {
             val date: Date = document.getDate("Date")!!
             val author = document.get("Author").toString()
@@ -81,6 +85,7 @@ fun ForumScreen(navController: NavHostController) {
             val nb = document.get("Nb").toString().toIntOrNull() ?: 0
             val description = document.get("Description").toString()
             val filter = document.get("Filter").toString()
+
 
             forumpost.add(
                 ForumPostItem(
@@ -94,6 +99,8 @@ fun ForumScreen(navController: NavHostController) {
                     description
                 )
             )
+
+
         }
         ForumPostList = forumpost
 

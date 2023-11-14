@@ -40,6 +40,7 @@ import com.example.saglife.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
@@ -60,8 +61,6 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
             var username by remember { mutableStateOf(TextFieldValue()) }
             var password by remember { mutableStateOf(TextFieldValue()) }
             var email by remember { mutableStateOf(TextFieldValue()) }
-            /*var firstname by remember { mutableStateOf(TextFieldValue()) }
-            var lastname by remember { mutableStateOf(TextFieldValue()) }*/
 
             Box(modifier = Modifier
                 .fillMaxSize()
@@ -88,26 +87,6 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                 Text(text = "Inscription", style = TextStyle(fontSize = 20.sp), modifier = Modifier.padding(bottom = 16.dp))
 
                 Spacer(modifier = Modifier.height(10.dp))
-
-                /*TextField(
-                    label = { Text(text = "Prénom") },
-                    value = firstname,
-                    onValueChange = { firstname = it },
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(start = 60.dp, end = 60.dp)
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                TextField(
-                    label = { Text(text = "Nom") },
-                    value = lastname,
-                    onValueChange = { lastname = it },
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(start = 60.dp, end = 60.dp)
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))*/
 
                 TextField(
                     label = { Text(text = "Nom d'utilisateur") },
@@ -169,6 +148,7 @@ fun signUpWithFirebase(email: String, password: String, username: String, navCon
                 user?.updateProfile(userProfileChangeRequest)
                     ?.addOnCompleteListener { profileUpdateTask ->
                         if (profileUpdateTask.isSuccessful) {
+                            addUserToDatabase(user.uid, username)
                             navController.navigate("login")
                         } else {
                             // La mise à jour du pseudo a échoué
@@ -181,5 +161,24 @@ fun signUpWithFirebase(email: String, password: String, username: String, navCon
                 val errorMessage = task.exception?.message
                 println("Echec de l'ajout de l'utilisateur: $errorMessage")
             }
+        }
+}
+
+fun addUserToDatabase(uid: String, username: String) {
+    val profileImage = "R.drawable.ic_profile"
+    val userMap = mapOf(
+        "username" to username,
+        "profile_   pic" to profileImage
+    )
+
+    // Ajouter l'utilisateur à la table "users" avec son UID comme clé
+    val db = Firebase.firestore
+    db.collection("users").document(uid)
+        .set(userMap)
+        .addOnSuccessListener {
+            println("Utilisateur ajouté à la base de données avec succès")
+        }
+        .addOnFailureListener { e ->
+            println("Erreur lors de l'ajout de l'utilisateur à la base de données: $e")
         }
 }

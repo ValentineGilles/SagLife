@@ -1,6 +1,6 @@
 package com.example.saglife.models
 import java.util.Date
-class ForumCommentItem (val author: String, val comment: String, val date: Date)
+class ForumCommentItem (val author_id: String, val comment: String, val date: Date)
 {
     fun getDay(): String{
         return date.date.toString() + " "+ getMonth()

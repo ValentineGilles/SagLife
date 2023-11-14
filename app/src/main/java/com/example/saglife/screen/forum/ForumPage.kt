@@ -48,6 +48,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.saglife.R
+import com.example.saglife.database.getUsernameFromUid
 import com.example.saglife.models.ForumCommentItem
 import com.example.saglife.models.ForumPostItem
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -94,6 +95,8 @@ fun ForumPage(navController: NavHostController, id: String?) {
     // Initialisation de la base de données
     val db = Firebase.firestore
 
+
+
     // Etat de l'affichage de la description
     var showFullDescription by remember { mutableStateOf(false) }
 
@@ -119,14 +122,14 @@ fun ForumPage(navController: NavHostController, id: String?) {
         if (id != null && !postLoaded) {
             db.collection("forum").document(id).get().addOnSuccessListener { document ->
                 val date: Date = document.getDate("Date")!!
-                val author = document.get("Author").toString()
+                val author_id = document.get("Author").toString()
                 val icon = document.get("Icon").toString()
                 val title = document.get("Title").toString()
                 val nb = document.get("Nb").toString().toIntOrNull() ?: 0
                 val description = document.get("Description").toString()
 
                 forumpost =
-                    ForumPostItem(document.id, author, date, icon, title, nb, "", description)
+                    ForumPostItem(document.id, author_id, date, icon, title, nb, "", description)
                 postLoaded = true // Indique que les données ont été récupérées pour empecher le refresh automatique
             }
                 .addOnFailureListener { e ->
@@ -162,6 +165,9 @@ fun ForumPage(navController: NavHostController, id: String?) {
                 }
         }
     }
+
+
+
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -313,6 +319,16 @@ fun ForumPage(navController: NavHostController, id: String?) {
                 }
 
                 items(CommentsPostList) { item ->
+                    // Gestion du nom d'auteur
+                    var author by remember { mutableStateOf("Utilisateur supprimé") }
+
+                    // Récupération nom de l'auteur
+                    LaunchedEffect(item.author_id) {
+                        getUsernameFromUid(item.author_id) { username ->
+                            author = username
+                        }
+                    }
+
                     // Affichage des commentaires
                     Card(
                         modifier = Modifier
@@ -337,7 +353,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
                                     modifier = Modifier.size(20.dp)
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = item.author)
+                                Text(text = author)
 
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
