@@ -1,5 +1,6 @@
 package com.example.saglife.screen.forum
 
+import ForumCommentCard
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -95,11 +96,6 @@ fun ForumPage(navController: NavHostController, id: String?) {
     // Initialisation de la base de données
     val db = Firebase.firestore
 
-
-
-    // Etat de l'affichage de la description
-    var showFullDescription by remember { mutableStateOf(false) }
-
     // Etat du post
     var forumpost by remember { mutableStateOf(ForumPostItem("", "", Date(), "", "", 0, "", "")) }
 
@@ -128,6 +124,8 @@ fun ForumPage(navController: NavHostController, id: String?) {
                 val nb = document.get("Nb").toString().toIntOrNull() ?: 0
                 val description = document.get("Description").toString()
 
+                println("forum : $author_id, $date, $icon, $title, $nb, $description")
+
                 forumpost =
                     ForumPostItem(document.id, author_id, date, icon, title, nb, "", description)
                 postLoaded = true // Indique que les données ont été récupérées pour empecher le refresh automatique
@@ -138,9 +136,6 @@ fun ForumPage(navController: NavHostController, id: String?) {
         }
     }
 
-    // Modification de la date et heure pour l'affichage
-    val date = forumpost.getDay()
-    val hour = forumpost.getTime()
 
     // Recupération des commentaires au lancement de la page
     LaunchedEffect(id, postLoaded) {
@@ -155,6 +150,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
                         val comment_date = document.getDate("Date") ?: Date()
                         val postcomment =
                             ForumCommentItem(comment_author, comment_comment, comment_date)
+
                         commentspost.add(postcomment)
                     }
                     CommentsPostList = commentspost
@@ -165,7 +161,6 @@ fun ForumPage(navController: NavHostController, id: String?) {
                 }
         }
     }
-
 
 
     Box(
@@ -194,7 +189,6 @@ fun ForumPage(navController: NavHostController, id: String?) {
                     .fillMaxSize()
                     .padding(bottom = 56.dp)
             ) {
-
                 // Affichage du post
                 item {
                     Card(
@@ -319,55 +313,8 @@ fun ForumPage(navController: NavHostController, id: String?) {
                 }
 
                 items(CommentsPostList) { item ->
-                    // Gestion du nom d'auteur
-                    var author by remember { mutableStateOf("Utilisateur supprimé") }
-
-                    // Récupération nom de l'auteur
-                    LaunchedEffect(item.author_id) {
-                        getUsernameFromUid(item.author_id) { username ->
-                            author = username
-                        }
-                    }
-
                     // Affichage des commentaires
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 16.dp, start = 16.dp, bottom = 16.dp)
-                            .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                        ),
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_profile),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = author)
-
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = "${item.getDay()} à ${item.getTime()}",
-                                    modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.End,
-                                    style = MaterialTheme.typography.bodySmall
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(text = item.comment)
-                        }
-                    }
+                    ForumCommentCard(data = item)
                 }
             }
 
@@ -385,7 +332,8 @@ fun ForumPage(navController: NavHostController, id: String?) {
                     colors = TextFieldDefaults.textFieldColors(
                         unfocusedIndicatorColor = Color.Transparent,
                         focusedIndicatorColor = Color.Transparent,
-                        containerColor = MaterialTheme.colorScheme.surface),
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth(),
@@ -401,7 +349,12 @@ fun ForumPage(navController: NavHostController, id: String?) {
                                 Calendar.getInstance().time
 
                             if (author != null && id != null) {
-                                insertIntoFirebase(id, author, commentText, commentdate) // Ajoute le commentaire à la base de données
+                                insertIntoFirebase(
+                                    id,
+                                    author,
+                                    commentText,
+                                    commentdate
+                                ) // Ajoute le commentaire à la base de données
                             }
                             comment = TextFieldValue("") // Réinitialise le champ de texte
                         }
@@ -410,12 +363,17 @@ fun ForumPage(navController: NavHostController, id: String?) {
                 // Bouton d'envoi du commentaire
                 IconButton(
                     onClick = {
-                        val author = auth.currentUser?.displayName
+                        val author = auth.currentUser?.uid
                         val commentText = comment.text
                         val commentdate = Calendar.getInstance().time
 
                         if (author != null && id != null) {
-                            insertIntoFirebase(id, author, commentText, commentdate) // Ajoute le commentaire à la base de données
+                            insertIntoFirebase(
+                                id,
+                                author,
+                                commentText,
+                                commentdate
+                            ) // Ajoute le commentaire à la base de données
                         }
                         comment = TextFieldValue("") // Réinitialise le champ de texte
                     },
