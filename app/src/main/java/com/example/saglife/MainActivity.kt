@@ -33,6 +33,7 @@ import com.example.saglife.screen.account.ForgotPasswordScreen
 import com.example.saglife.screen.account.LoginScreen
 import com.example.saglife.screen.account.ProfileScreen
 import com.example.saglife.screen.account.RegistrationScreen
+import com.example.saglife.screen.forum.ForumCreatePost
 import com.example.saglife.ui.theme.SagLifeTheme
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -186,6 +187,13 @@ class MainActivity : ComponentActivity() {
                     isBottomBarVisible.value = true
                     isTopBarBack.value = true
                     ForumPage(navController = navController, backStackEntry.arguments?.getString("id"))
+                }
+
+                composable(Routes.ForumCreatePost.route) { backStackEntry ->
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    ForumCreatePost(navController = navController)
                 }
             }
         }
