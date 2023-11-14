@@ -159,7 +159,6 @@ fun ForumScreen(navController: NavHostController) {
                                     }
                                 }.toMutableList()
                             }
-                            println("Test forumpostlist : $ForumPostList")
 
                         },
                         filter

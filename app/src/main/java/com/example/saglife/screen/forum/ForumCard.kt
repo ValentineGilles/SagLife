@@ -57,9 +57,11 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
     val id = data.id
     val context = LocalContext.current
 
-    LaunchedEffect(author_id) {
-        getUsernameFromUid(author_id) { username ->
-            author = username
+    if (author_id != "") {
+        LaunchedEffect(author_id) {
+            getUsernameFromUid(author_id) { username ->
+                author = username
+            }
         }
     }
 
