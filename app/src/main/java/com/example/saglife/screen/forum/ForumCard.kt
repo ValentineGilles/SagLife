@@ -36,6 +36,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.saglife.R
 import com.example.saglife.database.getUsernameFromUid
 import com.example.saglife.models.ForumPostItem
 import com.google.firebase.Firebase
@@ -49,13 +50,21 @@ import com.google.firebase.firestore.firestore
 fun ForumCard(data: ForumPostItem, navController: NavHostController) {
 
     var author by remember { mutableStateOf("Utilisateur supprimé") }
-    val icon = data.icon
+    var icon = R.drawable.ic_profile
     val title = data.title
     val author_id = data.author
     val date = data.getDay()
     val hour = data.getTime()
     val id = data.id
-    val context = LocalContext.current
+    val filter = data.filter
+
+    when(filter)
+    {
+        "Immigration" -> icon = R.drawable.ic_immigration
+        "Vie courante" -> icon = R.drawable.ic_daily
+        "Assurance" -> icon = R.drawable.ic_insurance
+        else -> icon = R.drawable.ic_question
+    }
 
     if (author_id != "") {
         LaunchedEffect(author_id) {
@@ -104,7 +113,7 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(context.resources.getIdentifier(icon, "drawable", context.packageName)),
+                painter = painterResource(icon),
                 contentDescription = "Forum",
                 modifier = Modifier.size(40.dp)
             )
