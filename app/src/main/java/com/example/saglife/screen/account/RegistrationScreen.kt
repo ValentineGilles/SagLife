@@ -13,13 +13,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,6 +56,7 @@ fun RegistrationScreen(navController: NavHostController) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScaffoldWithTopBar(navController: NavHostController) {
@@ -60,7 +64,10 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
         content = {
             var username by remember { mutableStateOf(TextFieldValue()) }
             var password by remember { mutableStateOf(TextFieldValue()) }
+            var password2 by remember { mutableStateOf(TextFieldValue()) }
             var email by remember { mutableStateOf(TextFieldValue()) }
+
+            var ConnectionError by remember { mutableStateOf<String?>(null) }
 
             Box(modifier = Modifier
                 .fillMaxSize()
@@ -89,8 +96,12 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                 Spacer(modifier = Modifier.height(10.dp))
 
                 TextField(
+                    shape = RoundedCornerShape(8.dp),
                     label = { Text(text = "Nom d'utilisateur") },
                     value = username,
+                    colors = TextFieldDefaults.textFieldColors(
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent),
                     onValueChange = { username = it },
                     modifier = Modifier.fillMaxWidth()
                         .padding(start = 60.dp, end = 60.dp)
@@ -99,29 +110,79 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                 Spacer(modifier = Modifier.height(20.dp))
 
                 TextField(
+                    shape = RoundedCornerShape(8.dp),
                     label = { Text(text = "Adresse E-mail") },
                     value = email,
                     onValueChange = { email = it },
+                    colors = TextFieldDefaults.textFieldColors(
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent),
                     modifier = Modifier.fillMaxWidth()
                         .padding(start = 60.dp, end = 60.dp)
                 )
+
                 Spacer(modifier = Modifier.height(16.dp))
                 TextField(
+                    shape = RoundedCornerShape(8.dp),
                     label = { Text(text = "Mot de passe") },
                     value = password,
+                    colors = TextFieldDefaults.textFieldColors(
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent),
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     onValueChange = { password = it },
                     modifier = Modifier.fillMaxWidth()
                         .padding(start = 60.dp, end = 60.dp)
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+                TextField(
+                    shape = RoundedCornerShape(8.dp),
+                    label = { Text(text = "Confirmer vot mot de passe") },
+                    value = password2,
+                    colors = TextFieldDefaults.textFieldColors(
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent),
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    onValueChange = { password2 = it },
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(start = 60.dp, end = 60.dp)
+                )
+
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
+                ConnectionError?.let {
+                    Text(text = it, color = Color.Red, modifier = Modifier.padding(top = 0.dp, start = 60.dp, end = 60.dp, bottom = 20.dp))
+                }
+
+                Box(modifier = Modifier.padding(40.dp, 8.dp, 40.dp, 0.dp)) {
                     Button(
                         onClick = {
-                            val usernameText = username.text
-                            signUpWithFirebase(email.text, password.text, usernameText, navController)},
+                            if (password.text.isNotEmpty() && email.text.isNotEmpty() && username.text.isNotEmpty()) {
+                                if (password2 == password) {
+                                    signUpWithFirebase(
+                                        email.text,
+                                        password.text,
+                                        username.text,
+                                        navController
+                                    ) { success, errorMessage ->
+                                        if (!success) {
+                                            // Affichez le message d'erreur sur password2Error
+                                            ConnectionError =
+                                                errorMessage ?: "Une erreur inconnue s'est produite"
+                                        }
+                                    }
+                                } else {
+                                    // Affichez un message d'erreur si les mots de passe ne correspondent pas
+                                    ConnectionError = "Les deux mots de passe ne correspondent pas."
+                                }
+                            }
+                            else
+                            {
+                                ConnectionError = "Veuillez remplir tous les champs."
+                            }
+                                  },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
@@ -135,8 +196,15 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
 }
 
 
+
 // Fonction pour créer un utilisateur avec Firebase
-fun signUpWithFirebase(email: String, password: String, username: String, navController: NavHostController) {
+fun signUpWithFirebase(
+    email: String,
+    password: String,
+    username: String,
+    navController: NavHostController,
+    onSignUpComplete: (success: Boolean, errorMessage: String?) -> Unit
+) {
     auth.createUserWithEmailAndPassword(email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -150,19 +218,23 @@ fun signUpWithFirebase(email: String, password: String, username: String, navCon
                         if (profileUpdateTask.isSuccessful) {
                             addUserToDatabase(user.uid, username)
                             navController.navigate("login")
+                            onSignUpComplete(true, null) // Succès de l'inscription
                         } else {
                             // La mise à jour du pseudo a échoué
                             val errorMessage = profileUpdateTask.exception?.message
                             println("Echec de l'ajout du pseudo: $errorMessage")
+                            onSignUpComplete(false, errorMessage)
                         }
                     }
             } else {
                 // La création de l'utilisateur a échoué
                 val errorMessage = task.exception?.message
                 println("Echec de l'ajout de l'utilisateur: $errorMessage")
+                onSignUpComplete(false, errorMessage)
             }
         }
 }
+
 
 fun addUserToDatabase(uid: String, username: String) {
     val profileImage = "R.drawable.ic_profile"

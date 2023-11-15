@@ -51,10 +51,13 @@ import kotlinx.coroutines.tasks.await
 
 private val auth: FirebaseAuth = Firebase.auth
 
+
 @Composable
 fun LoginScreen(navController: NavHostController) {
     var email by remember { mutableStateOf(TextFieldValue("saglifeapp@gmail.com")) }
     var password by remember { mutableStateOf(TextFieldValue("UserTest")) }
+
+    var ConnectionError by remember { mutableStateOf<String?>(null) }
 
     Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         ClickableText(
@@ -108,10 +111,21 @@ fun LoginScreen(navController: NavHostController) {
         )
         Spacer(modifier = Modifier.height(20.dp))
 
+        ConnectionError?.let {
+            Text(text = it, color = Color.Red, modifier = Modifier.padding(top = 0.dp, bottom = 20.dp))
+        }
+
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
                 onClick = {
                         isValidLogin(email.text, password.text, navController)
+                        { success, errorMessage ->
+                            if (!success) {
+                                // Affichez le message d'erreur sur password2Error
+                                ConnectionError =
+                                    errorMessage ?: "Une erreur inconnue s'est produite"
+                            }
+                        }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -135,20 +149,23 @@ fun LoginScreen(navController: NavHostController) {
 
 
 
-fun isValidLogin(email: String, password: String, navController: NavHostController) {
+fun isValidLogin(email: String, password: String, navController: NavHostController, onLoginComplete: (success: Boolean, errorMessage: String?) -> Unit) {
     auth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // Authentification réussie, naviguez vers l'écran d'accueil
                 navController.navigate(Routes.Home.route)
+                onLoginComplete(true, null)
             } else {
                 val exception = task.exception
                 if (exception != null) {
                     // Afficher l'origine de l'erreur
                     println("Échec lors de la connexion : ${exception.message}")
+                    onLoginComplete(false, exception.message)
                 } else {
                     // Si l'exception est null, affichez un message générique
                     println("Échec lors de la connexion")
+                    onLoginComplete(false, "Une erreur inconnue s'est produite")
                 }
             }
         }
