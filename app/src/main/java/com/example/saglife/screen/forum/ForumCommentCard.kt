@@ -32,14 +32,13 @@ import com.example.saglife.models.ForumCommentItem
 fun ForumCommentCard (data : ForumCommentItem)
 {
     // Gestion du nom d'auteur
-    var author by remember { mutableStateOf("Utilisateur supprimé") }
+    var author by remember { mutableStateOf("") }
 
     // Récupération nom de l'auteur
     if (data.author_id != "") {
-        LaunchedEffect(data.author_id) {
             getUsernameFromUid(data.author_id) { username ->
                 author = username
-            }
+
         }
     }
 
