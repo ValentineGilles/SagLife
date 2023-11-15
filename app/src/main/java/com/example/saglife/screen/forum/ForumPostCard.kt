@@ -27,13 +27,16 @@ import androidx.compose.ui.unit.dp
 import com.example.saglife.R
 import com.example.saglife.database.getUsernameFromUid
 import com.example.saglife.models.ForumPostItem
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
+private val auth = Firebase.auth
 @Composable
 fun ForumPostCard (data: ForumPostItem) {
 
     // Etat de l'affichage de la description
     var showFullDescription by remember { mutableStateOf(false) }
-    var author by remember { mutableStateOf("Utilisateur supprimé") }
+    var author by remember { mutableStateOf("") }
 
     val icon = data.icon
     val title = data.title
@@ -45,10 +48,8 @@ fun ForumPostCard (data: ForumPostItem) {
     println("Data author_id: $author_id")
 
     if (author_id != "") {
-        println("authorid : $author_id")
         getUsernameFromUid(author_id) { username ->
             author = username
-            println("Username : $username")
         }
     }
 
@@ -133,7 +134,7 @@ fun ForumPostCard (data: ForumPostItem) {
                 .padding(
                     start = 30.dp,
                     end = 30.dp,
-                    bottom = 30.dp
+                    bottom = 8.dp
                 )
         ) {
             // Affiche le bouton "Voir plus" ou "Voir moins" si la description est supérieure à 500 caractères
@@ -156,7 +157,27 @@ fun ForumPostCard (data: ForumPostItem) {
                             .fillMaxWidth(),
                         style = TextStyle(textDecoration = TextDecoration.Underline)
                     )
+
                 }
+            }
+
+        }
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = 30.dp,
+                end = 30.dp,
+                bottom = 30.dp
+            ))
+        {
+            if (author_id == auth.currentUser?.uid) {
+                Text(
+                    text = "Modifier",
+                    textAlign = TextAlign.Right,
+                    modifier = Modifier
+                        .clickable {}
+                        .fillMaxWidth()
+                )
             }
         }
     }

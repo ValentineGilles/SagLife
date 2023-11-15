@@ -30,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -49,7 +48,7 @@ import com.google.firebase.firestore.firestore
 @Composable
 fun ForumCard(data: ForumPostItem, navController: NavHostController) {
 
-    var author by remember { mutableStateOf("Utilisateur supprimé") }
+    var author by remember { mutableStateOf("") }
     var icon = R.drawable.ic_profile
     val title = data.title
     val author_id = data.author
@@ -63,14 +62,16 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
         "Immigration" -> icon = R.drawable.ic_immigration
         "Vie courante" -> icon = R.drawable.ic_daily
         "Assurance" -> icon = R.drawable.ic_insurance
+        "Santé" -> icon = R.drawable.ic_health
+        "Tourisme" -> icon = R.drawable.ic_tourism
+        "Bon plan" -> icon = R.drawable.ic_deal
         else -> icon = R.drawable.ic_question
     }
 
+
     if (author_id != "") {
-        LaunchedEffect(author_id) {
             getUsernameFromUid(author_id) { username ->
                 author = username
-            }
         }
     }
 
