@@ -33,7 +33,9 @@ import com.example.saglife.screen.account.ForgotPasswordScreen
 import com.example.saglife.screen.account.LoginScreen
 import com.example.saglife.screen.account.ProfileScreen
 import com.example.saglife.screen.account.RegistrationScreen
+import com.example.saglife.screen.calendar.EventCreate
 import com.example.saglife.screen.forum.ForumCreatePost
+import com.example.saglife.screen.map.MapCreate
 import com.example.saglife.ui.theme.SagLifeTheme
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -129,6 +131,7 @@ class MainActivity : ComponentActivity() {
                         isTopBarBack.value = false
                         MapScreen(navController = navController)
                     }
+
                     composable(Routes.Forum.route) {
                         isTopBarVisible.value = true
                         isBottomBarVisible.value = true
@@ -151,6 +154,7 @@ class MainActivity : ComponentActivity() {
                         LoginScreen(
                             navController = navController
                     )
+
                 }
 
 
@@ -194,6 +198,18 @@ class MainActivity : ComponentActivity() {
                     isBottomBarVisible.value = true
                     isTopBarBack.value = true
                     ForumCreatePost(navController = navController)
+                }
+                composable(Routes.MapCreate.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    MapCreate(navController = navController)
+                }
+                composable(Routes.EventCreate.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    EventCreate(navController = navController)
                 }
             }
         }

@@ -224,7 +224,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.End,
                                 style = MaterialTheme.typography.bodySmall
-                                )
+                            )
                         }
                         Row(
                             modifier = Modifier
@@ -393,62 +393,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
                 )
                 // Bouton d'envoi du commentaire
                 IconButton(
-                    onClick = {Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.BottomStart)
-                            .background(MaterialTheme.colorScheme.surface),
-                    ) {
-                        // Affichage du champ de texte pour ajouter un commentaire
-                        TextField(
-                            label = { Text(text = "Votre commentaire...") },
-                            value = comment,
-                            onValueChange = { comment = it },
-                            colors = TextFieldDefaults.textFieldColors(
-                                unfocusedIndicatorColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent,
-                                containerColor = MaterialTheme.colorScheme.surface),
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxWidth(),
-                            textStyle = MaterialTheme.typography.bodyLarge,
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                imeAction = ImeAction.Done
-                            ),
-                            keyboardActions = KeyboardActions(
-                                onDone = {
-                                    val author = auth.currentUser?.displayName
-                                    val commentText = comment.text
-                                    val commentdate =
-                                        Calendar.getInstance().time
-
-                                    if (author != null && id != null) {
-                                        insertIntoFirebase(id, author, commentText, commentdate) // Ajoute le commentaire à la base de données
-                                    }
-                                    comment = TextFieldValue("") // Réinitialise le champ de texte
-                                }
-                            )
-                        )
-                        // Bouton d'envoi du commentaire
-                        IconButton(
-                            onClick = {
-                                val author = auth.currentUser?.displayName
-                                val commentText = comment.text
-                                val commentdate = Calendar.getInstance().time
-
-                                if (author != null && id != null) {
-                                    insertIntoFirebase(id, author, commentText, commentdate) // Ajoute le commentaire à la base de données
-                                }
-                                comment = TextFieldValue("") // Réinitialise le champ de texte
-                            },
-                            modifier = Modifier.align(Alignment.CenterVertically)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Send,
-                                contentDescription = "Envoyer"
-                            )
-                        }
-                    }
+                    onClick = {
                         val author = auth.currentUser?.displayName
                         val commentText = comment.text
                         val commentdate = Calendar.getInstance().time

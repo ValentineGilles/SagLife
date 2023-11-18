@@ -17,6 +17,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,11 +43,15 @@ import java.util.Date
 
 @Composable
 fun EventScreen(navController: NavHostController, id : String?) {
+    var postLoaded by remember { mutableStateOf(false) }
+
 
     var event by remember { mutableStateOf(EventItem("id","Evénement", Date(), Date(),"Description...","event.jpg","Catégorie")) }
     var urlImage: Uri? by remember { mutableStateOf(null) }
 
     val db = Firebase.firestore
+    LaunchedEffect(postLoaded) {
+        if (!postLoaded) {
     if(id!=null) {
         db.collection("event").document(id).get().addOnSuccessListener { document ->
             println(document.data.toString())
@@ -57,30 +62,31 @@ fun EventScreen(navController: NavHostController, id : String?) {
             val photoPath = document.get("Photo").toString()
             val filter = document.get("Filter").toString()
             event = EventItem(document.id,name, dateStart, dateEnd,description, photoPath, filter)
+
         }
         val storage = Firebase.storage
         val storageReference = storage.getReference("images/").child(event.photoPath)
 
         storageReference.downloadUrl.addOnSuccessListener { url -> urlImage = url }
+
+    }
+        }
     }
 
 
 
     Column (
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
-    ){ if (urlImage == null) Image(
-        painter = painterResource(id = R.drawable.event),
-        contentDescription = "null",
-        contentScale = ContentScale.Crop,
-        modifier = Modifier.fillMaxWidth(),
-
-        ) else
-        AsyncImage(
-            model = urlImage,
-            contentDescription = "null",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth(),
-        )
+    ){ Box(modifier = Modifier
+        .fillMaxWidth()){
+        if (urlImage != null)
+            AsyncImage(
+                model = urlImage,
+                contentDescription = "null",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxWidth(),
+            )
+    }
         ElevatedCard (modifier = Modifier.fillMaxWidth().height(80.dp).padding(8.dp)) {
             Row(verticalAlignment= Alignment.CenterVertically){
                 Box(modifier = Modifier.width(80.dp)){

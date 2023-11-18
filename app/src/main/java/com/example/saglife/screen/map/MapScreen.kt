@@ -19,12 +19,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,17 +57,15 @@ import com.google.firebase.storage.storage
 @Composable
 fun MapScreen(navController : NavHostController) {
 
-    var selectedFilters by remember { mutableStateOf(mutableListOf<String>()) }
+    var selectedFilters =  mutableListOf<String>()
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
-    var postLoaded by remember { mutableStateOf(false) }
     var mapsFiltered by remember { mutableStateOf(mutableListOf<MapItem>()) }
     var allMaps = mutableListOf<MapItem>()
 
     val db = Firebase.firestore
 
 
-    LaunchedEffect(postLoaded) {
-        if (!postLoaded) {
+
             db.collection("filter_map").get().addOnSuccessListener { result ->
                 val filters = mutableListOf<String>()
                 for (document in result) {
@@ -77,51 +79,78 @@ fun MapScreen(navController : NavHostController) {
                 }
 
 
-            db.collection("map").get().addOnSuccessListener { result ->
-                for (document in result) {
-                    val name = document.getString("Name")!!
-                    val adresse = document.getString("Adresse")!!
-                    val filter = document.getString("Filter")!!
-                    val description = document.getString("Description")!!
-                    val photoPath = document.getString("Photo")!!
-                    allMaps.add(MapItem(document.id, name, adresse, filter, description, photoPath))
-                }
-                mapsFiltered = allMaps
 
-            }
-        }}
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        LazyRow(
-            modifier = Modifier.padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+    db.collection("map").get().addOnSuccessListener { result ->
+        for (document in result) {
+            val name = document.getString("Name")!!
+            val adresse = document.getString("Adresse")!!
+            val filter = document.getString("Filter")!!
+            val description = document.getString("Description")!!
+            val photoPath = document.getString("Photo")!!
+            allMaps.add(MapItem(document.id, name, adresse, filter, description, photoPath))
+        }
+        print("All map  "+allMaps)
+        mapsFiltered = allMaps
+
+    }
+
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
         ) {
-            items(filterList) { filter ->
-                FilterChip(
-                    onClick = { filterName ->
 
-                        if (selectedFilters.contains(filterName)) {
-                            selectedFilters.remove(filterName)
-                        } else {
-                            selectedFilters.add(filterName)
-                        }
-                        if (selectedFilters.isNotEmpty()) {
-                            mapsFiltered = filterMapItems(selectedFilters, allMaps)
-                        } else {
-                            mapsFiltered = allMaps
-                        }
+            Column(modifier = Modifier.fillMaxSize()) {
+                LazyRow(
+                    modifier = Modifier.padding(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(filterList) { filter ->
+                        FilterChip(
+                            onClick = { filterName ->
+
+                                if (selectedFilters.contains(filterName)) {
+                                    selectedFilters.remove(filterName)
+                                } else {
+                                    selectedFilters.add(filterName)
+                                }
+                                println(selectedFilters)
+                                if (selectedFilters.isNotEmpty()) {
+                                    print("All map"+allMaps)
+                                    mapsFiltered = filterMapItems(selectedFilters, allMaps)
+                                    println("not empty")
+                                    println("filter : "+filterMapItems(selectedFilters, allMaps))
+                                } else {
+                                    println("empty")
+
+                                    mapsFiltered = allMaps
+                                }
+                                println(mapsFiltered)
 
 
-                    },
-                    filter
+                            },
+                            filter
+                        )
+                    }
+                }
+                LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
+                    items(mapsFiltered) { map ->
+                        MapComposant(map = map, navController = navController)
+                    }
+                }
+
+        }
+            FloatingActionButton(
+                modifier = Modifier.padding(16.dp).align(Alignment.BottomEnd),
+                onClick = {
+                    navController.navigate("map/create")
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Ajouter un établissement"
                 )
             }
-        }
-    LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
-        items(mapsFiltered) { map ->
-            MapComposant(map = map, navController = navController)
-        }
-    }
 }
 }
 
