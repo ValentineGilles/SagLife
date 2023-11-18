@@ -1,7 +1,9 @@
 package com.example.saglife.models
+
 import java.util.Date
-class ForumCommentItem (val comment_id : String, val author_id: String, val comment: String, val date: Date)
-{
+
+class MapComment (val author: String, val comment : String, val date : Date, val note : Int) {
+
     fun getDay(): String{
         return date.date.toString() + " "+ getMonth()
     }
@@ -22,10 +24,4 @@ class ForumCommentItem (val comment_id : String, val author_id: String, val comm
             else-> "Déc."
         }
     }
-
-    fun getTime(): String{
-        return date.hours.toString()+"h"+date.minutes.toString().padStart(2, '0')
-    }
-
-
 }

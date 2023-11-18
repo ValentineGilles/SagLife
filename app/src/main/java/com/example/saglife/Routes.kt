@@ -4,11 +4,15 @@ sealed class Routes(val route: String) {
     object Forgotten : Routes("forgotten")
     object Home : Routes("home")
     object Calendar : Routes("calendar")
+    object EventCreate : Routes("event/create")
     object Forum : Routes("forum")
     object Map : Routes("map")
+    object MapCreate : Routes("map/create")
     object Profile : Routes("Profile")
     object Event : Routes("event/{id}")
     object MapInfo : Routes("mapInfo/{id}")
     object ForumPage : Routes("forum/{id}")
-
+    object ForumCreatePost : Routes("forum/createpost")
+    object ForumModifyPost : Routes("forum/modifypost/{id}")
+    object ForumModifyComment : Routes("forum/modifycomment/{post_id}/{comment_id}")
 }

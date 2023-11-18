@@ -17,10 +17,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.saglife.R
@@ -48,12 +53,15 @@ import java.util.Date
 @Composable
 fun CalendarScreen(navController: NavHostController) {
 
+    var postLoaded by remember { mutableStateOf(false) }
+
     var selectedFilters by remember { mutableStateOf(mutableListOf<String>()) }
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
 
     val db = Firebase.firestore
 
     db.collection("filter_event").get().addOnSuccessListener { result ->
+        println("filter")
         val filters = mutableListOf<String>()
         for (document in result) {
             val name = document.getString("Name")!!
@@ -70,6 +78,7 @@ fun CalendarScreen(navController: NavHostController) {
 
     val allEvents = mutableListOf<EventItem>()
     db.collection("event").get().addOnSuccessListener { result ->
+        println("event")
         for (document in result) {
 
             val name = document.get("Name").toString()
@@ -92,38 +101,52 @@ fun CalendarScreen(navController: NavHostController) {
         }
         eventsFiltered = allEvents
     }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            LazyRow(
+                modifier = Modifier.padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(filterList) { filter ->
+                    FilterChip(
+                        onClick = { filterName ->
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        LazyRow(
-            modifier = Modifier.padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(filterList) { filter ->
-                FilterChip(
-                    onClick = { filterName ->
-
-                        if (selectedFilters.contains(filterName)) {
-                            selectedFilters.remove(filterName)
-                        } else {
-                            selectedFilters.add(filterName)
-                        }
-                        if (selectedFilters.isNotEmpty()) {
-                            eventsFiltered = filterEventItems(selectedFilters, allEvents)
-                        } else {
-                            eventsFiltered = allEvents
-                        }
+                            if (selectedFilters.contains(filterName)) {
+                                selectedFilters.remove(filterName)
+                            } else {
+                                selectedFilters.add(filterName)
+                            }
+                            if (selectedFilters.isNotEmpty()) {
+                                eventsFiltered = filterEventItems(selectedFilters, allEvents)
+                            } else {
+                                eventsFiltered = allEvents
+                            }
 
 
-                    },
-                    filter
-                )
+                        },
+                        filter
+                    )
+                }
+            }
+
+            LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
+                items(eventsFiltered) { event ->
+                    EventComposant(event = event, navController = navController)
+                }
             }
         }
-
-        LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
-            items(eventsFiltered) { event ->
-                EventComposant(event = event, navController = navController)
-            }
+        FloatingActionButton(
+            modifier = Modifier.padding(16.dp).align(Alignment.BottomEnd),
+            onClick = {
+                navController.navigate("event/create")
+            },
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Ajouter un événement"
+            )
         }
     }
 }
@@ -156,15 +179,10 @@ fun EventComposant(event: EventItem, navController: NavHostController) {
             .height(200.dp)
             .padding(16.dp), onClick = { navController.navigate("event/${event.id}") }) {
         Box(
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            if (urlImage == null) Image(
-                painter = painterResource(id = R.drawable.event),
-                contentDescription = "null",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.BottomCenter,
 
-                ) else
+        ) {
+            if (urlImage != null)
                 AsyncImage(
                     model = urlImage,
                     contentDescription = "null",
@@ -196,6 +214,7 @@ fun EventComposant(event: EventItem, navController: NavHostController) {
                             .padding(top = 8.dp, bottom = 8.dp)
 
                     )
+
                     Spacer(
                         Modifier
                             .width(8.dp)

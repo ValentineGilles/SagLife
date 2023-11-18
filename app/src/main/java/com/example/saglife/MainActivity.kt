@@ -33,6 +33,11 @@ import com.example.saglife.screen.account.ForgotPasswordScreen
 import com.example.saglife.screen.account.LoginScreen
 import com.example.saglife.screen.account.ProfileScreen
 import com.example.saglife.screen.account.RegistrationScreen
+import com.example.saglife.screen.calendar.EventCreate
+import com.example.saglife.screen.forum.ForumCreatePost
+import com.example.saglife.screen.forum.ForumModifyComment
+import com.example.saglife.screen.forum.ForumModifyPost
+import com.example.saglife.screen.map.MapCreate
 import com.example.saglife.ui.theme.SagLifeTheme
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -56,100 +61,98 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-        @OptIn(ExperimentalMaterial3Api::class)
-        @Composable
-        fun MyApp(navController: NavHostController) {
-            val currentUser = auth.currentUser
-            var startpage = ""
-            println("current user : $currentUser")
-            if (currentUser != null) {
-                startpage = Routes.Home.route
-            }
-            else
-            {
-                startpage = Routes.Login.route
-            }
-            var selectedItem by remember { mutableStateOf(0) }
-            // Initialize Firebase
-            FirebaseApp.initializeApp(this)
-            // Définir une variable pour indiquer si les bars doivent être affichées
-            val isTopBarVisible = remember { mutableStateOf(true) }
-            val isTopBarBack = remember { mutableStateOf(true) }
-            val isBottomBarVisible = remember { mutableStateOf(true) }
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun MyApp(navController: NavHostController) {
+        val currentUser = auth.currentUser
+        var startpage = ""
+        println("current user : $currentUser")
+        if (currentUser != null) {
+            startpage = Routes.Home.route
+        } else {
+            startpage = Routes.Login.route
+        }
+        var selectedItem by remember { mutableStateOf(0) }
+        // Initialize Firebase
+        FirebaseApp.initializeApp(this)
+        // Définir une variable pour indiquer si les bars doivent être affichées
+        val isTopBarVisible = remember { mutableStateOf(true) }
+        val isTopBarBack = remember { mutableStateOf(true) }
+        val isBottomBarVisible = remember { mutableStateOf(true) }
 
         Scaffold(
-                topBar = {
-                    if (isTopBarVisible.value) {
-                        if (isTopBarBack.value)
-                        {
-                            CustomTopAppBar(navController, "", true, false)
-                        }
-                        else {
-                            CustomTopAppBar(navController, "", false, true)
-                        }
+            topBar = {
+                if (isTopBarVisible.value) {
+                    if (isTopBarBack.value) {
+                        CustomTopAppBar(navController, "", true, false)
+                    } else {
+                        CustomTopAppBar(navController, "", false, true)
                     }
-                },
-                bottomBar = {
-                    if (isBottomBarVisible.value) {
-                        BottomNavigationBar(selectedItem) {
-                            selectedItem = it
-                            when (it) {
-                                0 -> navController.navigate(Routes.Home.route)
-                                1 -> navController.navigate(Routes.Calendar.route)
-                                2 -> navController.navigate(Routes.Map.route)
-                                3 -> navController.navigate(Routes.Forum.route)
-                            }
+                }
+            },
+            bottomBar = {
+                if (isBottomBarVisible.value) {
+                    BottomNavigationBar(selectedItem) {
+                        selectedItem = it
+                        when (it) {
+                            0 -> navController.navigate(Routes.Home.route)
+                            1 -> navController.navigate(Routes.Calendar.route)
+                            2 -> navController.navigate(Routes.Map.route)
+                            3 -> navController.navigate(Routes.Forum.route)
                         }
                     }
                 }
+            }
         ) { innerPadding ->
             NavHost(
-                    navController = navController,
-                    startDestination = startpage,
-                    modifier = Modifier.padding(innerPadding)
+                navController = navController,
+                startDestination = startpage,
+                modifier = Modifier.padding(innerPadding)
 
-                ) {
-                    composable(Routes.Home.route) {
-                        // Affiche la TopBar et la BottomBar sur "Home"
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = true
-                        isTopBarBack.value = false
-                        HomeScreen(navController = navController)
-                    }
-                    composable(Routes.Calendar.route) {
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = true
-                        isTopBarBack.value = false
-                        CalendarScreen(navController = navController)
-                    }
-                    composable(Routes.Map.route) {
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = true
-                        isTopBarBack.value = false
-                        MapScreen(navController = navController)
-                    }
-                    composable(Routes.Forum.route) {
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = true
-                        isTopBarBack.value = false
-                        ForumScreen(navController = navController)
-                    }
+            ) {
+                composable(Routes.Home.route) {
+                    // Affiche la TopBar et la BottomBar sur "Home"
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = false
+                    HomeScreen(navController = navController)
+                }
+                composable(Routes.Calendar.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = false
+                    CalendarScreen(navController = navController)
+                }
+                composable(Routes.Map.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = false
+                    MapScreen(navController = navController)
+                }
 
-                    composable(Routes.Profile.route) {
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = true
-                        isTopBarBack.value = true
-                        ProfileScreen(navController = navController)
-                    }
+                composable(Routes.Forum.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = false
+                    ForumScreen(navController = navController)
+                }
 
-                    composable(Routes.Login.route) {
-                        // Masque la TopBar et la BottomBar sur "Login"
-                        isTopBarVisible.value = false
-                        isBottomBarVisible.value = false
-                        isTopBarBack.value = false
-                        LoginScreen(
-                            navController = navController
+                composable(Routes.Profile.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    ProfileScreen(navController = navController)
+                }
+
+                composable(Routes.Login.route) {
+                    // Masque la TopBar et la BottomBar sur "Login"
+                    isTopBarVisible.value = false
+                    isBottomBarVisible.value = false
+                    isTopBarBack.value = false
+                    LoginScreen(
+                        navController = navController
                     )
+
                 }
 
 
@@ -161,34 +164,81 @@ class MainActivity : ComponentActivity() {
                         backStackEntry.arguments?.getString("id")
                     )
                 }
-                    composable(Routes.Registration.route) {
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = false
-                        isTopBarBack.value = true
-                        RegistrationScreen(navController = navController)
-                    }
-
-                    composable(Routes.Forgotten.route) {
-                        isTopBarVisible.value = true
-                        isBottomBarVisible.value = false
-                        isTopBarBack.value = true
-                        ForgotPasswordScreen(navController = navController)
-                    }
-                composable(Routes.Event.route) {backStackEntry ->
+                composable(Routes.Registration.route) {
                     isTopBarVisible.value = true
                     isBottomBarVisible.value = false
                     isTopBarBack.value = true
-                    EventScreen(navController = navController,backStackEntry.arguments?.getString("id"))
+                    RegistrationScreen(navController = navController)
+                }
+
+                composable(Routes.Forgotten.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = false
+                    isTopBarBack.value = true
+                    ForgotPasswordScreen(navController = navController)
+                }
+                composable(Routes.Event.route) { backStackEntry ->
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = false
+                    isTopBarBack.value = true
+                    EventScreen(
+                        navController = navController,
+                        backStackEntry.arguments?.getString("id")
+                    )
                 }
 
                 composable(Routes.ForumPage.route) { backStackEntry ->
                     isTopBarVisible.value = true
                     isBottomBarVisible.value = true
                     isTopBarBack.value = true
-                    ForumPage(navController = navController, backStackEntry.arguments?.getString("id"))
+                    ForumPage(
+                        navController = navController,
+                        backStackEntry.arguments?.getString("id")
+                    )
+                }
+
+                composable(Routes.ForumCreatePost.route) { backStackEntry ->
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    ForumCreatePost(navController = navController)
+                }
+                composable(Routes.MapCreate.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    MapCreate(navController = navController)
+                }
+                composable(Routes.EventCreate.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    EventCreate(navController = navController)
+                }
+
+                    composable(Routes.ForumModifyPost.route) { backStackEntry ->
+                        isTopBarVisible.value = true
+                        isBottomBarVisible.value = true
+                        isTopBarBack.value = true
+                        ForumModifyPost(
+                            navController = navController,
+                            backStackEntry.arguments?.getString("id")
+                        )
+                    }
+
+                    composable(Routes.ForumModifyComment.route) { backStackEntry ->
+                        isTopBarVisible.value = true
+                        isBottomBarVisible.value = true
+                        isTopBarBack.value = true
+                        ForumModifyComment(
+                            navController = navController,
+                            backStackEntry.arguments?.getString("post_id"),
+                            backStackEntry.arguments?.getString("comment_id")
+                        )
+                    }
                 }
             }
         }
     }
-}
+
 

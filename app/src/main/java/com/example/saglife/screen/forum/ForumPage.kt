@@ -1,27 +1,19 @@
 package com.example.saglife.screen.forum
 
+import ForumCommentCard
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,17 +29,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.saglife.R
 import com.example.saglife.models.ForumCommentItem
 import com.example.saglife.models.ForumPostItem
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -94,9 +81,6 @@ fun ForumPage(navController: NavHostController, id: String?) {
     // Initialisation de la base de données
     val db = Firebase.firestore
 
-    // Etat de l'affichage de la description
-    var showFullDescription by remember { mutableStateOf(false) }
-
     // Etat du post
     var forumpost by remember { mutableStateOf(ForumPostItem("", "", Date(), "", "", 0, "", "")) }
 
@@ -119,14 +103,16 @@ fun ForumPage(navController: NavHostController, id: String?) {
         if (id != null && !postLoaded) {
             db.collection("forum").document(id).get().addOnSuccessListener { document ->
                 val date: Date = document.getDate("Date")!!
-                val author = document.get("Author").toString()
+                val author_id = document.get("Author").toString()
                 val icon = document.get("Icon").toString()
                 val title = document.get("Title").toString()
                 val nb = document.get("Nb").toString().toIntOrNull() ?: 0
                 val description = document.get("Description").toString()
 
+                println("forum : $author_id, $date, $icon, $title, $nb, $description")
+
                 forumpost =
-                    ForumPostItem(document.id, author, date, icon, title, nb, "", description)
+                    ForumPostItem(document.id, author_id, date, icon, title, nb, "", description)
                 postLoaded = true // Indique que les données ont été récupérées pour empecher le refresh automatique
             }
                 .addOnFailureListener { e ->
@@ -135,9 +121,6 @@ fun ForumPage(navController: NavHostController, id: String?) {
         }
     }
 
-    // Modification de la date et heure pour l'affichage
-    val date = forumpost.getDay()
-    val hour = forumpost.getTime()
 
     // Recupération des commentaires au lancement de la page
     LaunchedEffect(id, postLoaded) {
@@ -150,8 +133,10 @@ fun ForumPage(navController: NavHostController, id: String?) {
                         val comment_author = document.getString("Author") ?: ""
                         val comment_comment = document.getString("Comment") ?: ""
                         val comment_date = document.getDate("Date") ?: Date()
+                        val comment_id = document.id
                         val postcomment =
-                            ForumCommentItem(comment_author, comment_comment, comment_date)
+                            ForumCommentItem(comment_id, comment_author, comment_comment, comment_date)
+
                         commentspost.add(postcomment)
                     }
                     CommentsPostList = commentspost
@@ -162,6 +147,8 @@ fun ForumPage(navController: NavHostController, id: String?) {
                 }
         }
     }
+
+
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -188,116 +175,11 @@ fun ForumPage(navController: NavHostController, id: String?) {
                     .fillMaxSize()
                     .padding(bottom = 56.dp)
             ) {
-
                 // Affichage du post
                 item {
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
-                            .shadow(4.dp, shape = RoundedCornerShape(8.dp))
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    start = 30.dp,
-                                    end = 30.dp,
-                                    top = 30.dp
-                                ),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_profile),
-                                contentDescription = "Forum",
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Text(
-                                text = forumpost.author,
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                            Text(
-                                text = "$date à $hour",
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.End,
-                                style = MaterialTheme.typography.bodySmall
-                                )
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(10.dp)
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                text = forumpost.title,
-                                style = MaterialTheme.typography.titleLarge,
-                                textAlign = TextAlign.Center,
-                            )
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    start = 30.dp,
-                                    end = 30.dp,
-                                    bottom = 30.dp
-                                )
-                        ) {
-                            // Affiche la description complète si elle est inférieure à 500 caractères
-                            if (showFullDescription || forumpost.description.length < 500) {
-                                Text(
-                                    text = forumpost.description,
-                                    textAlign = TextAlign.Justify
-                                )
-                            } else {
-                                Text(
-                                    text = forumpost.description.substring(
-                                        0,
-                                        500
-                                    ), // Limite la description à 500 caractères
-                                    textAlign = TextAlign.Justify
-                                )
-                            }
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    start = 30.dp,
-                                    end = 30.dp,
-                                    bottom = 30.dp
-                                )
-                        ) {
-                            // Affiche le bouton "Voir plus" ou "Voir moins" si la description est supérieure à 500 caractères
-                            if (forumpost.description.length > 500) {
-                                if (showFullDescription) {
-                                    Text(
-                                        text = "Voir moins",
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier
-                                            .clickable { showFullDescription = false }
-                                            .fillMaxWidth(),
-                                        style = TextStyle(textDecoration = TextDecoration.Underline)
-                                    )
-                                } else {
-                                    Text(
-                                        text = "Voir plus",
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier
-                                            .clickable { showFullDescription = true }
-                                            .fillMaxWidth(),
-                                        style = TextStyle(textDecoration = TextDecoration.Underline)
-                                    )
-                                }
-                            }
-                        }
-                    }
+                    ForumPostCard(
+                        navController = navController,
+                        data = forumpost)
                 }
 
                 item {
@@ -314,44 +196,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
 
                 items(CommentsPostList) { item ->
                     // Affichage des commentaires
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 16.dp, start = 16.dp, bottom = 16.dp)
-                            .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                        ),
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_profile),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = item.author)
-
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = "${item.getDay()} à ${item.getTime()}",
-                                    modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.End,
-                                    style = MaterialTheme.typography.bodySmall
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(text = item.comment)
-                        }
-                    }
+                    ForumCommentCard(navController = navController, postId = id?:"", data = item)
                 }
             }
 
@@ -369,7 +214,8 @@ fun ForumPage(navController: NavHostController, id: String?) {
                     colors = TextFieldDefaults.textFieldColors(
                         unfocusedIndicatorColor = Color.Transparent,
                         focusedIndicatorColor = Color.Transparent,
-                        containerColor = MaterialTheme.colorScheme.surface),
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth(),
@@ -385,7 +231,12 @@ fun ForumPage(navController: NavHostController, id: String?) {
                                 Calendar.getInstance().time
 
                             if (author != null && id != null) {
-                                insertIntoFirebase(id, author, commentText, commentdate) // Ajoute le commentaire à la base de données
+                                insertIntoFirebase(
+                                    id,
+                                    author,
+                                    commentText,
+                                    commentdate
+                                ) // Ajoute le commentaire à la base de données
                             }
                             comment = TextFieldValue("") // Réinitialise le champ de texte
                         }
@@ -394,12 +245,17 @@ fun ForumPage(navController: NavHostController, id: String?) {
                 // Bouton d'envoi du commentaire
                 IconButton(
                     onClick = {
-                        val author = auth.currentUser?.displayName
+                        val author = auth.currentUser?.uid
                         val commentText = comment.text
                         val commentdate = Calendar.getInstance().time
 
                         if (author != null && id != null) {
-                            insertIntoFirebase(id, author, commentText, commentdate) // Ajoute le commentaire à la base de données
+                            insertIntoFirebase(
+                                id,
+                                author,
+                                commentText,
+                                commentdate
+                            ) // Ajoute le commentaire à la base de données
                         }
                         comment = TextFieldValue("") // Réinitialise le champ de texte
                     },

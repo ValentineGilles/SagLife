@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.saglife.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -31,13 +32,21 @@ fun CustomTopAppBar(
     showBackIcon: Boolean,
     showProfileIcon: Boolean,
 ) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
     TopAppBar(
         title = {
             Text(text = title)
         },
         navigationIcon = @Composable {
             if (showBackIcon && navController.previousBackStackEntry != null) {
-                IconButton(onClick = { navController.navigateUp() }) {
+                IconButton(onClick = {
+                    navController.navigateUp()
+                    if (currentRoute == Routes.ForumPage.route)
+                    {
+                        navController.navigate(Routes.Forum.route)
+                    }
+                }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Back"
