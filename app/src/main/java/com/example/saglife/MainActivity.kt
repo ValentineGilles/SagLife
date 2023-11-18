@@ -35,7 +35,12 @@ import com.example.saglife.screen.account.ProfileScreen
 import com.example.saglife.screen.account.RegistrationScreen
 import com.example.saglife.screen.calendar.EventCreate
 import com.example.saglife.screen.forum.ForumCreatePost
+<<<<<<< HEAD
 import com.example.saglife.screen.map.MapCreate
+=======
+import com.example.saglife.screen.forum.ForumModifyComment
+import com.example.saglife.screen.forum.ForumModifyPost
+>>>>>>> 66b2225 (Option de modification des posts et des commentaires)
 import com.example.saglife.ui.theme.SagLifeTheme
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -210,6 +215,19 @@ class MainActivity : ComponentActivity() {
                     isBottomBarVisible.value = true
                     isTopBarBack.value = true
                     EventCreate(navController = navController)
+
+                composable(Routes.ForumModifyPost.route) {backStackEntry ->
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    ForumModifyPost(navController = navController,backStackEntry.arguments?.getString("id"))
+                }
+
+                composable(Routes.ForumModifyComment.route) {backStackEntry ->
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    ForumModifyComment(navController = navController,backStackEntry.arguments?.getString("post_id"), backStackEntry.arguments?.getString("comment_id"))
                 }
             }
         }
