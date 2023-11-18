@@ -127,6 +127,10 @@ fun ForumScreen(navController: NavHostController) {
             }
         }
 
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+        ) {
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -184,21 +188,21 @@ fun ForumScreen(navController: NavHostController) {
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.BottomEnd
-                ) {
-                    FloatingActionButton(
-                        onClick = {
-                            navController.navigate("forum/createpost")
-                        },
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = "Ajouter un post"
-                        )
-                    }
-                }
+
+
+            }
+
+            }
+            FloatingActionButton(
+                modifier = Modifier.padding(16.dp).align(Alignment.BottomEnd),
+                onClick = {
+                    navController.navigate("forum/createpost")
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Ajouter un post"
+                )
             }
         }
     }
