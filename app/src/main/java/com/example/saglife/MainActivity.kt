@@ -34,6 +34,8 @@ import com.example.saglife.screen.account.LoginScreen
 import com.example.saglife.screen.account.ProfileScreen
 import com.example.saglife.screen.account.RegistrationScreen
 import com.example.saglife.screen.forum.ForumCreatePost
+import com.example.saglife.screen.forum.ForumModifyComment
+import com.example.saglife.screen.forum.ForumModifyPost
 import com.example.saglife.ui.theme.SagLifeTheme
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -194,6 +196,20 @@ class MainActivity : ComponentActivity() {
                     isBottomBarVisible.value = true
                     isTopBarBack.value = true
                     ForumCreatePost(navController = navController)
+                }
+
+                composable(Routes.ForumModifyPost.route) {backStackEntry ->
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    ForumModifyPost(navController = navController,backStackEntry.arguments?.getString("id"))
+                }
+
+                composable(Routes.ForumModifyComment.route) {backStackEntry ->
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    ForumModifyComment(navController = navController,backStackEntry.arguments?.getString("post_id"), backStackEntry.arguments?.getString("comment_id"))
                 }
             }
         }

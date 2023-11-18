@@ -24,6 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.saglife.R
 import com.example.saglife.database.getUsernameFromUid
 import com.example.saglife.models.ForumPostItem
@@ -32,7 +33,7 @@ import com.google.firebase.auth.auth
 
 private val auth = Firebase.auth
 @Composable
-fun ForumPostCard (data: ForumPostItem) {
+fun ForumPostCard (navController : NavHostController, data: ForumPostItem) {
 
     // Etat de l'affichage de la description
     var showFullDescription by remember { mutableStateOf(false) }
@@ -44,8 +45,6 @@ fun ForumPostCard (data: ForumPostItem) {
     val date = data.getDay()
     val hour = data.getTime()
     val description = data.description
-    println("Data.author : $data.author")
-    println("Data author_id: $author_id")
 
     if (author_id != "") {
         getUsernameFromUid(author_id) { username ->
@@ -175,7 +174,8 @@ fun ForumPostCard (data: ForumPostItem) {
                     text = "Modifier",
                     textAlign = TextAlign.Right,
                     modifier = Modifier
-                        .clickable {}
+                        .clickable {println("id = $data.id")
+                            navController.navigate("forum/modifypost/${data.id}")}
                         .fillMaxWidth()
                 )
             }

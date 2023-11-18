@@ -1,3 +1,4 @@
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,12 +25,17 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.saglife.R
 import com.example.saglife.database.getUsernameFromUid
 import com.example.saglife.models.ForumCommentItem
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+
+private val auth = Firebase.auth
 
 @Composable
-fun ForumCommentCard (data : ForumCommentItem)
+fun ForumCommentCard (navController : NavHostController, postId : String, data : ForumCommentItem)
 {
     // Gestion du nom d'auteur
     var author by remember { mutableStateOf("") }
@@ -79,6 +85,18 @@ fun ForumCommentCard (data : ForumCommentItem)
 
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = data.comment)
+            println("id_comment = ${data.comment_id}")
+            println("id_post = ${postId}")
+            if (data.author_id == auth.currentUser?.uid) {
+                Text(
+                    text = "Modifier",
+                    textAlign = TextAlign.Right,
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate("forum/modifycomment/${postId}/${data.comment_id}")}
+                        .fillMaxWidth()
+                )
+            }
         }
     }
 }
