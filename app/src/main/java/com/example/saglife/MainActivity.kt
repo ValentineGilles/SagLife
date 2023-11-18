@@ -35,7 +35,6 @@ import com.example.saglife.screen.account.ProfileScreen
 import com.example.saglife.screen.account.RegistrationScreen
 import com.example.saglife.screen.calendar.EventCreate
 import com.example.saglife.screen.forum.ForumCreatePost
-import com.example.saglife.screen.map.MapCreate
 import com.example.saglife.screen.forum.ForumModifyComment
 import com.example.saglife.screen.forum.ForumModifyPost
 import com.example.saglife.ui.theme.SagLifeTheme
