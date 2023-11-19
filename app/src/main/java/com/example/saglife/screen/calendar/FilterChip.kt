@@ -16,13 +16,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.saglife.models.ForumFilterItem
 
+/**
+ * Composant de puce filtrante pour la sélection de filtres dans l'interface utilisateur.
+ *
+ * @param onClick La fonction de rappel appelée lorsqu'un filtre est cliqué.
+ * @param filtername Le nom du filtre à afficher dans la puce.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterChip(onClick: (String) -> Unit, filtername: String) {
+    // État pour suivre si la puce est sélectionnée ou non
     var selected by remember { mutableStateOf(false) }
 
+    // Composant FilterChip de Material3 pour représenter un filtre
     FilterChip(
-        onClick = { selected = !selected
+        onClick = {
+            // Inversion de l'état de sélection lors du clic sur la puce
+            selected = !selected
                     onClick(filtername)},
         label = {
             Text(filtername)

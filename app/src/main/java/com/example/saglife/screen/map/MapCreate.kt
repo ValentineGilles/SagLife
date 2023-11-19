@@ -46,11 +46,16 @@ import com.google.firebase.firestore.firestore
 import java.util.Calendar
 import java.util.UUID
 
-private val auth: FirebaseAuth = com.google.firebase.ktx.Firebase.auth
+/**
+ * Écran de création d'un nouvel établissement.
+ *
+ * @param navController Le contrôleur de navigation.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("MutableCollectionMutableState")
 @Composable
 fun MapCreate(navController: NavHostController) {
+    // État des champs de saisie
     var name by remember { mutableStateOf(TextFieldValue()) }
     var adresse by remember { mutableStateOf(TextFieldValue()) }
     var description by remember { mutableStateOf(TextFieldValue()) }
@@ -60,6 +65,7 @@ fun MapCreate(navController: NavHostController) {
     // Etat de chargement des données
     var postLoaded by remember { mutableStateOf(false) }
 
+    // État des filtres
     var selectedFilter by remember { mutableStateOf("") }
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
 
@@ -98,7 +104,7 @@ fun MapCreate(navController: NavHostController) {
             modifier = Modifier.padding(bottom = 16.dp, top= 32.dp)
         )
 
-
+// Champ de saisie pour le nom de l'établissement
         TextField(
             shape = RoundedCornerShape(8.dp),
             value = name,
@@ -112,6 +118,7 @@ fun MapCreate(navController: NavHostController) {
                 .widthIn(max = 300.dp) // Ajuster la largeur maximale
                 .padding(bottom = 16.dp)
         )
+        // Champ de saisie pour l'adresse
         TextField(
             shape = RoundedCornerShape(8.dp),
             value = adresse,
@@ -125,7 +132,7 @@ fun MapCreate(navController: NavHostController) {
                 .widthIn(max = 300.dp) // Ajuster la largeur maximale
                 .padding(bottom = 16.dp)
         )
-
+        // Champ de saisie pour la description
         TextField(
             shape = RoundedCornerShape(8.dp),
             value = description,
@@ -140,6 +147,7 @@ fun MapCreate(navController: NavHostController) {
                 .height(200.dp)
         )
 
+        // Liste de filtres sous forme de puces filtrantes
         LazyRow(
             modifier = Modifier.fillMaxWidth().padding(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -168,11 +176,11 @@ fun MapCreate(navController: NavHostController) {
             }
         }
 
-
+        // Bouton pour enregistrer les informations sur la carte
         ElevatedButton(
             onClick = {
 
-
+                // Vérification des champs non vides avant d'enregistrer
                 if (name.text != "" && description.text !="" && adresse.text != "") {
                     val map = MapItem(
                         id = "",
@@ -182,7 +190,9 @@ fun MapCreate(navController: NavHostController) {
                         description = description.text,
                         photoPath = "map.png"
                     )
+                    // Enregistrement des données dans Firebase
                     map.toFirebase()
+                    // Retour à l'écran précédent
                 navController.popBackStack()}
             },
             modifier = Modifier

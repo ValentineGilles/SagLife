@@ -6,8 +6,23 @@ import com.google.firebase.storage.storage
 import kotlinx.coroutines.tasks.await
 import java.util.Date
 
+/**
+ * Modèle de données représentant un élément sur la carte.
+ *
+ * @param id Identifiant unique de l'élément sur la carte.
+ * @param name Nom de l'élément.
+ * @param adresse Adresse de l'élément.
+ * @param filter Filtre associé à l'élément.
+ * @param description Description de l'élément.
+ * @param photoPath Chemin de l'image associée à l'élément.
+ */
 class MapItem (val id:String, val name : String, val adresse : String, val filter : String, val description : String, val photoPath : String){
 
+    /**
+     * Convertit l'objet MapItem en une structure de données JSON.
+     *
+     * @return Map représentant les propriétés de l'élément.
+     */
     fun toJson(): Map<String, String> {
         return mapOf(
             "Name" to this.name,
@@ -17,6 +32,10 @@ class MapItem (val id:String, val name : String, val adresse : String, val filte
             "Photo" to this.photoPath,
         )
     }
+
+    /**
+     * Envoie l'élément vers la base de données Firebase.
+     */
     fun toFirebase() {
         val db = Firebase.firestore
 

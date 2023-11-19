@@ -48,39 +48,46 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.saglife.R
+import com.example.saglife.models.EventItem
 import com.example.saglife.screen.calendar.FilterChip
 import com.example.saglife.models.MapItem
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 
+/**
+ * Écran affichant la liste des établissements.
+ *
+ * @param navController Le contrôleur de navigation.
+ */
 @Composable
-fun MapScreen(navController : NavHostController) {
+fun MapScreen(navController: NavHostController) {
 
-    var selectedFilters =  mutableListOf<String>()
+    // Initialisation des états
+    var selectedFilters = mutableListOf<String>()
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
     var mapsFiltered by remember { mutableStateOf(mutableListOf<MapItem>()) }
     var allMaps = mutableListOf<MapItem>()
 
+    // Instance de Firebase Firestore
     val db = Firebase.firestore
 
-
-
-            db.collection("filter_map").get().addOnSuccessListener { result ->
-                val filters = mutableListOf<String>()
-                for (document in result) {
-                    val name = document.getString("Name")!!
-                    filters.add(name)
-                }
-                filterList = filters
-            }
-                .addOnFailureListener { e ->
-                    println("Erreur lors de la récupération des données des filtres : $e")
-                }
-
+    // Récupération des filtres depuis la collection "filter_map"
+    db.collection("filter_map").get().addOnSuccessListener { result ->
+        val filters = mutableListOf<String>()
+        for (document in result) {
+            val name = document.getString("Name")!!
+            filters.add(name)
+        }
+        filterList = filters
+    }
+        .addOnFailureListener { e ->
+            println("Erreur lors de la récupération des données des filtres : $e")
+        }
 
 
 
+    // Récupération de toutes les cartes depuis la collection "map"
     db.collection("map").get().addOnSuccessListener { result ->
         for (document in result) {
             val name = document.getString("Name")!!
@@ -90,71 +97,83 @@ fun MapScreen(navController : NavHostController) {
             val photoPath = document.getString("Photo")!!
             allMaps.add(MapItem(document.id, name, adresse, filter, description, photoPath))
         }
-        print("All map  "+allMaps)
+        print("All map  " + allMaps)
         mapsFiltered = allMaps
 
     }
 
+    // Mise en page de l'interface utilisateur avec Compose
+    Box(
+        modifier = Modifier.fillMaxSize(),
+    ) {
 
-        Box(
-            modifier = Modifier.fillMaxSize(),
-        ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            // Affichage des filtres dans une LazyRow
+            LazyRow(
+                modifier = Modifier.padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(filterList) { filter ->
+                    FilterChip(
+                        onClick = { filterName ->
+                            // Filtrage des cartes en fonction des filtres sélectionnés
+                            if (selectedFilters.contains(filterName)) {
+                                selectedFilters.remove(filterName)
+                            } else {
+                                selectedFilters.add(filterName)
+                            }
+                            println(selectedFilters)
+                            if (selectedFilters.isNotEmpty()) {
+                                print("All map" + allMaps)
+                                mapsFiltered = filterMapItems(selectedFilters, allMaps)
+                                println("not empty")
+                                println("filter : " + filterMapItems(selectedFilters, allMaps))
+                            } else {
+                                println("empty")
 
-            Column(modifier = Modifier.fillMaxSize()) {
-                LazyRow(
-                    modifier = Modifier.padding(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(filterList) { filter ->
-                        FilterChip(
-                            onClick = { filterName ->
-
-                                if (selectedFilters.contains(filterName)) {
-                                    selectedFilters.remove(filterName)
-                                } else {
-                                    selectedFilters.add(filterName)
-                                }
-                                println(selectedFilters)
-                                if (selectedFilters.isNotEmpty()) {
-                                    print("All map"+allMaps)
-                                    mapsFiltered = filterMapItems(selectedFilters, allMaps)
-                                    println("not empty")
-                                    println("filter : "+filterMapItems(selectedFilters, allMaps))
-                                } else {
-                                    println("empty")
-
-                                    mapsFiltered = allMaps
-                                }
-                                println(mapsFiltered)
+                                mapsFiltered = allMaps
+                            }
+                            println(mapsFiltered)
 
 
-                            },
-                            filter
-                        )
-                    }
+                        },
+                        filter
+                    )
                 }
-                LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
-                    items(mapsFiltered) { map ->
-                        MapComposant(map = map, navController = navController)
-                    }
+            }
+            // Affichage des cartes filtrées dans une LazyColumn
+            LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
+                items(mapsFiltered) { map ->
+                    MapComposant(map = map, navController = navController)
                 }
+            }
 
         }
-            FloatingActionButton(
-                modifier = Modifier.padding(16.dp).align(Alignment.BottomEnd),
-                onClick = {
-                    navController.navigate("map/create")
-                },
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Ajouter un établissement"
-                )
-            }
-}
+        // Bouton flottant pour ajouter une nouvelle carte
+        FloatingActionButton(
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.BottomEnd),
+            onClick = {
+                navController.navigate("map/create")
+            },
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Ajouter un établissement"
+            )
+        }
+    }
 }
 
-// Fonction qui prend en paramètre une liste de String filters et une liste de EventItem (val id:String,val name : String, val dateStart : Date, val dateEnd : Date, val description : String, val photoPath : String, val filter : String). La fonction doit filtrer la liste de EventItem en ne retournant que les élément ou l'un des Strings de la liste filters est égale au champ val filter : String.
+/**
+ * Fonction qui prend en paramètre une liste de chaînes de caractères [filters] et une liste d'objets [MapItem].
+ * La fonction filtre la liste d'objets en ne retournant que les éléments où l'un des éléments de [filters] est égal au champ [filter].
+ *
+ * @param filters Liste des filtres à appliquer.
+ * @param mapItems Liste des établissement à filtrer.
+ * @return Liste filtrée d'objets [MapItem].
+ */
 fun filterMapItems(filters: List<String>, mapItems: List<MapItem>): MutableList<MapItem> {
     val filteredMapItems = mutableListOf<MapItem>()
     for (mapItem in mapItems) {
@@ -166,39 +185,60 @@ fun filterMapItems(filters: List<String>, mapItems: List<MapItem>): MutableList<
 }
 
 
+/**
+ * Composant qui affiche un établissement.
+ *
+ * @param map Objet [MapItem] à afficher.
+ * @param navController Contrôleur de navigation.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapComposant(map : MapItem, navController : NavHostController){
+fun MapComposant(map: MapItem, navController: NavHostController) {
     var storage = Firebase.storage
     var storageReference = storage.getReference("images/").child(map.photoPath)
-    var urlImage : Uri? by remember { mutableStateOf(null) }
-    storageReference.downloadUrl.addOnSuccessListener { url-> urlImage = url}
+    var urlImage: Uri? by remember { mutableStateOf(null) }
+    storageReference.downloadUrl.addOnSuccessListener { url -> urlImage = url }
 
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
-        ),modifier = Modifier
+        ), modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
-            .padding(16.dp), onClick = {navController.navigate("mapInfo/${map.id}")}) {
+            .padding(16.dp), onClick = { navController.navigate("mapInfo/${map.id}") }) {
         Box(
             contentAlignment = Alignment.BottomCenter
-        ){
-            if(urlImage==null) Image(
+        ) {
+            if (urlImage == null) Image(
                 painter = painterResource(id = R.drawable.event),
-                contentDescription = "null", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth(),
+                contentDescription = "null",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxWidth(),
 
                 ) else
                 AsyncImage(
-                    model = urlImage,contentDescription = "null", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth(),
+                    model = urlImage,
+                    contentDescription = "null",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxWidth(),
                 )
-            Surface(modifier = Modifier.fillMaxWidth().height(72.dp)){
-                Row (verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween,modifier = Modifier.padding(8.dp)) {
-                    Column (){
+            Surface(modifier = Modifier
+                .fillMaxWidth()
+                .height(72.dp)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    Column() {
                         Text(text = map.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                        Row(verticalAlignment= Alignment.CenterVertically, ){
-                            Text(text = "4,7 \nsur 5", fontSize = 12.sp, textAlign= TextAlign.Center)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "4,7 \nsur 5",
+                                fontSize = 12.sp,
+                                textAlign = TextAlign.Center
+                            )
                             Spacer(
                                 Modifier
                                     .width(8.dp)
@@ -214,7 +254,7 @@ fun MapComposant(map : MapItem, navController : NavHostController){
                                 Modifier
                                     .width(8.dp)
                             )
-                            Text(text = "1,2km", fontSize = 12.sp, textAlign= TextAlign.Center)
+                            Text(text = "1,2km", fontSize = 12.sp, textAlign = TextAlign.Center)
                             Spacer(
                                 Modifier
                                     .width(8.dp)
@@ -230,14 +270,19 @@ fun MapComposant(map : MapItem, navController : NavHostController){
                                 Modifier
                                     .width(8.dp)
                             )
-                            Text(text = map.filter, fontSize = 12.sp, textAlign= TextAlign.Center)
+                            Text(text = map.filter, fontSize = 12.sp, textAlign = TextAlign.Center)
 
                         }
                     }
-                    FilledTonalButton(onClick = {  }, contentPadding = PaddingValues(16.dp,8.dp),modifier = Modifier
-                        .defaultMinSize(minWidth = 1.dp, minHeight = 1.dp), shape = RoundedCornerShape(24), elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 8.dp
-                    )
+                    FilledTonalButton(
+                        onClick = { },
+                        contentPadding = PaddingValues(16.dp, 8.dp),
+                        modifier = Modifier
+                            .defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                        shape = RoundedCornerShape(24),
+                        elevation = ButtonDefaults.buttonElevation(
+                            defaultElevation = 8.dp
+                        )
                     ) {
                         Text("Itinéraire")
                     }

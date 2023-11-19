@@ -49,17 +49,27 @@ import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 import java.util.Date
 
+/**
+ * Écran affichant la liste des événements.
+ *
+ * @param navController Contrôleur de navigation.
+ */
 @SuppressLint("MutableCollectionMutableState")
 @Composable
 fun CalendarScreen(navController: NavHostController) {
-
+    // État pour suivre le chargement des données.
     var postLoaded by remember { mutableStateOf(false) }
 
+    // Liste des filtres sélectionnés.
     var selectedFilters by remember { mutableStateOf(mutableListOf<String>()) }
+
+    // Liste de tous les filtres disponibles.
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
 
+    // Instance de la base de données Firestore.
     val db = Firebase.firestore
 
+    // Récupération des filtres depuis Firestore.
     db.collection("filter_event").get().addOnSuccessListener { result ->
         println("filter")
         val filters = mutableListOf<String>()
@@ -73,9 +83,10 @@ fun CalendarScreen(navController: NavHostController) {
             println("Erreur lors de la récupération des données des filtres : $e")
         }
 
+    // Liste des événements filtrés.
     var eventsFiltered by remember { mutableStateOf(mutableListOf<EventItem>()) }
 
-
+    // Liste de tous les événements.
     val allEvents = mutableListOf<EventItem>()
     db.collection("event").get().addOnSuccessListener { result ->
         println("event")
@@ -101,10 +112,12 @@ fun CalendarScreen(navController: NavHostController) {
         }
         eventsFiltered = allEvents
     }
+    // Affichage de la page principale.
     Box(
         modifier = Modifier.fillMaxSize(),
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
+            // Affichage des filtres sous forme de puce.
             LazyRow(
                 modifier = Modifier.padding(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -112,12 +125,13 @@ fun CalendarScreen(navController: NavHostController) {
                 items(filterList) { filter ->
                     FilterChip(
                         onClick = { filterName ->
-
+                            // Gestion de la sélection/déselection du filtre.
                             if (selectedFilters.contains(filterName)) {
                                 selectedFilters.remove(filterName)
                             } else {
                                 selectedFilters.add(filterName)
                             }
+                            // Filtrage des événements en fonction des filtres sélectionnés.
                             if (selectedFilters.isNotEmpty()) {
                                 eventsFiltered = filterEventItems(selectedFilters, allEvents)
                             } else {
@@ -130,13 +144,14 @@ fun CalendarScreen(navController: NavHostController) {
                     )
                 }
             }
-
+// Affichage des événements filtrés.
             LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
                 items(eventsFiltered) { event ->
                     EventComposant(event = event, navController = navController)
                 }
             }
         }
+        // Bouton flottant pour ajouter un nouvel événement.
         FloatingActionButton(
             modifier = Modifier.padding(16.dp).align(Alignment.BottomEnd),
             onClick = {
@@ -151,7 +166,14 @@ fun CalendarScreen(navController: NavHostController) {
     }
 }
 
-// Fonction qui prend en paramètre une liste de String filters et une liste de EventItem (val id:String,val name : String, val dateStart : Date, val dateEnd : Date, val description : String, val photoPath : String, val filter : String). La fonction doit filtrer la liste de EventItem en ne retournant que les élément ou l'un des Strings de la liste filters est égale au champ val filter : String.
+/**
+ * Fonction qui prend en paramètre une liste de chaînes de caractères [filters] et une liste d'objets [EventItem].
+ * La fonction filtre la liste d'objets en ne retournant que les éléments où l'un des éléments de [filters] est égal au champ [filter].
+ *
+ * @param filters Liste des filtres à appliquer.
+ * @param eventItems Liste des événements à filtrer.
+ * @return Liste filtrée d'objets [EventItem].
+ */
 fun filterEventItems(filters: List<String>, eventItems: List<EventItem>): MutableList<EventItem> {
     val filteredEventItems = mutableListOf<EventItem>()
     for (eventItem in eventItems) {
@@ -162,15 +184,22 @@ fun filterEventItems(filters: List<String>, eventItems: List<EventItem>): Mutabl
     return filteredEventItems
 }
 
+/**
+ * Composant qui affiche un événement.
+ *
+ * @param event Objet [EventItem] à afficher.
+ * @param navController Contrôleur de navigation.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventComposant(event: EventItem, navController: NavHostController) {
+    // Récupération de l'URL de l'image depuis Firebase Storage.
     val storage = Firebase.storage
     val storageReference = storage.getReference("images/").child(event.photoPath)
     var urlImage: Uri? by remember { mutableStateOf(null) }
     storageReference.downloadUrl.addOnSuccessListener { url -> urlImage = url }
 
-
+// Affichage de la carte d'événement.
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp

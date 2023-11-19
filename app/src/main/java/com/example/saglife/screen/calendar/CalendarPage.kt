@@ -41,6 +41,12 @@ import com.google.firebase.storage.storage
 import java.util.Date
 
 
+/**
+ * Écran affichant les détails d'un événement.
+ *
+ * @param navController Contrôleur de navigation.
+ * @param id Identifiant de l'événement à afficher.
+ */
 @Composable
 fun EventScreen(navController: NavHostController, id : String?) {
     var postLoaded by remember { mutableStateOf(false) }

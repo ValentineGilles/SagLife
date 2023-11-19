@@ -86,11 +86,19 @@ import com.google.firebase.storage.storage
 import java.util.Calendar
 import java.util.Date
 
+// Authentification Firebase
 private val auth: FirebaseAuth = com.google.firebase.ktx.Firebase.auth
+
+/**
+ * Écran d'informations détaillées pour un établissement.
+ *
+ * @param navController Le contrôleur de navigation.
+ * @param id L'identifiant de l'établissement sur la carte.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapInfoScreen(navController: NavHostController, id : String?) {
-
+// État pour stocker les informations sur l'établissement
     var map by remember {
         mutableStateOf(
             MapItem(
@@ -103,8 +111,11 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
             )
         )
     }
+    // URL de l'image à afficher
     var urlImage : Uri? by remember { mutableStateOf(null) }
+    // État du chargement des données
     var postLoaded by remember { mutableStateOf(false) }
+    // Liste des commentaires
     var comments by remember{  mutableStateOf(mutableListOf<MapComment>())}
 
     // Etat du commentaire
@@ -114,6 +125,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
     LaunchedEffect(postLoaded) {
         if (!postLoaded) {
             if (id != null) {
+                // Récupération des informations sur l'établissement depuis Firestore
                 db.collection("map").document(id).get().addOnSuccessListener { document ->
                     val name = document.getString("Name")!!
                     val adresse = document.getString("Adresse")!!
@@ -122,7 +134,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                     val photoPath = document.getString("Photo")!!
                     map = MapItem(document.id, name, adresse, filter, description, photoPath)
                 }
-
+                // Récupération des commentaires depuis Firestore
                 db.collection("map").document(id).collection("comments").get().addOnSuccessListener { result ->
                     var allComments = mutableListOf<MapComment>()
                     for (document in result) {
@@ -136,7 +148,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                     comments=allComments
                 }
             }
-
+            // Récupération de l'URL de l'image depuis Storage
             var storage = Firebase.storage
             var storageReference = storage.getReference("images/").child(map.photoPath)
             storageReference.downloadUrl.addOnSuccessListener { url-> urlImage = url}
@@ -146,10 +158,11 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
 
 
 
-
+    // Affichage de l'écran d'informations détaillées
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
     ) {
+        // Affichage de l'image
         if(urlImage==null) Image(
             painter = painterResource(id = R.drawable.event),
             contentDescription = "null", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth(),
@@ -158,6 +171,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
             AsyncImage(
                 model = urlImage,contentDescription = "null", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth(),
             )
+        // Informations principales sur l'établissement
         Surface(modifier = Modifier.padding(16.dp).fillMaxWidth().height(72.dp), color = Color.Transparent) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

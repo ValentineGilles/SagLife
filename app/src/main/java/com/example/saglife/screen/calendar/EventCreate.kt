@@ -69,25 +69,33 @@ import java.time.Instant
 import java.time.ZoneOffset
 import java.util.Calendar
 import java.util.Date
+
+/**
+ * Ecran pour créer un événement.
+ *
+ * @param navController Navigation controller.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("MutableCollectionMutableState")
 @Composable
 fun EventCreate(navController: NavHostController) {
+    // État des champs du formulaire
     var name by remember { mutableStateOf(TextFieldValue()) }
     var description by remember { mutableStateOf(TextFieldValue()) }
     var photoPath by remember { mutableStateOf(TextFieldValue()) }
 
+    // Heures de début et de fin
     var time_start by remember { mutableStateOf("10h00") }
     var time_stop by remember { mutableStateOf("12h00") }
-
-
 
     // Etat de chargement des données
     var postLoaded by remember { mutableStateOf(false) }
 
+    // Filtre sélectionné et liste des filtres disponibles
     var selectedFilter by remember { mutableStateOf("") }
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
 
+    // États pour les composants de sélection de date et d'heure
     val startTimePickerState =
         remember { TimePickerState(is24Hour = true, initialHour = 0, initialMinute = 0) }
     val stopTimePickerState =
@@ -95,20 +103,20 @@ fun EventCreate(navController: NavHostController) {
 
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = Date().time
-        //initialSelectedDateMillis = Instant.now().toEpochMilli()
     )
 
 
     val db = Firebase.firestore
 
-    var uri by remember{ mutableStateOf<Uri?>(null) }
+    // Uri de l'image sélectionnée
+    var uri by remember { mutableStateOf<Uri?>(null) }
     val singlePhotoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = {
             uri = it
         }
     )
-
+    // Chargement initial des filtres depuis Firebase
     LaunchedEffect(postLoaded) {
         if (!postLoaded) {
 
@@ -141,7 +149,7 @@ fun EventCreate(navController: NavHostController) {
             modifier = Modifier.padding(bottom = 16.dp, top = 32.dp)
         )
 
-
+// Champ de saisie du nom de l'événement
         TextField(
             shape = RoundedCornerShape(8.dp),
             value = name,
@@ -156,29 +164,34 @@ fun EventCreate(navController: NavHostController) {
                 .widthIn(max = 300.dp) // Ajuster la largeur maximale
                 .padding(bottom = 16.dp)
         )
-
+        // Sélecteur de date
         DatePicker(state = datePickerState)
-
+        // Calcul de la date sélectionnée
         val selectedDate = datePickerState.selectedDateMillis?.let {
             Date(it)
         }
-        Row (horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically){
+        // Sélecteurs d'heure de début et de fin
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text("Horaires")
-            Row { time_start = TimePickerDialog( state = startTimePickerState, time = time_start)
+            Row {
+                time_start = TimePickerDialog(state = startTimePickerState, time = time_start)
                 Text("-")
-                time_stop = TimePickerDialog( state = stopTimePickerState, time = time_stop)
+                time_stop = TimePickerDialog(state = stopTimePickerState, time = time_stop)
             }
-            }
-
+        }
+        // Bouton pour choisir une image
         Button(onClick = {
             singlePhotoPicker.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
 
-        }){
+        }) {
             Text("Pick Single Image")
         }
-
+        // Champ de saisie de la description
         TextField(
             shape = RoundedCornerShape(8.dp),
             value = description,
@@ -193,7 +206,7 @@ fun EventCreate(navController: NavHostController) {
                 .padding(bottom = 16.dp)
                 .height(200.dp)
         )
-
+        // Liste déroulante des filtres
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
@@ -225,11 +238,11 @@ fun EventCreate(navController: NavHostController) {
         }
 
 
-
+        // Bouton pour enregistrer l'événement
         ElevatedButton(
             onClick = {
                 if (name.text != "" && description.text != "" && selectedDate != null) {
-
+                    // Construction des objets de date pour le début et la fin
                     val dateStart = Date(selectedDate.time)
                     dateStart.hours = startTimePickerState.hour
                     dateStart.minutes = startTimePickerState.minute
@@ -237,6 +250,7 @@ fun EventCreate(navController: NavHostController) {
                     dateStop.hours = stopTimePickerState.hour
                     dateStop.minutes = stopTimePickerState.minute
 
+                    // Création de l'objet EventItem
                     val event = EventItem(
                         id = "",
                         name = name.text,
@@ -246,11 +260,12 @@ fun EventCreate(navController: NavHostController) {
                         description = description.text,
                         photoPath = "event.jpg"
                     )
+                    // Enregistrement de l'événement dans Firebase
                     event.toFirebase()
 
+                    // Retour à l'écran précédent
                     navController.popBackStack()
                 }
-
 
 
             },
@@ -270,68 +285,71 @@ fun TimePickerDialog(
     time: String,
     toggle: @Composable () -> Unit = {},
     state: TimePickerState,
-) : String {
+): String {
 
     val openDialog = remember { mutableStateOf(false) }
 
     ElevatedButton(
-        modifier= Modifier,
+        modifier = Modifier,
         shape = RoundedCornerShape(24),
-        onClick = { openDialog.value = true },) {
+        onClick = { openDialog.value = true },
+    ) {
         Text(time)
     }
-    if(openDialog.value)
+    if (openDialog.value)
         androidx.compose.ui.window.Dialog(
-        onDismissRequest = {
-            openDialog.value = false
-            println("Confirmation registered")},
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        ),
-    ) {
-        Surface(
-            shape = MaterialTheme.shapes.extraLarge,
-            tonalElevation = 6.dp,
-            modifier = Modifier
-                .width(IntrinsicSize.Min)
-                .height(IntrinsicSize.Min)
-                .background(
-                    shape = MaterialTheme.shapes.extraLarge,
-                    color = MaterialTheme.colorScheme.surface
-                ),
+            onDismissRequest = {
+                openDialog.value = false
+                println("Confirmation registered")
+            },
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false
+            ),
         ) {
-            Column(
-                modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+            Surface(
+                shape = MaterialTheme.shapes.extraLarge,
+                tonalElevation = 6.dp,
+                modifier = Modifier
+                    .width(IntrinsicSize.Min)
+                    .height(IntrinsicSize.Min)
+                    .background(
+                        shape = MaterialTheme.shapes.extraLarge,
+                        color = MaterialTheme.colorScheme.surface
+                    ),
             ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp),
-                    text = title,
-                    style = MaterialTheme.typography.labelMedium
-                )
-                TimePicker(state = state)
-                Row(
-                    modifier = Modifier
-                        .height(40.dp)
-                        .fillMaxWidth()
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    toggle()
-                    Spacer(modifier = Modifier.weight(1f))
-                    TextButton(
-                        onClick = { openDialog.value = false }
-                    ) { Text("Cancel") }
-                    TextButton(
-                        onClick = { openDialog.value = false
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 20.dp),
+                        text = title,
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    TimePicker(state = state)
+                    Row(
+                        modifier = Modifier
+                            .height(40.dp)
+                            .fillMaxWidth()
+                    ) {
+                        toggle()
+                        Spacer(modifier = Modifier.weight(1f))
+                        TextButton(
+                            onClick = { openDialog.value = false }
+                        ) { Text("Cancel") }
+                        TextButton(
+                            onClick = {
+                                openDialog.value = false
 
                             }
-                    ) { Text("OK") }
+                        ) { Text("OK") }
+                    }
                 }
             }
         }
-    }
-    return state.hour.toString()+ ":"+ state.minute.toString()
+    return state.hour.toString() + ":" + state.minute.toString()
 }
 
 
