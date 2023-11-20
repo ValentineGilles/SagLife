@@ -10,17 +10,17 @@ class ForumPostItem(val id:String, val author:String, val date: Date, val icon:S
 
     private fun getMonth() : String{
         return when(date.month){
-            1-> "Janv."
-            2-> "Févr."
-            3-> "Mars"
-            4-> "Avr."
-            5-> "Mai"
-            6-> "Juin"
-            7-> "Juil."
-            8-> "Août"
-            9-> "Sept."
-            10-> "Oct."
-            11-> "Nov."
+            0-> "Janv."
+            1-> "Févr."
+            2-> "Mars"
+            3-> "Avr."
+            4-> "Mai"
+            5-> "Juin"
+            6-> "Juil."
+            7-> "Août"
+            8-> "Sept."
+            9-> "Oct."
+            10-> "Nov."
             else-> "Déc."
         }
     }

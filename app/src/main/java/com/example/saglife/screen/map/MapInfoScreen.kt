@@ -158,158 +158,197 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
 
 
 
-    // Affichage de l'écran d'informations détaillées
-    Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
-    ) {
-        // Affichage de l'image
-        if(urlImage==null) Image(
-            painter = painterResource(id = R.drawable.event),
-            contentDescription = "null", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth(),
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+    )
+    {
+        // Affichage de l'écran d'informations détaillées
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 56.dp)
+        ) {
+            item {
+                // Affichage de l'image
+                if (urlImage == null) Image(
+                    painter = painterResource(id = R.drawable.event),
+                    contentDescription = "null",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxWidth(),
 
-            ) else
-            AsyncImage(
-                model = urlImage,contentDescription = "null", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth(),
-            )
-        // Informations principales sur l'établissement
-        Surface(modifier = Modifier.padding(16.dp).fillMaxWidth().height(72.dp), color = Color.Transparent) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(8.dp)
-            ) {
-                Column() {
-                    Text(text = map.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                    Row(verticalAlignment = Alignment.CenterVertically,) {
-                        Text(text = "4,7 \nsur 5", fontSize = 12.sp, textAlign = TextAlign.Center)
-                        Spacer(
-                            Modifier
-                                .width(8.dp)
-                        )
-                        Divider(
-                            modifier = Modifier
-                                .fillMaxHeight()  //fill the max height
-                                .width(1.dp)
-                                .padding(top = 8.dp, bottom = 8.dp)
-
-                        )
-                        Spacer(
-                            Modifier
-                                .width(8.dp)
-                        )
-                        Text(text = "1,2km", fontSize = 12.sp, textAlign = TextAlign.Center)
-                        Spacer(
-                            Modifier
-                                .width(8.dp)
-                        )
-                        Divider(
-                            modifier = Modifier
-                                .fillMaxHeight()  //fill the max height
-                                .width(1.dp)
-                                .padding(top = 8.dp, bottom = 8.dp)
-
-                        )
-                        Spacer(
-                            Modifier
-                                .width(8.dp)
-                        )
-                        Text(text = map.filter, fontSize = 12.sp, textAlign = TextAlign.Center)
-
-                    }
-                }
-                FilledTonalButton(
-                    onClick = { },
-                    contentPadding = PaddingValues(16.dp, 8.dp),
-                    modifier = Modifier
-                        .defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                    shape = RoundedCornerShape(24),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 8.dp
+                    ) else
+                    AsyncImage(
+                        model = urlImage,
+                        contentDescription = "null",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxWidth(),
                     )
-                ) {
-                    Text("Itinéraire")
-                }
-            }
-        }
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()  //fill the max width
-                .height(1.dp).padding(start = 16.dp, end = 16.dp)
-        )
-        Text(
-            text = map.description,
-            fontSize = 16.sp,
-            modifier = Modifier.padding(16.dp),
-            textAlign = TextAlign.Justify
-        )
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()  //fill the max width
-                .height(1.dp).padding(start = 16.dp, end = 16.dp)
-        )
-        Spacer(
-            Modifier
-                .height(8.dp)
-        )
-
-        // Affichage du titre "Commentaires"
-        Text(
-            text = "Commentaires",
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-        )
-        for(comment in comments){
-            val star = 3
-            // Affichage des commentaires
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 16.dp, start = 16.dp, bottom = 16.dp)
-                    .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
-            ) {
-                Column(
+                // Informations principales sur l'établissement
+                Surface(
                     modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth()
+                        .height(72.dp),
+                    color = Color.Transparent
                 ) {
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.padding(8.dp)
                     ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_profile),
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = comment.author)
+                        Column() {
+                            Text(text = map.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                            Row(verticalAlignment = Alignment.CenterVertically,) {
+                                Text(
+                                    text = "4,7 \nsur 5",
+                                    fontSize = 12.sp,
+                                    textAlign = TextAlign.Center
+                                )
+                                Spacer(
+                                    Modifier
+                                        .width(8.dp)
+                                )
+                                Divider(
+                                    modifier = Modifier
+                                        .fillMaxHeight()  //fill the max height
+                                        .width(1.dp)
+                                        .padding(top = 8.dp, bottom = 8.dp)
 
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "${comment.date}",
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.End,
-                            style = MaterialTheme.typography.bodySmall
-                        )
+                                )
+                                Spacer(
+                                    Modifier
+                                        .width(8.dp)
+                                )
+                                Text(text = "1,2km", fontSize = 12.sp, textAlign = TextAlign.Center)
+                                Spacer(
+                                    Modifier
+                                        .width(8.dp)
+                                )
+                                Divider(
+                                    modifier = Modifier
+                                        .fillMaxHeight()  //fill the max height
+                                        .width(1.dp)
+                                        .padding(top = 8.dp, bottom = 8.dp)
+
+                                )
+                                Spacer(
+                                    Modifier
+                                        .width(8.dp)
+                                )
+                                Text(
+                                    text = map.filter,
+                                    fontSize = 12.sp,
+                                    textAlign = TextAlign.Center
+                                )
+
+                            }
+                        }
+                        FilledTonalButton(
+                            onClick = { },
+                            contentPadding = PaddingValues(16.dp, 8.dp),
+                            modifier = Modifier
+                                .defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                            shape = RoundedCornerShape(24),
+                            elevation = ButtonDefaults.buttonElevation(
+                                defaultElevation = 8.dp
+                            )
+                        ) {
+                            Text("Itinéraire")
+                        }
                     }
-                    Row { for (i in 1..star)Icon(imageVector = Icons.Default.Star, contentDescription = null)
-                        for (i in star+1..5)Icon(imageVector = Icons.TwoTone.Star, contentDescription = null) }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = comment.comment)
                 }
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()  //fill the max width
+                        .height(1.dp)
+                        .padding(start = 16.dp, end = 16.dp)
+                )
+                Text(
+                    text = map.description,
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(16.dp),
+                    textAlign = TextAlign.Justify
+                )
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()  //fill the max width
+                        .height(1.dp)
+                        .padding(start = 16.dp, end = 16.dp)
+                )
+                Spacer(
+                    Modifier
+                        .height(8.dp)
+                )
+
+                // Affichage du titre "Commentaires"
+                Text(
+                    text = "Commentaires",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                )
+                for (comment in comments) {
+                    val star = 3
+                    // Affichage des commentaires
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 16.dp, start = 16.dp, bottom = 16.dp)
+                            .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                        ),
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth()
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_profile),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(text = comment.author)
+
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "${comment.date}",
+                                    modifier = Modifier.fillMaxWidth(),
+                                    textAlign = TextAlign.End,
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
+                            Row {
+                                for (i in 1..star) Icon(
+                                    imageVector = Icons.Default.Star,
+                                    contentDescription = null
+                                )
+                                for (i in star + 1..5) Icon(
+                                    imageVector = Icons.TwoTone.Star,
+                                    contentDescription = null
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(text = comment.comment)
+                        }
+                    }
+
+                }
+
             }
-
         }
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.End)
+                .align(Alignment.BottomStart)
                 .background(MaterialTheme.colorScheme.surface),
         ) {
             // Affichage du champ de texte pour ajouter un commentaire
@@ -320,7 +359,8 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                 colors = TextFieldDefaults.textFieldColors(
                     unfocusedIndicatorColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
-                    containerColor = MaterialTheme.colorScheme.surface),
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
@@ -336,7 +376,12 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                             Calendar.getInstance().time
 
                         if (author != null && id != null) {
-                            insertIntoFirebase(id, author, commentText, commentdate) // Ajoute le commentaire à la base de données
+                            insertIntoFirebase(
+                                id,
+                                author,
+                                commentText,
+                                commentdate
+                            ) // Ajoute le commentaire à la base de données
                         }
                         comment = TextFieldValue("") // Réinitialise le champ de texte
                     }
@@ -350,7 +395,12 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                     val commentdate = Calendar.getInstance().time
 
                     if (author != null && id != null) {
-                        insertIntoFirebase(id, author, commentText, commentdate) // Ajoute le commentaire à la base de données
+                        insertIntoFirebase(
+                            id,
+                            author,
+                            commentText,
+                            commentdate
+                        ) // Ajoute le commentaire à la base de données
                     }
                     comment = TextFieldValue("") // Réinitialise le champ de texte
                 },
@@ -362,7 +412,6 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                 )
             }
         }
-
     }
 }
 
@@ -371,7 +420,9 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
 @Composable
 fun Comment(){
     val star = 3
-    Surface (color = PurpleGrey40,shape = RoundedCornerShape(8)){ Column (modifier = Modifier.padding(8.dp).width(100.dp)){ Row (modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween){ Text(text = "Author", fontWeight = FontWeight.Bold)
+    Surface (color = PurpleGrey40,shape = RoundedCornerShape(8)){ Column (modifier = Modifier
+        .padding(8.dp)
+        .width(100.dp)){ Row (modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween){ Text(text = "Author", fontWeight = FontWeight.Bold)
         Text(text = "18 janvier 2022", color = Purple80)}
         Row { for (i in 1..star)Icon(imageVector = Icons.Default.Star, contentDescription = null)
             for (i in star+1..5)Icon(imageVector = Icons.TwoTone.Star, contentDescription = null) }

@@ -2,6 +2,7 @@ package com.example.saglife.screen.map
 
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
@@ -29,6 +31,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -142,11 +146,13 @@ fun MapScreen(navController: NavHostController) {
                 }
             }
             // Affichage des cartes filtrées dans une LazyColumn
-            LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
+            LazyColumn(modifier = Modifier.padding(16.dp)) {
                 items(mapsFiltered) { map ->
                     MapComposant(map = map, navController = navController)
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
+
 
         }
         // Bouton flottant pour ajouter une nouvelle carte
@@ -200,13 +206,15 @@ fun MapComposant(map: MapItem, navController: NavHostController) {
     storageReference.downloadUrl.addOnSuccessListener { url -> urlImage = url }
 
 
-    ElevatedCard(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ), modifier = Modifier
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+        modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
-            .padding(16.dp), onClick = { navController.navigate("mapInfo/${map.id}") }) {
+            .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
+        onClick = { navController.navigate("mapInfo/${map.id}") }) {
         Box(
             contentAlignment = Alignment.BottomCenter
         ) {
@@ -225,18 +233,19 @@ fun MapComposant(map: MapItem, navController: NavHostController) {
                 )
             Surface(modifier = Modifier
                 .fillMaxWidth()
-                .height(72.dp)) {
+                .height(80.dp)
+                ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.padding(8.dp)
                 ) {
-                    Column() {
-                        Text(text = map.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    Column(modifier = Modifier) {
+                        Text(text = map.name, style = MaterialTheme.typography.titleLarge/*, fontWeight = FontWeight.Bold*/)
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "4,7 \nsur 5",
-                                fontSize = 12.sp,
+                                text = "4,7/5",
+                                style = MaterialTheme.typography.bodyMedium,
                                 textAlign = TextAlign.Center
                             )
                             Spacer(
@@ -254,7 +263,7 @@ fun MapComposant(map: MapItem, navController: NavHostController) {
                                 Modifier
                                     .width(8.dp)
                             )
-                            Text(text = "1,2km", fontSize = 12.sp, textAlign = TextAlign.Center)
+                            Text(text = "1,2km", style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
                             Spacer(
                                 Modifier
                                     .width(8.dp)
@@ -270,7 +279,7 @@ fun MapComposant(map: MapItem, navController: NavHostController) {
                                 Modifier
                                     .width(8.dp)
                             )
-                            Text(text = map.filter, fontSize = 12.sp, textAlign = TextAlign.Center)
+                            Text(text = map.filter, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
 
                         }
                     }
