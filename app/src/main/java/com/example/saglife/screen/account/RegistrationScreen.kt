@@ -47,8 +47,10 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
+// Initialisation de Firebase Authentication
 private val auth: FirebaseAuth = Firebase.auth
 
+// Composable pour l'écran d'inscription
 @Composable
 fun RegistrationScreen(navController: NavHostController) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -56,6 +58,7 @@ fun RegistrationScreen(navController: NavHostController) {
     }
 }
 
+// Composable pour l'écran d'inscription avec la barre de navigation en haut
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -69,17 +72,16 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
 
             var ConnectionError by remember { mutableStateOf<String?>(null) }
 
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-
-                ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
             }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    ,
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -101,7 +103,8 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                     value = username,
                     colors = TextFieldDefaults.textFieldColors(
                         unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent),
+                        focusedIndicatorColor = Color.Transparent
+                    ),
                     onValueChange = { username = it },
                     modifier = Modifier.fillMaxWidth()
                         .padding(start = 60.dp, end = 60.dp)
@@ -116,7 +119,8 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                     onValueChange = { email = it },
                     colors = TextFieldDefaults.textFieldColors(
                         unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent),
+                        focusedIndicatorColor = Color.Transparent
+                    ),
                     modifier = Modifier.fillMaxWidth()
                         .padding(start = 60.dp, end = 60.dp)
                 )
@@ -128,7 +132,8 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                     value = password,
                     colors = TextFieldDefaults.textFieldColors(
                         unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent),
+                        focusedIndicatorColor = Color.Transparent
+                    ),
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     onValueChange = { password = it },
@@ -138,11 +143,12 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                 Spacer(modifier = Modifier.height(16.dp))
                 TextField(
                     shape = RoundedCornerShape(8.dp),
-                    label = { Text(text = "Confirmer vot mot de passe") },
+                    label = { Text(text = "Confirmer votre mot de passe") },
                     value = password2,
                     colors = TextFieldDefaults.textFieldColors(
                         unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent),
+                        focusedIndicatorColor = Color.Transparent
+                    ),
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     onValueChange = { password2 = it },
@@ -168,7 +174,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                                         navController
                                     ) { success, errorMessage ->
                                         if (!success) {
-                                            // Affichez le message d'erreur sur password2Error
+                                            // Affichez le message d'erreur sur ConnectionError
                                             ConnectionError =
                                                 errorMessage ?: "Une erreur inconnue s'est produite"
                                         }
@@ -177,25 +183,20 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                                     // Affichez un message d'erreur si les mots de passe ne correspondent pas
                                     ConnectionError = "Les deux mots de passe ne correspondent pas."
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 ConnectionError = "Veuillez remplir tous les champs."
                             }
-                                  },
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
                     ) {
                         Text(text = "S'inscrire", color = Color.White)
                     }
-
-            } }
-
+                }
+            }
         })
 }
-
-
 
 // Fonction pour créer un utilisateur avec Firebase
 fun signUpWithFirebase(
@@ -235,15 +236,15 @@ fun signUpWithFirebase(
         }
 }
 
-
+// Fonction pour ajouter l'utilisateur à la base de données
 fun addUserToDatabase(uid: String, username: String) {
     val profileImage = "R.drawable.ic_profile"
     val userMap = mapOf(
         "username" to username,
-        "profile_   pic" to profileImage
+        "profile_pic" to profileImage
     )
 
-    // Ajouter l'utilisateur à la table "users" avec son UID comme clé
+// Ajouter l'utilisateur à la table "users
     val db = Firebase.firestore
     db.collection("users").document(uid)
         .set(userMap)

@@ -33,12 +33,14 @@ import com.google.firebase.auth.auth
 
 private val auth = Firebase.auth
 @Composable
-fun ForumPostCard (navController : NavHostController, data: ForumPostItem) {
-
-    // Etat de l'affichage de la description
+fun ForumPostCard(navController: NavHostController, data: ForumPostItem) {
+    // État pour afficher ou masquer la description complète
     var showFullDescription by remember { mutableStateOf(false) }
+
+    // État pour stocker le nom de l'auteur
     var author by remember { mutableStateOf("") }
 
+    // Récupération des données du post
     val icon = data.icon
     val title = data.title
     val author_id = data.author
@@ -46,12 +48,12 @@ fun ForumPostCard (navController : NavHostController, data: ForumPostItem) {
     val hour = data.getTime()
     val description = data.description
 
+    // Récupération du nom de l'auteur en fonction de son ID
     if (author_id != "") {
         getUsernameFromUid(author_id) { username ->
             author = username
         }
     }
-
 
     Card(
         colors = CardDefaults.cardColors(
@@ -65,22 +67,21 @@ fun ForumPostCard (navController : NavHostController, data: ForumPostItem) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    start = 30.dp,
-                    end = 30.dp,
-                    top = 30.dp
-                ),
+                .padding(start = 30.dp, end = 30.dp, top = 30.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Icône du profil de l'auteur
             Icon(
                 painter = painterResource(R.drawable.ic_profile),
                 contentDescription = "Forum",
                 modifier = Modifier.size(20.dp)
             )
+            // Nom de l'auteur
             Text(
                 text = author,
                 style = MaterialTheme.typography.bodySmall
             )
+            // Date et heure du post
             Text(
                 text = "$date à $hour",
                 modifier = Modifier.fillMaxWidth(),
@@ -88,53 +89,43 @@ fun ForumPostCard (navController : NavHostController, data: ForumPostItem) {
                 style = MaterialTheme.typography.bodySmall
             )
         }
+
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
+            modifier = Modifier.fillMaxWidth().padding(10.dp)
         ) {
+            // Titre du post
             Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
                 text = title,
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
             )
         }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    start = 30.dp,
-                    end = 30.dp,
-                    bottom = 30.dp
-                )
+                .padding(start = 30.dp, end = 30.dp, bottom = 30.dp)
         ) {
-            // Affiche la description complète si elle est inférieure à 500 caractères
+            // Affiche la description complète si elle est inférieure à 500 caractères ou si l'utilisateur a choisi de la voir
             if (showFullDescription || description.length < 500) {
                 Text(
                     text = description,
                     textAlign = TextAlign.Justify
                 )
             } else {
+                // Limite la description à 500 caractères si elle est trop longue
                 Text(
-                    text = description.substring(
-                        0,
-                        500
-                    ), // Limite la description à 500 caractères
+                    text = description.substring(0, 500),
                     textAlign = TextAlign.Justify
                 )
             }
         }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    start = 30.dp,
-                    end = 30.dp,
-                    bottom = 8.dp
-                )
+                .padding(start = 30.dp, end = 30.dp, bottom = 8.dp)
         ) {
             // Affiche le bouton "Voir plus" ou "Voir moins" si la description est supérieure à 500 caractères
             if (data.description.length > 500) {
@@ -156,26 +147,25 @@ fun ForumPostCard (navController : NavHostController, data: ForumPostItem) {
                             .fillMaxWidth(),
                         style = TextStyle(textDecoration = TextDecoration.Underline)
                     )
-
                 }
             }
-
         }
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                start = 30.dp,
-                end = 30.dp,
-                bottom = 30.dp
-            ))
-        {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 30.dp, end = 30.dp, bottom = 30.dp)
+        ) {
+            // Affiche le bouton "Modifier" si l'utilisateur actuel est l'auteur du post
             if (author_id == auth.currentUser?.uid) {
                 Text(
                     text = "Modifier",
                     textAlign = TextAlign.Right,
                     modifier = Modifier
-                        .clickable {println("id = $data.id")
-                            navController.navigate("forum/modifypost/${data.id}")}
+                        .clickable {
+                            println("id = ${data.id}")
+                            navController.navigate("forum/modifypost/${data.id}")
+                        }
                         .fillMaxWidth()
                 )
             }

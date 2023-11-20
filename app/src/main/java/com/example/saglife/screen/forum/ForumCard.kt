@@ -47,7 +47,7 @@ import com.google.firebase.firestore.firestore
 @SuppressLint("DiscouragedApi")
 @Composable
 fun ForumCard(data: ForumPostItem, navController: NavHostController) {
-
+    // Déclaration de variables pour stocker les données de la carte du forum
     var author by remember { mutableStateOf("") }
     var icon = R.drawable.ic_profile
     val title = data.title
@@ -57,8 +57,8 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
     val id = data.id
     val filter = data.filter
 
-    when(filter)
-    {
+    // Sélection de l'icône en fonction du filtre du message du forum
+    when (filter) {
         "Immigration" -> icon = R.drawable.ic_immigration
         "Vie courante" -> icon = R.drawable.ic_daily
         "Assurance" -> icon = R.drawable.ic_insurance
@@ -68,20 +68,23 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
         else -> icon = R.drawable.ic_question
     }
 
-
+    // Récupération du nom d'auteur en fonction de l'ID de l'auteur
     if (author_id != "") {
-            getUsernameFromUid(author_id) { username ->
-                author = username
+        getUsernameFromUid(author_id) { username ->
+            author = username
         }
     }
 
+    // Accès à la base de données Firestore
     val db = Firebase.firestore
 
+    // Comptage du nombre de commentaires pour ce message du forum
     val nb_comments = db.collection("forum").document(id).collection("comments").count()
 
     var snapshot: AggregateQuerySnapshot? = null
     var nb_com by remember { mutableStateOf(0) }
 
+    // Récupération du nombre de commentaires en fonction du résultat de la requête
     nb_comments.get(AggregateSource.SERVER).addOnCompleteListener { task ->
         if (task.isSuccessful) {
             snapshot = task.result
@@ -89,7 +92,6 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
             task.exception?.message?.let {
                 print("Count : $it")
             }
-
         }
         nb_com = (snapshot?.count ?: 0).toInt()
     }
@@ -97,7 +99,7 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
             println("Erreur lors du comptage des commentaires : $e")
         }
 
-
+    // Composable Card qui affiche la carte du forum
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -113,6 +115,7 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
 
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Affichage de l'icône en fonction du filtre
             Icon(
                 painter = painterResource(icon),
                 contentDescription = "Forum",
@@ -130,9 +133,11 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
                     .fillMaxWidth()
                     .padding(start = 16.dp)
             ) {
+                // Affichage du titre du message
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleSmall)
+                // Affichage de l'auteur du message
                 Text(
                     text = author,
                     style = TextStyle(
@@ -141,6 +146,7 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
                     ),
                     color = Color.Gray
                 )
+                // Affichage du nombre de commentaires et de la date/heure du message
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -164,3 +170,4 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
         }
     }
 }
+

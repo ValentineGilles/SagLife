@@ -31,7 +31,6 @@ import com.example.saglife.database.getUsernameFromUid
 import com.example.saglife.models.ForumCommentItem
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-
 private val auth = Firebase.auth
 
 @Composable
@@ -40,15 +39,14 @@ fun ForumCommentCard (navController : NavHostController, postId : String, data :
     // Gestion du nom d'auteur
     var author by remember { mutableStateOf("") }
 
-    // Récupération nom de l'auteur
+    // Récupération du nom de l'auteur en fonction de l'ID de l'auteur
     if (data.author_id != "") {
-            getUsernameFromUid(data.author_id) { username ->
-                author = username
-
+        getUsernameFromUid(data.author_id) { username ->
+            author = username
         }
     }
 
-    // Affichage des commentaires
+    // Affichage de la carte du commentaire
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -66,15 +64,18 @@ fun ForumCommentCard (navController : NavHostController, postId : String, data :
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // Affichage de l'icône du profil de l'auteur
                 Icon(
                     painter = painterResource(R.drawable.ic_profile),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
+                // Affichage du nom de l'auteur
                 Text(text = author, style = MaterialTheme.typography.bodySmall)
 
                 Spacer(modifier = Modifier.height(8.dp))
+                // Affichage de la date et de l'heure du commentaire
                 Text(
                     text = "${data.getDay()} à ${data.getTime()}",
                     modifier = Modifier.fillMaxWidth(),
@@ -84,16 +85,19 @@ fun ForumCommentCard (navController : NavHostController, postId : String, data :
             }
 
             Spacer(modifier = Modifier.height(8.dp))
+            // Affichage du contenu du commentaire
             Text(text = data.comment)
             println("id_comment = ${data.comment_id}")
             println("id_post = ${postId}")
+            // Affichage du lien "Modifier" si l'utilisateur actuel est l'auteur du commentaire
             if (data.author_id == auth.currentUser?.uid) {
                 Text(
                     text = "Modifier",
                     textAlign = TextAlign.Right,
                     modifier = Modifier
                         .clickable {
-                            navController.navigate("forum/modifycomment/${postId}/${data.comment_id}")}
+                            navController.navigate("forum/modifycomment/${postId}/${data.comment_id}")
+                        }
                         .fillMaxWidth()
                 )
             }

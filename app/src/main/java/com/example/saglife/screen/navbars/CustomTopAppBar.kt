@@ -32,19 +32,21 @@ fun CustomTopAppBar(
     showBackIcon: Boolean,
     showProfileIcon: Boolean,
 ) {
+    // Récupération de la route actuelle de la navigation
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
+    // Composant TopAppBar qui représente la barre d'application en haut de l'écran
     TopAppBar(
         title = {
-            Text(text = title)
+            Text(text = title) // Affiche le titre spécifié
         },
         navigationIcon = @Composable {
+            // Icône de navigation à gauche (flèche arrière) ou bouton de déconnexion en fonction de la configuration
             if (showBackIcon && navController.previousBackStackEntry != null) {
                 IconButton(onClick = {
-                    navController.navigateUp()
-                    if (currentRoute == Routes.ForumPage.route)
-                    {
-                        navController.navigate(Routes.Forum.route)
+                    navController.navigateUp() // Retour en arrière dans la navigation
+                    if (currentRoute == Routes.ForumPage.route) {
+                        navController.navigate(Routes.Forum.route) // Navigue vers la page du forum si nécessaire
                     }
                 }) {
                     Icon(
@@ -52,37 +54,36 @@ fun CustomTopAppBar(
                         contentDescription = "Back"
                     )
                 }
-            }
-            else
-            {
+            } else {
                 IconButton(onClick = {
-                    auth.signOut()
-                    navController.navigate(Routes.Login.route) }) {
+                    auth.signOut() // Déconnexion de l'utilisateur
+                    navController.navigate(Routes.Login.route) // Navigue vers l'écran de connexion
+                }) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_logout),
+                        painter = painterResource(R.drawable.ic_logout), // Icône de déconnexion personnalisée
                         contentDescription = "Log out"
                     )
                 }
             }
         },
         actions = {
+            // Actions à droite de la barre d'application (icône de profil et nom d'utilisateur)
             if (showProfileIcon) {
-                Spacer(modifier = Modifier.width(16.dp))
-                val username = auth.currentUser?.displayName
-                if(username != null)
-                {
-                    Text(text=username)
+                Spacer(modifier = Modifier.width(16.dp)) // Espace entre l'icône de profil et le nom d'utilisateur
+                val username = auth.currentUser?.displayName // Récupération du nom d'utilisateur actuel
+                if (username != null) {
+                    Text(text = username) // Affiche le nom d'utilisateur s'il est disponible
                 }
                 IconButton(onClick = { navController.navigate(Routes.Profile.route) }) {
-
+                    // Icône de profil cliquable pour accéder au profil de l'utilisateur
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_profile),
+                        painter = painterResource(id = R.drawable.ic_profile), // Icône de profil personnalisée
                         contentDescription = "Profil",
                         modifier = Modifier
                             .size(24.dp)
-                            .clip(CircleShape)
+                            .clip(CircleShape) // Clip l'icône pour la rendre ronde
                     )
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.width(10.dp)) // Espace entre l'icône de profil et le texte
                 }
             }
         }

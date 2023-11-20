@@ -41,26 +41,25 @@ import java.util.Calendar
 import java.util.UUID
 
 private val auth: FirebaseAuth = com.google.firebase.ktx.Firebase.auth
+
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("MutableCollectionMutableState")
 @Composable
 fun ForumCreatePost(navController: NavHostController) {
+    // État pour gérer le titre et la description du post
     var title by remember { mutableStateOf(TextFieldValue()) }
     var description by remember { mutableStateOf(TextFieldValue()) }
 
-    // Etat de chargement des données
+    // État pour le chargement des données des filtres de post
     var postLoaded by remember { mutableStateOf(false) }
     var filterList by remember { mutableStateOf(mutableListOf<ForumFilterItem>()) }
     val forumfilter = mutableListOf<ForumFilterItem>()
     var filter_chip by remember { mutableStateOf("") }
 
-
-
     val db = Firebase.firestore
 
+    // Utilisation de LaunchedEffect pour récupérer les données des filtres de post une seule fois
     LaunchedEffect(postLoaded) {
         if (!postLoaded) {
-
             db.collection("filter_forum").get().addOnSuccessListener { result ->
                 for (document in result) {
                     val name = document.get("Name").toString()
@@ -87,7 +86,6 @@ fun ForumCreatePost(navController: NavHostController) {
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(bottom = 16.dp, top= 32.dp)
         )
-
 
         TextField(
             shape = RoundedCornerShape(8.dp),
@@ -132,10 +130,9 @@ fun ForumCreatePost(navController: NavHostController) {
             }
         }
 
-
         Button(
             onClick = {
-                // Enregistrez le nouveau post dans la base de données ou effectuez d'autres actions nécessaires
+                // Créez un nouveau post avec les données saisies par l'utilisateur
                 val newPost = auth.currentUser?.uid?.let {
                     ForumPostItem(
                         id = UUID.randomUUID().toString(),
@@ -149,13 +146,14 @@ fun ForumCreatePost(navController: NavHostController) {
                     )
                 }
                 if (filter_chip != "") {
-                // Enregistrez le nouveau post dans la base de données
+                    // Enregistrez le nouveau post dans la base de données
                     if (newPost != null) {
                         savePostToDatabase(newPost)
                     }
-                // Naviguez vers la page du forum après la création du post
-                navController.navigate("forum")
-            }},
+                    // Naviguez vers la page du forum après la création du post
+                    navController.navigate("forum")
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .widthIn(max = 300.dp) // Ajuster la largeur maximale du bouton
@@ -163,11 +161,9 @@ fun ForumCreatePost(navController: NavHostController) {
             Text("Créer le post")
         }
     }
-
 }
 
-
-// Fonction pour enregistrer un post dans la base de données (remplacez cela par votre logique d'enregistrement réelle)
+// Fonction pour enregistrer un post dans la base de données Firestore
 private fun savePostToDatabase(post: ForumPostItem) {
     // Assurez-vous que l'ID du post est null, car un nouvel ID sera généré lors de l'ajout dans Firestore
     val newPost = mapOf(

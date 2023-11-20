@@ -29,17 +29,25 @@ import com.example.saglife.models.ForumFilterItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterChip(onClick: (String) -> Unit, filtername: ForumFilterItem) {
+    // Déclaration d'une variable mutable pour suivre l'état de la sélection du chip
     var selected by remember { mutableStateOf(false) }
 
+    // Composable FilterChip qui affiche le chip filtrable
     FilterChip(
-        onClick = { selected = !selected
-                    onClick(filtername.name)},
+        onClick = {
+            // Inverser l'état de la sélection lorsque le chip est cliqué
+            selected = !selected
+            // Appeler la fonction de rappel onClick avec le nom du filtre
+            onClick(filtername.name)
+        },
         label = {
+            // Afficher le nom du filtre
             Text(filtername.name)
         },
         selected = selected,
         leadingIcon = if (selected) {
             {
+                // Afficher une icône "Done" lorsque le chip est sélectionné
                 Icon(
                     imageVector = Icons.Filled.Done,
                     contentDescription = "Done icon",
@@ -52,31 +60,38 @@ fun FilterChip(onClick: (String) -> Unit, filtername: ForumFilterItem) {
     )
 }
 
-
 @Composable
 fun FilterCreatePostChip(
     onClick: (String) -> Unit,
     selectedFilters: String,
     filtername: ForumFilterItem
 ) {
+    // Vérifier si ce chip est sélectionné en fonction du nom du filtre
     val isSelected = selectedFilters == filtername.name
 
+    // Composable Card qui affiche le chip pour la création de messages
     Card(
         modifier = Modifier
             .padding(end = 8.dp, bottom = 8.dp)
             .border(1.dp, Color.White, RoundedCornerShape(8.dp))
             .clickable {
+                // Gérer le clic en fonction de l'état de sélection
                 if (isSelected) {
+                    // Désélectionner le filtre en appelant la fonction de rappel avec une chaîne vide
                     onClick("")
                 } else {
+                    // Sélectionner le filtre en appelant la fonction de rappel avec le nom du filtre
                     onClick(filtername.name)
                 }
             },
-                colors = if (isSelected) CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary
-    ) else CardDefaults.cardColors(
-        containerColor = Color.Transparent
-    )) {
+        // Définir la couleur de la Card en fonction de l'état de sélection
+        colors = if (isSelected) CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        ) else CardDefaults.cardColors(
+            containerColor = Color.Transparent
+        )
+    ) {
+        // Afficher le nom du filtre avec une mise en forme de style
         Text(
             text = filtername.name,
             modifier = Modifier.padding(8.dp),

@@ -22,7 +22,7 @@ fun LaunchScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.saglife_logo), // Remplacez "logo" par le nom de votre fichier de logo
+            painter = painterResource(id = R.drawable.saglife_logo), // Logo de l'application
             contentDescription = "Logo de l'application"
         )
     }

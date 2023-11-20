@@ -46,7 +46,9 @@ private val auth: FirebaseAuth = Firebase.auth
 
 @Composable
 fun ForgotPasswordScreen(navController: NavHostController) {
+    // Crée une boîte (Box) qui remplit toute la taille de l'écran
     Box(modifier = Modifier.fillMaxSize()) {
+        // Affiche le Scaffold avec la barre supérieure personnalisée pour la réinitialisation de mot de passe
         ScaffoldWithTopBarForgotPass(navController)
     }
 }
@@ -54,18 +56,21 @@ fun ForgotPasswordScreen(navController: NavHostController) {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScaffoldWithTopBarForgotPass(navController: NavHostController) {
+    // Crée un Scaffold avec une barre supérieure et un contenu personnalisé
     Scaffold(
-           content = {
+        content = {
             var email by remember { mutableStateOf(TextFieldValue()) }
 
+            // Colonne contenant les éléments de l'écran de réinitialisation de mot de passe
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(60.dp)
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState()), // Permet le défilement vertical si nécessaire
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // Affiche le logo de l'application
                 Image(
                     painter = painterResource(id = R.drawable.saglife_logo_purple),
                     contentDescription = "Logo de l'application",
@@ -73,11 +78,10 @@ fun ScaffoldWithTopBarForgotPass(navController: NavHostController) {
                         .width(200.dp)
                         .height(200.dp)
                 )
-                Spacer(modifier = Modifier.height(20.dp))
-
-                //Text(text = "Réinitialiser le mot de passe", style = TextStyle(fontSize = 20.sp), modifier = Modifier.padding(bottom = 16.dp))
 
                 Spacer(modifier = Modifier.height(20.dp))
+
+                // Champ de texte pour l'adresse e-mail
                 TextField(
                     label = { Text(text = "Adresse e-mail") },
                     value = email,
@@ -87,6 +91,7 @@ fun ScaffoldWithTopBarForgotPass(navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(20.dp))
 
+                // Bouton de réinitialisation de mot de passe
                 Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                     Button(
                         onClick = {
@@ -117,7 +122,7 @@ fun ScaffoldWithTopBarForgotPass(navController: NavHostController) {
                         Text(text = "Réinitialiser", color = Color.White)
                     }
                 }
-
             }
-        })
+        }
+    )
 }

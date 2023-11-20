@@ -51,21 +51,24 @@ import kotlinx.coroutines.tasks.await
 
 private val auth: FirebaseAuth = Firebase.auth
 
-
 @Composable
 fun LoginScreen(navController: NavHostController) {
+    // État des champs de texte pour l'e-mail et le mot de passe
     var email by remember { mutableStateOf(TextFieldValue("saglifeapp@gmail.com")) }
     var password by remember { mutableStateOf(TextFieldValue("UserTest")) }
 
+    // État pour afficher les messages d'erreur de connexion
     var ConnectionError by remember { mutableStateOf<String?>(null) }
 
+    // Boîte avec un fond pour contenir le texte "S'inscrire" en bas de l'écran
     Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         ClickableText(
             text = AnnotatedString("S'inscrire"),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(20.dp),
-            onClick = {navController.navigate("registration")
+            onClick = {
+                navController.navigate("registration")
             },
             style = TextStyle(
                 fontSize = 14.sp,
@@ -76,14 +79,16 @@ fun LoginScreen(navController: NavHostController) {
         )
     }
 
+    // Colonne contenant les éléments de l'écran de connexion
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(60.dp)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState()), // Permet le défilement vertical si nécessaire
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Affiche le logo de l'application
         Image(
             painter = painterResource(id = R.drawable.saglife_logo_purple),
             contentDescription = "Logo de l'application",
@@ -91,16 +96,22 @@ fun LoginScreen(navController: NavHostController) {
                 .width(200.dp)
                 .height(200.dp)
         )
+
         Text(text = "SagLife", style = TextStyle(fontSize = 30.sp), modifier = Modifier.padding(bottom = 16.dp))
 
         Spacer(modifier = Modifier.height(20.dp))
+
+        // Champ de texte pour l'adresse e-mail
         TextField(
             label = { Text(text = "Adresse e-mail") },
             value = email,
             onValueChange = { email = it },
             modifier = Modifier.fillMaxWidth()
         )
+
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Champ de texte pour le mot de passe (avec masquage du texte)
         TextField(
             label = { Text(text = "Mot de passe") },
             value = password,
@@ -109,23 +120,26 @@ fun LoginScreen(navController: NavHostController) {
             onValueChange = { password = it },
             modifier = Modifier.fillMaxWidth()
         )
+
         Spacer(modifier = Modifier.height(20.dp))
 
+        // Affiche le message d'erreur de connexion s'il y en a un
         ConnectionError?.let {
             Text(text = it, color = Color.Red, modifier = Modifier.padding(top = 0.dp, bottom = 20.dp))
         }
 
+        // Bouton de connexion
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
                 onClick = {
-                        isValidLogin(email.text, password.text, navController)
-                        { success, errorMessage ->
-                            if (!success) {
-                                // Affichez le message d'erreur sur password2Error
-                                ConnectionError =
-                                    errorMessage ?: "Une erreur inconnue s'est produite"
-                            }
+                    // Valide la connexion en utilisant les informations saisies
+                    isValidLogin(email.text, password.text, navController) { success, errorMessage ->
+                        if (!success) {
+                            // Affichez le message d'erreur de connexion
+                            ConnectionError =
+                                errorMessage ?: "Une erreur inconnue s'est produite"
                         }
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -134,7 +148,10 @@ fun LoginScreen(navController: NavHostController) {
                 Text(text = "Se connecter", color = Color.White)
             }
         }
+
         Spacer(modifier = Modifier.height(20.dp))
+
+        // Texte "Mot de passe oublié ?" avec un lien pour réinitialiser le mot de passe
         ClickableText(
             text = AnnotatedString("Mot de passe oublié ?"),
             onClick = { navController.navigate("forgotten") },
@@ -147,8 +164,7 @@ fun LoginScreen(navController: NavHostController) {
     }
 }
 
-
-
+// Fonction pour valider la connexion
 fun isValidLogin(email: String, password: String, navController: NavHostController, onLoginComplete: (success: Boolean, errorMessage: String?) -> Unit) {
     auth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener { task ->
@@ -170,3 +186,4 @@ fun isValidLogin(email: String, password: String, navController: NavHostControll
             }
         }
 }
+

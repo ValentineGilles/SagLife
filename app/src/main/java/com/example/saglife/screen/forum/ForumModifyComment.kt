@@ -29,12 +29,13 @@ import com.google.firebase.firestore.firestore
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ForumModifyComment(navController: NavHostController, post_id : String?, comment_id : String?) {
+fun ForumModifyComment(navController: NavHostController, post_id: String?, comment_id: String?) {
+    // État pour gérer le commentaire modifié
     var comment by remember { mutableStateOf(TextFieldValue()) }
 
     val db = Firebase.firestore
 
-    // Effect pour charger les données du document correspondant à l'ID
+    // Effect pour charger les données du document correspondant à l'ID du commentaire
     if (post_id != null && comment_id != null) {
         LaunchedEffect(post_id) {
             val documentRef = db.collection("forum").document(post_id).collection("comments")
@@ -42,6 +43,7 @@ fun ForumModifyComment(navController: NavHostController, post_id : String?, comm
 
             documentRef.get().addOnSuccessListener { documentSnapshot ->
                 if (documentSnapshot.exists()) {
+                    // Remplissez le champ de commentaire avec la valeur du document
                     comment = TextFieldValue(documentSnapshot.getString("Comment") ?: "")
                 } else {
                     // Document non trouvé
@@ -58,6 +60,7 @@ fun ForumModifyComment(navController: NavHostController, post_id : String?, comm
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // Champ de texte pour modifier le commentaire
         TextField(
             value = comment,
             onValueChange = { comment = it },
@@ -72,9 +75,10 @@ fun ForumModifyComment(navController: NavHostController, post_id : String?, comm
                 focusedIndicatorColor = Color.Transparent)
         )
 
+        // Bouton pour mettre à jour le commentaire dans la base de données
         Button(
             onClick = {
-                if (post_id != null && comment_id != null){
+                if (post_id != null && comment_id != null) {
                     updateCommentInDatabase(post_id, comment_id, comment.text)
                 }
                 navController.navigate("forum/$post_id")
@@ -88,24 +92,24 @@ fun ForumModifyComment(navController: NavHostController, post_id : String?, comm
     }
 }
 
-
-private fun updateCommentInDatabase(postId: String, commentId : String, updatedComment: String) {
+// Fonction pour mettre à jour le commentaire dans la base de données Firestore
+private fun updateCommentInDatabase(postId: String, commentId: String, updatedComment: String) {
     val updatedData = mapOf(
         "Comment" to updatedComment,
     )
 
     val db = Firebase.firestore
 
-    // Utilisez la référence au document avec l'ID du post pour mettre à jour les champs spécifiques
+    // Utilisez la référence au document avec l'ID du post pour mettre à jour les champs spécifiques du commentaire
     db.collection("forum")
-        .document(postId).collection("comments").document(commentId)
+        .document(postId)
+        .collection("comments")
+        .document(commentId)
         .update(updatedData)
         .addOnSuccessListener {
             println("Champs du post mis à jour avec succès")
-
         }
         .addOnFailureListener { e ->
             println("Erreur lors de la mise à jour des champs du post: $e")
         }
 }
-

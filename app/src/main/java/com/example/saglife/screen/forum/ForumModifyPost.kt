@@ -34,10 +34,12 @@ import com.google.firebase.firestore.firestore
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForumModifyPost(navController: NavHostController, id: String?) {
+    // États pour gérer le titre, la description et le filtre du post modifié
     var title by remember { mutableStateOf(TextFieldValue()) }
     var description by remember { mutableStateOf(TextFieldValue()) }
     var filter by remember { mutableStateOf(TextFieldValue()) }
 
+    // État pour le chargement des données du post
     var postLoaded by remember { mutableStateOf(false) }
     var filterList by remember { mutableStateOf(mutableListOf<ForumFilterItem>()) }
     val forumfilter = mutableListOf<ForumFilterItem>()
@@ -45,14 +47,14 @@ fun ForumModifyPost(navController: NavHostController, id: String?) {
 
     val db = Firebase.firestore
 
-    // Effect pour charger les données du document correspondant à l'ID
+    // Effect pour charger les données du document correspondant à l'ID du post
     LaunchedEffect(id) {
         if (id != null) {
-
             val documentRef = db.collection("forum").document(id)
 
             documentRef.get().addOnSuccessListener { documentSnapshot ->
                 if (documentSnapshot.exists()) {
+                    // Remplissez les champs de titre, de description et de filtre avec les valeurs du document
                     title = TextFieldValue(documentSnapshot.getString("Title") ?: "")
                     description = TextFieldValue(documentSnapshot.getString("Description") ?: "")
                     filter = TextFieldValue(documentSnapshot.getString("Filter") ?: "")
@@ -65,6 +67,7 @@ fun ForumModifyPost(navController: NavHostController, id: String?) {
         }
     }
 
+    // Effect pour charger les données des filtres de post depuis Firestore
     LaunchedEffect(postLoaded) {
         if (!postLoaded) {
             db.collection("filter_forum").get().addOnSuccessListener { result ->
@@ -87,6 +90,7 @@ fun ForumModifyPost(navController: NavHostController, id: String?) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // Champ de texte pour modifier le titre du post
         TextField(
             value = title,
             onValueChange = { title = it },
@@ -100,6 +104,7 @@ fun ForumModifyPost(navController: NavHostController, id: String?) {
                 focusedIndicatorColor = Color.Transparent)
         )
 
+        // Champ de texte pour modifier la description du post
         TextField(
             value = description,
             onValueChange = { description = it },
@@ -113,6 +118,7 @@ fun ForumModifyPost(navController: NavHostController, id: String?) {
                 focusedIndicatorColor = Color.Transparent)
         )
 
+        // Liste déroulante de filtres pour le post
         LazyRow(
             modifier = Modifier.fillMaxWidth().padding(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -128,9 +134,12 @@ fun ForumModifyPost(navController: NavHostController, id: String?) {
             }
         }
 
+        // Bouton pour mettre à jour le post dans la base de données
         Button(
             onClick = {
-                updatePostInDatabase(id ?: "", title.text, description.text, filter_chip)
+                if (id != null) {
+                    updatePostInDatabase(id, title.text, description.text, filter_chip)
+                }
                 navController.navigate("forum/$id")
             },
             modifier = Modifier
@@ -142,7 +151,7 @@ fun ForumModifyPost(navController: NavHostController, id: String?) {
     }
 }
 
-
+// Fonction pour mettre à jour le post dans la base de données Firestore
 private fun updatePostInDatabase(postId: String, updatedTitle: String, updatedDescription: String, updatedFilter: String) {
     val updatedData = mapOf(
         "Title" to updatedTitle,
@@ -152,7 +161,7 @@ private fun updatePostInDatabase(postId: String, updatedTitle: String, updatedDe
 
     val db = Firebase.firestore
 
-    // Utilisez la référence au document avec l'ID du post pour mettre à jour les champs spécifiques
+    // Utilisez la référence au document avec l'ID du post pour mettre à jour les champs spécifiques du post
     db.collection("forum")
         .document(postId)
         .update(updatedData)
@@ -164,4 +173,3 @@ private fun updatePostInDatabase(postId: String, updatedTitle: String, updatedDe
             println("Erreur lors de la mise à jour des champs du post: $e")
         }
 }
-

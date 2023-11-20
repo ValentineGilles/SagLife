@@ -14,15 +14,17 @@ import androidx.navigation.NavHostController
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ProfileScreen(navController : NavHostController) {
+fun ProfileScreen(navController: NavHostController) {
+    // Utilisation du composant Scaffold pour créer une disposition de base
     Scaffold(
         content = {
+            // Colonne pour organiser les éléments de l'écran
             Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-
+                modifier = Modifier.fillMaxSize(), // Remplit tout l'espace disponible
+                verticalArrangement = Arrangement.Center, // Centre verticalement les éléments
+                horizontalAlignment = Alignment.CenterHorizontally // Centre horizontalement les éléments
             ) {
+                // Texte temporaire. A remplacer par les parametres et infos de l'utilisateur
                 Text(
                     text = "Profile",
                     fontSize = 20.sp

@@ -26,27 +26,37 @@ fun BottomNavigationBar(
     selectedItem: Int,
     onItemSelected: (Int) -> Unit
 ) {
+    // Récupération des couleurs du thème Material
     val colors = MaterialTheme.colorScheme
+
+    // Composant BottomNavigation qui affiche les éléments de la barre de navigation inférieure
     BottomNavigation(backgroundColor = colors.surface) {
 
+        // Première option de navigation : Accueil
         BottomNavigationItem(
-            selected = selectedItem == 0,
-            onClick = { onItemSelected(0) },
-            icon = { Icon(imageVector = Icons.Default.Home, contentDescription = "Home") },
-            label = { Text(text = "Accueil", style = MaterialTheme.typography.bodySmall) }
+            selected = selectedItem == 0, // Détermine si cette option est sélectionnée
+            onClick = { onItemSelected(0) }, // Appelé lorsqu'on clique sur cette option
+            icon = { Icon(imageVector = Icons.Default.Home, contentDescription = "Home") }, // Icône de l'option
+            label = { Text(text = "Accueil", style = MaterialTheme.typography.bodySmall) } // Texte de l'option
         )
+
+        // Deuxième option de navigation : Événements
         BottomNavigationItem(
             selected = selectedItem == 1,
             onClick = { onItemSelected(1) },
             icon = { Icon(imageVector = Icons.Default.DateRange, contentDescription = "Calendar") },
             label = { Text(text = "Evenements", style = MaterialTheme.typography.bodySmall) }
         )
+
+        // Troisième option de navigation : Carte
         BottomNavigationItem(
             selected = selectedItem == 2,
             onClick = { onItemSelected(2) },
             icon = { Icon(imageVector = Icons.Default.Place, contentDescription = "Map") },
             label = { Text(text = "Carte", style = MaterialTheme.typography.bodySmall) }
         )
+
+        // Quatrième option de navigation : Forum
         BottomNavigationItem(
             selected = selectedItem == 3,
             onClick = { onItemSelected(3) },

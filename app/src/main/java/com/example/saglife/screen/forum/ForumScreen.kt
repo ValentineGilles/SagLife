@@ -56,9 +56,9 @@ fun ForumScreen(navController: NavHostController) {
     val db = Firebase.firestore
     val forumfilter = mutableListOf<ForumFilterItem>()
 
+    // Effect pour charger les filtres de forum depuis Firebase
     LaunchedEffect(postLoaded) {
         if (!postLoaded) {
-
             db.collection("filter_forum").get().addOnSuccessListener { result ->
                 for (document in result) {
                     val name = document.get("Name").toString()
@@ -76,6 +76,7 @@ fun ForumScreen(navController: NavHostController) {
     val forumpost = mutableListOf<ForumPostItem>()
     var ForumPostList by remember { mutableStateOf(mutableListOf<ForumPostItem>()) }
 
+    // Récupération des posts de forum depuis Firebase
     db.collection("forum").orderBy("Date", Query.Direction.DESCENDING).get().addOnSuccessListener { result ->
         for (document in result) {
             val date: Date = document.getDate("Date")!!
@@ -85,7 +86,6 @@ fun ForumScreen(navController: NavHostController) {
             val nb = document.get("Nb").toString().toIntOrNull() ?: 0
             val description = document.get("Description").toString()
             val filter = document.get("Filter").toString()
-
 
             forumpost.add(
                 ForumPostItem(
@@ -99,100 +99,85 @@ fun ForumScreen(navController: NavHostController) {
                     description
                 )
             )
-
-
         }
         ForumPostList = forumpost
-
     }
         .addOnFailureListener { e ->
             println("Erreur lors de la récupération des données des posts: $e")
         }
 
-
-
+    // Affiche la liste des posts dans un SwipeRefresh
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing = refreshing),
         onRefresh = {
             refreshing = true
         },
         modifier = Modifier.fillMaxSize()
-
     ) {
         LaunchedEffect(refreshing) {
             if (refreshing) {
-                delay(1000) // Simule une attente de 2 secondes
+                delay(1000) // Simule une attente de 1 seconde
                 refreshing = false
                 postLoaded = false
             }
         }
 
-
+        // Contenu de l'écran
         Box(
             modifier = Modifier.fillMaxSize(),
         ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-
-            LazyRow(
-                modifier = Modifier.padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-
-                items(filterList) { filter ->
-                    FilterChip(
-                        onClick = { filterName ->
-                            if (selectedFilters.contains(filterName)) {
-                                selectedFilters = selectedFilters.filter { it != filterName }
-                                println("Test selectedFilters : $selectedFilters")
-                            } else {
-                                selectedFilters = selectedFilters + filterName
-                                println("Test selectedFilters : $selectedFilters")
-                            }
-                            println("Test forumpost : $forumpost")
-                            ForumPostList = if (selectedFilters.isEmpty()) {
-                                println("Test Empty")
-                                forumpost
-                            } else {
-                                println("Test not Empty)")
-                                forumpost.filter { post ->
-                                    // Vérifier si un des filtres sélectionnés est dans la liste de filtres du post
-                                    selectedFilters.any { filterName ->
-                                        post.filter.contains(filterName)
-                                    }
-                                }.toMutableList()
-                            }
-
-                        },
-                        filter
-                    )
-                }
-            }
-
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                // Affiche la liste des filtres sous forme de puce
+                LazyRow(
+                    modifier = Modifier.padding(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                LazyColumn {
-                    items(ForumPostList) { data ->
-
-                        ForumCard(
-                            navController = navController,
-                            data = data
+                    items(filterList) { filter ->
+                        FilterChip(
+                            onClick = { filterName ->
+                                if (selectedFilters.contains(filterName)) {
+                                    selectedFilters = selectedFilters.filter { it != filterName }
+                                } else {
+                                    selectedFilters = selectedFilters + filterName
+                                }
+                                ForumPostList = if (selectedFilters.isEmpty()) {
+                                    forumpost
+                                } else {
+                                    forumpost.filter { post ->
+                                        // Vérifier si un des filtres sélectionnés est dans la liste de filtres du post
+                                        selectedFilters.any { filterName ->
+                                            post.filter.contains(filterName)
+                                        }
+                                    }.toMutableList()
+                                }
+                            },
+                            filter
                         )
-
-                        Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
 
-
+                // Affiche la liste des posts
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    LazyColumn {
+                        items(ForumPostList) { data ->
+                            ForumCard(
+                                navController = navController,
+                                data = data
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+                    }
+                }
             }
 
-            }
+            // Bouton flottant pour ajouter un nouveau post
             FloatingActionButton(
                 modifier = Modifier.padding(16.dp).align(Alignment.BottomEnd),
                 onClick = {
@@ -207,6 +192,5 @@ fun ForumScreen(navController: NavHostController) {
         }
     }
 }
-
 
 

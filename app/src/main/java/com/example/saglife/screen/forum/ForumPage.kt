@@ -78,7 +78,7 @@ fun insertIntoFirebase(forumId: String, author: String, commentText: String, dat
 @Composable
 fun ForumPage(navController: NavHostController, id: String?) {
 
-    // Initialisation de la base de données
+    // Initialisation de la base de données Firebase
     val db = Firebase.firestore
 
     // Etat du post
@@ -87,8 +87,10 @@ fun ForumPage(navController: NavHostController, id: String?) {
     // Etat du commentaire
     var comment by remember { mutableStateOf(TextFieldValue()) }
 
-    // Etat de chargement des données
+    // Etat de chargement des données du post
     var postLoaded by remember { mutableStateOf(false) }
+
+    // Etat de chargement des commentaires
     var commentsLoaded by remember { mutableStateOf(false) }
 
     // Etat du rafraîchissement
@@ -109,20 +111,21 @@ fun ForumPage(navController: NavHostController, id: String?) {
                 val nb = document.get("Nb").toString().toIntOrNull() ?: 0
                 val description = document.get("Description").toString()
 
+                // Affichage des données du post dans la console (à des fins de débogage)
                 println("forum : $author_id, $date, $icon, $title, $nb, $description")
 
+                // Création d'un objet ForumPostItem avec les données récupérées
                 forumpost =
                     ForumPostItem(document.id, author_id, date, icon, title, nb, "", description)
-                postLoaded = true // Indique que les données ont été récupérées pour empecher le refresh automatique
+                postLoaded = true // Indique que les données du post ont été récupérées pour empêcher le refresh automatique
             }
                 .addOnFailureListener { e ->
-                    println("Erreur lors de la récupération des données des posts: $e")
+                    println("Erreur lors de la récupération des données du post : $e")
                 }
         }
     }
 
-
-    // Recupération des commentaires au lancement de la page
+    // Récupération des commentaires au lancement de la page
     LaunchedEffect(id, postLoaded) {
         if (id != null && !postLoaded) {
             db.collection("forum").document(id).collection("comments")
@@ -134,13 +137,15 @@ fun ForumPage(navController: NavHostController, id: String?) {
                         val comment_comment = document.getString("Comment") ?: ""
                         val comment_date = document.getDate("Date") ?: Date()
                         val comment_id = document.id
+
+                        // Création d'un objet ForumCommentItem avec les données récupérées
                         val postcomment =
                             ForumCommentItem(comment_id, comment_author, comment_comment, comment_date)
 
                         commentspost.add(postcomment)
                     }
                     CommentsPostList = commentspost
-                    commentsLoaded = true // Indique que les données ont été récupérées pour empecher le refresh automatique
+                    commentsLoaded = true // Indique que les données des commentaires ont été récupérées pour empêcher le refresh automatique
                 }
                 .addOnFailureListener { e ->
                     println("Erreur lors de la récupération des commentaires : $e")
@@ -148,19 +153,19 @@ fun ForumPage(navController: NavHostController, id: String?) {
         }
     }
 
-
+    // Mise en page de la page du forum
     Box(
         modifier = Modifier
             .fillMaxSize(),
     ) {
-
-        // Refresh la page quand on swipe up
+        // Rafraîchissement de la page lorsque l'utilisateur swipe vers le bas
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = refreshing),
             onRefresh = {
                 refreshing = true
             }
         ) {
+            // Gestion de l'effet de rafraîchissement simulé
             LaunchedEffect(refreshing) {
                 if (refreshing) {
                     delay(1000) // Simule une attente de 1 seconde
@@ -170,20 +175,21 @@ fun ForumPage(navController: NavHostController, id: String?) {
                 }
             }
 
+            // Contenu de la page (LazyColumn)
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(bottom = 56.dp)
             ) {
-                // Affichage du post
+                // Affichage du post principal
                 item {
                     ForumPostCard(
                         navController = navController,
                         data = forumpost)
                 }
 
+                // Affichage du titre "Commentaires"
                 item {
-                    // Affichage du titre "Commentaires"
                     Text(
                         text = "Commentaires",
                         textAlign = TextAlign.Center,
@@ -194,19 +200,20 @@ fun ForumPage(navController: NavHostController, id: String?) {
                     )
                 }
 
+                // Affichage des commentaires
                 items(CommentsPostList) { item ->
-                    // Affichage des commentaires
                     ForumCommentCard(navController = navController, postId = id?:"", data = item)
                 }
             }
 
+            // Zone de saisie pour ajouter un commentaire
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomStart)
                     .background(MaterialTheme.colorScheme.surface),
             ) {
-                // Affichage du champ de texte pour ajouter un commentaire
+                // Champ de texte pour ajouter un commentaire
                 TextField(
                     label = { Text(text = "Votre commentaire...") },
                     value = comment,
@@ -269,7 +276,5 @@ fun ForumPage(navController: NavHostController, id: String?) {
             }
         }
     }
-
 }
-
 
