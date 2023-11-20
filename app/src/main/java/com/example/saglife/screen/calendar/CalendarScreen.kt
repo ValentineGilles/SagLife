@@ -17,14 +17,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,8 +49,10 @@ import coil.compose.AsyncImage
 import com.example.saglife.R
 import com.example.saglife.models.EventItem
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
+import java.util.Calendar
 import java.util.Date
 
 /**
@@ -86,9 +92,10 @@ fun CalendarScreen(navController: NavHostController) {
     // Liste des événements filtrés.
     var eventsFiltered by remember { mutableStateOf(mutableListOf<EventItem>()) }
 
+
     // Liste de tous les événements.
     val allEvents = mutableListOf<EventItem>()
-    db.collection("event").get().addOnSuccessListener { result ->
+    db.collection("event").orderBy("Date_start", Query.Direction.DESCENDING).get().addOnSuccessListener { result ->
         println("event")
         for (document in result) {
 
@@ -145,9 +152,10 @@ fun CalendarScreen(navController: NavHostController) {
                 }
             }
 // Affichage des événements filtrés.
-            LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
+            LazyColumn(modifier = Modifier.padding(16.dp)) {
                 items(eventsFiltered) { event ->
                     EventComposant(event = event, navController = navController)
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
@@ -200,13 +208,15 @@ fun EventComposant(event: EventItem, navController: NavHostController) {
     storageReference.downloadUrl.addOnSuccessListener { url -> urlImage = url }
 
 // Affichage de la carte d'événement.
-    ElevatedCard(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ), modifier = Modifier
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+        modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
-            .padding(16.dp), onClick = { navController.navigate("event/${event.id}") }) {
+            .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
+        onClick = { navController.navigate("event/${event.id}") }) {
         Box(
             contentAlignment = Alignment.BottomCenter,
 
@@ -225,9 +235,9 @@ fun EventComposant(event: EventItem, navController: NavHostController) {
                     .padding(8.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(modifier = Modifier.width(80.dp)) {
+                    Box(modifier = Modifier.width(70.dp)) {
                         Text(
-                            text = event.getDay(), fontSize = 24.sp, modifier = Modifier.align(
+                            text = event.getDay(), style = MaterialTheme.typography.titleLarge, modifier = Modifier.align(
                                 Alignment.Center
                             ), textAlign = TextAlign.Center
                         )
@@ -249,8 +259,8 @@ fun EventComposant(event: EventItem, navController: NavHostController) {
                             .width(8.dp)
                     )
                     Column {
-                        Text(text = event.name, fontSize = 24.sp, fontWeight = FontWeight.Bold)
-                        Text(text = event.getTime())
+                        Text(text = event.name, style = MaterialTheme.typography.titleLarge /*, fontWeight = FontWeight.Bold*/)
+                        Text(text = event.getTime(), style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             }

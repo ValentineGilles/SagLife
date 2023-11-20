@@ -26,14 +26,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.saglife.models.EventItem
 import com.example.saglife.models.ForumPostItem
+import com.example.saglife.models.MapItem
+import com.example.saglife.screen.calendar.EventComposant
 import com.example.saglife.screen.forum.ForumCard
+import com.example.saglife.screen.map.MapComposant
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.delay
+import java.util.Calendar
 import java.util.Date
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
@@ -80,6 +85,60 @@ fun HomeScreen(navController: NavHostController) {
             println("Erreur lors de la récupération des données des posts: $e")
         }
 
+    var mapsFiltered by remember { mutableStateOf(mutableListOf<MapItem>()) }
+    val allMaps = mutableListOf<MapItem>()
+
+    db.collection("map").limit(3).get().addOnSuccessListener { result ->
+        for (document in result) {
+            val name = document.getString("Name")!!
+            val adresse = document.getString("Adresse")!!
+            val filter = document.getString("Filter")!!
+            val description = document.getString("Description")!!
+            val photoPath = document.getString("Photo")!!
+            allMaps.add(MapItem(document.id, name, adresse, filter, description, photoPath))
+        }
+        print("All map  " + allMaps)
+        mapsFiltered = allMaps
+
+    }
+
+    // Liste des événements filtrés.
+    var eventsFiltered by remember { mutableStateOf(mutableListOf<EventItem>()) }
+
+
+    val today = Calendar.getInstance()
+    today.set(Calendar.HOUR_OF_DAY, 0)
+    today.set(Calendar.MINUTE, 0)
+    today.set(Calendar.SECOND, 0)
+    today.set(Calendar.MILLISECOND, 0)
+
+    // Liste de tous les événements.
+    val allEvents = mutableListOf<EventItem>()
+    db.collection("event").whereGreaterThanOrEqualTo("Date_start", today.time).orderBy("Date_start", Query.Direction.DESCENDING).limit(3).get().addOnSuccessListener { result ->
+        println("event")
+        for (document in result) {
+
+            val name = document.get("Name").toString()
+            val dateStart: Date = document.getDate("Date_start")!!
+            val dateEnd = document.getDate("Date_stop")!!
+            val description = document.get("Description").toString()
+            val photoPath = document.get("Photo").toString()
+            val filter = document.get("Filter").toString()
+            allEvents.add(
+                EventItem(
+                    document.id,
+                    name,
+                    dateStart,
+                    dateEnd,
+                    description,
+                    photoPath,
+                    filter
+                )
+            )
+        }
+        eventsFiltered = allEvents
+    }
+
     // Affiche la liste des derniers posts dans un SwipeRefresh
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing = refreshing),
@@ -99,7 +158,7 @@ fun HomeScreen(navController: NavHostController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(start = 16.dp, end = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             LazyColumn {
@@ -122,7 +181,41 @@ fun HomeScreen(navController: NavHostController) {
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
+
+                item {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 8.dp, bottom = 16.dp),
+                        text = "Les prochains évenements",
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Left,
+                    )
+                }
+                items(eventsFiltered) { event ->
+                    EventComposant(event = event, navController = navController)
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                
+                item {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 8.dp, bottom = 16.dp),
+                        text = "Quelques lieux à visiter",
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Left,
+                    )
+                }
+
+                items(mapsFiltered) { map ->
+                    MapComposant(map = map, navController = navController)
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+
             }
+
         }
     }
 }
