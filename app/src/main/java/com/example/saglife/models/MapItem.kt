@@ -1,6 +1,7 @@
 package com.example.saglife.models
 
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 import kotlinx.coroutines.tasks.await
@@ -16,17 +17,18 @@ import java.util.Date
  * @param description Description de l'élément.
  * @param photoPath Chemin de l'image associée à l'élément.
  */
-class MapItem (val id:String, val name : String, val adresse : String, val filter : String, val description : String, val photoPath : String){
+class MapItem (val id:String, val name : String, val adresseName : String, val adresseLocation : GeoPoint, val filter : String, val description : String, val photoPath : String, var note: Double){
 
     /**
      * Convertit l'objet MapItem en une structure de données JSON.
      *
      * @return Map représentant les propriétés de l'élément.
      */
-    fun toJson(): Map<String, String> {
+    fun toJson(): Map<String, Any> {
         return mapOf(
             "Name" to this.name,
-            "Adresse" to this.adresse,
+            "AdresseName" to this.adresseName,
+            "AdresseLocation" to this.adresseLocation,
             "Description" to this.description,
             "Filter" to this.filter,
             "Photo" to this.photoPath,

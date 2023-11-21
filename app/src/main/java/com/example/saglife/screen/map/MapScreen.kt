@@ -95,16 +95,42 @@ fun MapScreen(navController: NavHostController) {
     db.collection("map").get().addOnSuccessListener { result ->
         for (document in result) {
             val name = document.getString("Name")!!
-            val adresse = document.getString("Adresse")!!
+            val adresseName = document.getString("AdresseName")!!
+            val adresseLocation = document.getGeoPoint("AdresseLocation")!!
             val filter = document.getString("Filter")!!
             val description = document.getString("Description")!!
             val photoPath = document.getString("Photo")!!
-            allMaps.add(MapItem(document.id, name, adresse, filter, description, photoPath))
+
+            allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0))
+
         }
-        print("All map  " + allMaps)
+
         mapsFiltered = allMaps
 
+        for(mapItem in allMaps){
+            // Récupération des notes depuis Firestore
+            db.collection("map").document(mapItem.id).collection("notes").get().addOnSuccessListener { resultat ->
+
+                var note = 0.0
+                var sommeNote = 0
+                for (document in resultat) {
+                    sommeNote += document.getDouble("Note")?.toInt() ?: 0
+                }
+                if(resultat.size()!=0){
+                    note= (sommeNote/resultat.size()).toDouble()
+                }
+
+                mapItem.note = note
+
+            }.continueWith {
+                mapsFiltered = allMaps
+            }
+
+        }
+
     }
+
+
 
     // Mise en page de l'interface utilisateur avec Compose
     Box(
@@ -244,7 +270,7 @@ fun MapComposant(map: MapItem, navController: NavHostController) {
                         Text(text = map.name, style = MaterialTheme.typography.titleLarge/*, fontWeight = FontWeight.Bold*/)
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "4,7/5",
+                                text = if(map.note>0)"${map.note} \n sur 5" else "Non noté",
                                 style = MaterialTheme.typography.bodyMedium,
                                 textAlign = TextAlign.Center
                             )
@@ -252,6 +278,7 @@ fun MapComposant(map: MapItem, navController: NavHostController) {
                                 Modifier
                                     .width(8.dp)
                             )
+
                             Divider(
                                 modifier = Modifier
                                     .fillMaxHeight()  //fill the max height

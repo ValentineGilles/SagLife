@@ -74,13 +74,13 @@ import com.example.saglife.R
 import com.example.saglife.models.EventItem
 import com.example.saglife.models.MapComment
 import com.example.saglife.models.MapItem
-import com.example.saglife.screen.forum.insertIntoFirebase
 import com.example.saglife.ui.theme.Purple40
 import com.example.saglife.ui.theme.Purple80
 import com.example.saglife.ui.theme.PurpleGrey40
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 import java.util.Calendar
@@ -105,9 +105,11 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                 "id",
                 "Nom de l'établissement",
                 "Adresse",
+                GeoPoint(0.0, 0.0),
                 "Catégorie",
                 "Description...",
-                "event.jpg"
+                "event.jpg",
+                0.0
             )
         )
     }
@@ -121,6 +123,10 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
     // Etat du commentaire
     var comment by remember { mutableStateOf(TextFieldValue()) }
 
+    //Etat des stars
+    var stars by remember { mutableStateOf(0) }
+
+
     val db = Firebase.firestore
     LaunchedEffect(postLoaded) {
         if (!postLoaded) {
@@ -128,11 +134,27 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                 // Récupération des informations sur l'établissement depuis Firestore
                 db.collection("map").document(id).get().addOnSuccessListener { document ->
                     val name = document.getString("Name")!!
-                    val adresse = document.getString("Adresse")!!
+                    val adresseName = document.getString("AdresseName")!!
+                    val adresseLocation = document.getGeoPoint("AdresseLocation")!!
                     val filter = document.getString("Filter")!!
                     val description = document.getString("Description")!!
                     val photoPath = document.getString("Photo")!!
-                    map = MapItem(document.id, name, adresse, filter, description, photoPath)
+
+                    // Récupération des notes depuis Firestore
+                    db.collection("map").document(id).collection("notes").get().addOnSuccessListener { res ->
+                        var note = 0.0
+                        var sommeNote = 0
+                        for (doc in res) {
+                            sommeNote += doc.getDouble("Note")?.toInt() ?: 0
+                        }
+                        if(res.size()!=0){
+                            note= (sommeNote/res.size()).toDouble()
+                        }
+                        map = MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,note)
+
+
+                    }
+
                 }
                 // Récupération des commentaires depuis Firestore
                 db.collection("map").document(id).collection("comments").get().addOnSuccessListener { result ->
@@ -142,10 +164,16 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                         val author = document.getString("Author")!!
                         val comment = document.getString("Comment")!!
                         val date = document.getDate("Date")!!
-                        val note = document.getDouble("Note")!!.toInt()
-                        allComments.add(MapComment(author, comment, date, note))
+                        allComments.add(MapComment(author, comment, date))
                     }
                     comments=allComments
+                }
+
+
+
+                // Récupération de la note de l'utilisateur depuis Firestore
+                db.collection("map").document(id).collection("notes").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener { document ->
+                    stars = document.getDouble("Note")?.toInt() ?: 0
                 }
             }
             // Récupération de l'URL de l'image depuis Storage
@@ -155,6 +183,21 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
 
         }
         }
+
+    @Composable
+    fun Star(number: Int){
+        IconButton(onClick = {
+            stars = number
+            insertNoteIntoFirebase(id!!,number,auth.currentUser?.uid.toString())
+        }){
+            if(stars>=number)
+                Icon(imageVector = Icons.Default.Star, contentDescription = null,modifier = Modifier.size(48.dp))
+            else
+                Icon(imageVector = Icons.TwoTone.Star, contentDescription = null,modifier = Modifier.size(48.dp))
+        }
+
+
+    }
 
 
 
@@ -201,7 +244,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                             Text(text = map.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                             Row(verticalAlignment = Alignment.CenterVertically,) {
                                 Text(
-                                    text = "4,7 \nsur 5",
+                                    text = if(map.note>0)"${map.note} \n sur 5" else "Non noté",
                                     fontSize = 12.sp,
                                     textAlign = TextAlign.Center
                                 )
@@ -281,6 +324,36 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                         .height(8.dp)
                 )
 
+                Row {
+                    Text(
+                        text = "Toucher pour noter : ",
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                    )
+
+
+                    }
+                Row (horizontalArrangement = Arrangement.End){
+                    Star(1)
+                    Star(2)
+                    Star(3)
+                    Star(4)
+                    Star(5)
+                }
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()  //fill the max width
+                        .height(1.dp)
+                        .padding(start = 16.dp, end = 16.dp)
+                )
+                Spacer(
+                    Modifier
+                        .height(8.dp)
+                )
+
                 // Affichage du titre "Commentaires"
                 Text(
                     text = "Commentaires",
@@ -289,6 +362,10 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
+                )
+                Spacer(
+                    Modifier
+                        .height(8.dp)
                 )
                 for (comment in comments) {
                     val star = 3
@@ -320,22 +397,13 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
 
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
-                                    text = "${comment.date}",
+                                    text = "${comment.getDay()}",
                                     modifier = Modifier.fillMaxWidth(),
                                     textAlign = TextAlign.End,
                                     style = MaterialTheme.typography.bodySmall
                                 )
                             }
-                            Row {
-                                for (i in 1..star) Icon(
-                                    imageVector = Icons.Default.Star,
-                                    contentDescription = null
-                                )
-                                for (i in star + 1..5) Icon(
-                                    imageVector = Icons.TwoTone.Star,
-                                    contentDescription = null
-                                )
-                            }
+
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(text = comment.comment)
                         }
@@ -370,6 +438,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
+                        /*
                         val author = auth.currentUser?.displayName
                         val commentText = comment.text
                         val commentdate =
@@ -383,6 +452,8 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                                 commentdate
                             ) // Ajoute le commentaire à la base de données
                         }
+                        */
+
                         comment = TextFieldValue("") // Réinitialise le champ de texte
                     }
                 )
@@ -395,13 +466,10 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                     val commentdate = Calendar.getInstance().time
 
                     if (author != null && id != null) {
-                        insertIntoFirebase(
-                            id,
-                            author,
-                            commentText,
-                            commentdate
-                        ) // Ajoute le commentaire à la base de données
+                        MapComment(author, commentText, commentdate).toFirebase(id,auth.currentUser?.uid.toString()) // Ajoute le commentaire à la base de données
                     }
+
+
                     comment = TextFieldValue("") // Réinitialise le champ de texte
                 },
                 modifier = Modifier.align(Alignment.CenterVertically)
@@ -415,24 +483,22 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
     }
 }
 
+fun insertNoteIntoFirebase(mapId: String, note: Int, userId : String) {
+    val db = Firebase.firestore
 
-
-@Composable
-fun Comment(){
-    val star = 3
-    Surface (color = PurpleGrey40,shape = RoundedCornerShape(8)){ Column (modifier = Modifier
-        .padding(8.dp)
-        .width(100.dp)){ Row (modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween){ Text(text = "Author", fontWeight = FontWeight.Bold)
-        Text(text = "18 janvier 2022", color = Purple80)}
-        Row { for (i in 1..star)Icon(imageVector = Icons.Default.Star, contentDescription = null)
-            for (i in star+1..5)Icon(imageVector = Icons.TwoTone.Star, contentDescription = null) }
-        Spacer(
-            Modifier
-                .height(8.dp)
-        )
-        Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquam quis turpis eu volutpat. Proin nisi risus, accumsan sit amet mauris a, cursus mattis sem. Nunc ut mi lorem. Curabitur at arcu ullamcorper, elementum nibh at, facilisis est.",textAlign = TextAlign.Justify)
-    } }
+    // Ajoute le nouveau commentaire à la collection "comments"
+    db.collection("map")
+        .document(mapId)
+        .collection("notes")
+        .document(userId).set(mapOf("Note" to note ))
+        .addOnSuccessListener { documentReference ->
+            println("Note ajouté avec l'ID : ${userId}")
+        }
+        .addOnFailureListener { e ->
+            println("Erreur lors de l'ajout de la note : $e")
+        }
 }
+
 
 @Composable
 fun Comment2(comment : MapComment){
@@ -470,86 +536,9 @@ fun Comment2(comment : MapComment){
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            Row { for (i in 1..comment.note)Icon(imageVector = Icons.Default.Star, contentDescription = null)
-                for (i in comment.note+1..5)Icon(imageVector = Icons.TwoTone.Star, contentDescription = null) }
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = comment.comment)
         }
 
     }
-}
-@Preview
-@Composable
-fun PreviewMap() {
-    Comment2(MapComment("Sacha","Wshhh coucou", Date(), 3))
-    /*
-    Column (
-        modifier = Modifier.fillMaxSize(),
-    ){ Image(
-        painter = painterResource(id = R.drawable.event),
-        contentDescription = "null", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth()
-    )
-        Surface(modifier = Modifier.padding(16.dp).fillMaxWidth().height(72.dp)){
-        Row (verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween,modifier = Modifier.padding(8.dp)) {
-            Column (){
-                Text(text = "map.name", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                Row(verticalAlignment= Alignment.CenterVertically, ){
-                    Text(text = "4,7 \nsur 5", fontSize = 12.sp, textAlign= TextAlign.Center)
-                    Spacer(
-                        Modifier
-                            .width(8.dp)
-                    )
-                    Divider(
-                        modifier = Modifier
-                            .fillMaxHeight()  //fill the max height
-                            .width(1.dp)
-                            .padding(top = 8.dp, bottom = 8.dp)
-
-                    )
-                    Spacer(
-                        Modifier
-                            .width(8.dp)
-                    )
-                    Text(text = "1,2km", fontSize = 12.sp, textAlign= TextAlign.Center)
-                    Spacer(
-                        Modifier
-                            .width(8.dp)
-                    )
-                    Divider(
-                        modifier = Modifier
-                            .fillMaxHeight()  //fill the max height
-                            .width(1.dp)
-                            .padding(top = 8.dp, bottom = 8.dp)
-
-                    )
-                    Spacer(
-                        Modifier
-                            .width(8.dp)
-                    )
-                    Text(text = "map.categorie", fontSize = 12.sp, textAlign= TextAlign.Center)
-
-                }
-            }
-            FilledTonalButton(onClick = {  }, contentPadding = PaddingValues(16.dp,8.dp),modifier = Modifier
-                .defaultMinSize(minWidth = 1.dp, minHeight = 1.dp), shape = RoundedCornerShape(24), elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = 8.dp
-            )
-            ) {
-                Text("Itinéraire")
-            }
-        }
-        }
-        Divider(modifier = Modifier
-            .fillMaxWidth()  //fill the max width
-            .height(1.dp).padding(start = 16.dp, end= 16.dp))
-        Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla suscipit ex erat. Maecenas tempus nulla neque, vehicula posuere libero porta in. Donec fermentum enim vitae dui semper luctus. Nullam rhoncus ligula at tellus molestie, sed facilisis dui volutpat. Nunc fringilla massa id purus porttitor maximus. Aenean diam ante, consectetur euismod tincidunt nec, elementum in nisl. Sed bibendum tempus lorem, sed accumsan massa pellentesque at. Vivamus ullamcorper at mauris in aliquam. Vivamus fermentum libero quis purus tempor, non consequat dui rutrum. Nam blandit nibh nec odio ornare iaculis. Nulla id pharetra diam.\n" +
-                "\n" +
-                "Mauris placerat sed elit in ullamcorper. Vivamus viverra eu lorem nec blandit. Morbi id scelerisque augue. Vivamus a ante nibh. Nam cursus purus nec sapien ultrices, eu vulputate libero vestibulum. Phasellus eget velit malesuada, porttitor nunc ut, semper ante. Nunc hendrerit viverra lacus, eu venenatis diam maximus et. Nulla dignissim tristique nulla non feugiat.\n" +
-                "\n" +
-                "Morbi vitae semper risus. Donec mollis lacinia dictum. In justo elit, faucibus non libero ut, pharetra blandit ligula. Pellentesque non egestas arcu, vel ornare magna. Nam molestie nunc vel purus hendrerit, id volutpat urna congue. Phasellus faucibus tincidunt risus, at iaculis ex mollis quis. Cras non porta nisi. Aenean a felis arcu. Quisque pulvinar at arcu vel condimentum. Nulla nec fringilla est. Cras maximus, elit sed elementum semper, elit velit tincidunt nunc, eu congue augue quam quis lacus. Duis fermentum ligula et faucibus faucibus. Duis felis tortor, sagittis non imperdiet sit amet, fermentum nec purus. Vivamus elementum est odio, sit amet vulputate odio pharetra vitae.",fontSize = 16.sp, modifier = Modifier.padding(16.dp), textAlign = TextAlign.Justify)
-        Divider(modifier = Modifier
-            .fillMaxWidth()  //fill the max width
-            .height(1.dp).padding(start = 16.dp, end= 16.dp))
-    }*/
-
 }

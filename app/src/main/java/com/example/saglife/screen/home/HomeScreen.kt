@@ -91,14 +91,42 @@ fun HomeScreen(navController: NavHostController) {
     db.collection("map").limit(3).get().addOnSuccessListener { result ->
         for (document in result) {
             val name = document.getString("Name")!!
-            val adresse = document.getString("Adresse")!!
+            val adresseName = document.getString("AdresseName")!!
+            val adresseLocation = document.getGeoPoint("AdresseLocation")!!
             val filter = document.getString("Filter")!!
             val description = document.getString("Description")!!
             val photoPath = document.getString("Photo")!!
-            allMaps.add(MapItem(document.id, name, adresse, filter, description, photoPath))
+
+                allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0))
+
+
+
         }
         print("All map  " + allMaps)
         mapsFiltered = allMaps
+
+        mapsFiltered = allMaps
+
+        for(mapItem in allMaps){
+            // Récupération des notes depuis Firestore
+            db.collection("map").document(mapItem.id).collection("notes").get().addOnSuccessListener { resultat ->
+
+                var note = 0.0
+                var sommeNote = 0
+                for (document in resultat) {
+                    sommeNote += document.getDouble("Note")?.toInt() ?: 0
+                }
+                if(resultat.size()!=0){
+                    note= (sommeNote/resultat.size()).toDouble()
+                }
+
+                mapItem.note = note
+
+            }.continueWith {
+                mapsFiltered = allMaps
+            }
+
+        }
 
     }
 
