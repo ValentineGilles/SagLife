@@ -142,7 +142,7 @@ fun HomeScreen(navController: NavHostController) {
 
     // Liste de tous les événements.
     val allEvents = mutableListOf<EventItem>()
-    db.collection("event").whereGreaterThanOrEqualTo("Date_start", today.time).orderBy("Date_start", Query.Direction.DESCENDING).limit(3).get().addOnSuccessListener { result ->
+    db.collection("event").whereGreaterThanOrEqualTo("Date_start", today.time).orderBy("Date_start", Query.Direction.ASCENDING).limit(3).get().addOnSuccessListener { result ->
         println("event")
         for (document in result) {
 
@@ -224,7 +224,7 @@ fun HomeScreen(navController: NavHostController) {
                     EventComposant(event = event, navController = navController)
                     Spacer(modifier = Modifier.height(16.dp))
                 }
-                
+
                 item {
                     Text(
                         modifier = Modifier
