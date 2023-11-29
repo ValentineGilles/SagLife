@@ -1,6 +1,10 @@
 package com.example.saglife
 
+import LocationHelper
 import Routes
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Build
 
 import com.example.saglife.screen.calendar.CalendarScreen
@@ -10,6 +14,7 @@ import com.example.saglife.screen.map.MapScreen
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -39,6 +45,8 @@ import com.example.saglife.screen.forum.ForumModifyComment
 import com.example.saglife.screen.forum.ForumModifyPost
 import com.example.saglife.screen.map.MapCreate
 import com.example.saglife.ui.theme.SagLifeTheme
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -48,6 +56,9 @@ private val auth: FirebaseAuth = Firebase.auth
 
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,13 +68,49 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 MyApp(navController)
             }
-
         }
+        /*
+        //Demande de permission
+        val locationPermissionRequest = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
+            permission ->
+            when {
+                permission.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)
+            }
+        }*/
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            val REQUEST_LOCATION_PERMISSION_CODE = 128
+            requestPermissions(arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ), REQUEST_LOCATION_PERMISSION_CODE)
+            return
+        }
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location? ->
+                // Got last known location. In some rare situations this can be null.
+                val latitude = location?.latitude
+                val longitude = location?.longitude
+                println("Latitude: $latitude, Longitude: $longitude")
+            }
+
     }
+
+
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun MyApp(navController: NavHostController) {
+
+
         val currentUser = auth.currentUser
         var startpage = ""
         println("current user : $currentUser")
@@ -239,6 +286,37 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+    /*
+    fun getCLientLocation(){
+        var clientLocation
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            val REQUEST_LOCATION_PERMISSION_CODE = 128
+            requestPermissions(arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ), REQUEST_LOCATION_PERMISSION_CODE)
+            return
+        }
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location? ->
+                // Got last known location. In some rare situations this can be null.
+                val latitude = location?.latitude
+                val longitude = location?.longitude
+                clientLocation = com.example.saglife.models.Location(latitude!!,longitude!!)
+                println("Latitude: $latitude, Longitude: $longitude")
+            }
+
+        return clientLocation
+    }*/
     }
 
 

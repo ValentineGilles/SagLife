@@ -53,6 +53,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.saglife.R
 import com.example.saglife.models.EventItem
+import com.example.saglife.models.Location
 import com.example.saglife.screen.calendar.FilterChip
 import com.example.saglife.models.MapItem
 import com.google.firebase.Firebase
@@ -66,6 +67,8 @@ import com.google.firebase.storage.storage
  */
 @Composable
 fun MapScreen(navController: NavHostController) {
+
+    
 
     // Initialisation des états
     var selectedFilters = mutableListOf<String>()
@@ -230,7 +233,6 @@ fun MapComposant(map: MapItem, navController: NavHostController) {
     var storageReference = storage.getReference("images/").child(map.photoPath)
     var urlImage: Uri? by remember { mutableStateOf(null) }
     storageReference.downloadUrl.addOnSuccessListener { url -> urlImage = url }
-
 
     Card(
         colors = CardDefaults.cardColors(

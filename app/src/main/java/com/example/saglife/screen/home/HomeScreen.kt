@@ -1,6 +1,8 @@
 package com.example.saglife.screen.home
+import LocationHelper
 import androidx.compose.foundation.layout.Column
 import android.annotation.SuppressLint
+import android.location.Location
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +36,7 @@ import com.example.saglife.screen.forum.ForumCard
 import com.example.saglife.screen.map.MapComposant
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
@@ -96,10 +99,7 @@ fun HomeScreen(navController: NavHostController) {
             val filter = document.getString("Filter")!!
             val description = document.getString("Description")!!
             val photoPath = document.getString("Photo")!!
-
-                allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0))
-
-
+            allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0))
 
         }
         print("All map  " + allMaps)
@@ -246,5 +246,7 @@ fun HomeScreen(navController: NavHostController) {
 
         }
     }
+
+
 }
 
