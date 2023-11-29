@@ -204,8 +204,9 @@ class MainActivity : ComponentActivity() {
 
 
                 composable(Routes.MapInfo.route) { backStackEntry ->
-                    isTopBarVisible.value = false
-                    isBottomBarVisible.value = false
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
                     MapInfoScreen(
                         navController = navController,
                         backStackEntry.arguments?.getString("id")
@@ -226,7 +227,7 @@ class MainActivity : ComponentActivity() {
                 }
                 composable(Routes.Event.route) { backStackEntry ->
                     isTopBarVisible.value = true
-                    isBottomBarVisible.value = false
+                    isBottomBarVisible.value = true
                     isTopBarBack.value = true
                     EventScreen(
                         navController = navController,
