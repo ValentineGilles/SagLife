@@ -1,8 +1,8 @@
 package com.example.saglife.screen.map
+import android.location.Location
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,30 +18,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Colors
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.sharp.Star
 import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -65,18 +54,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.saglife.R
-import com.example.saglife.models.EventItem
 import com.example.saglife.models.MapComment
 import com.example.saglife.models.MapItem
-import com.example.saglife.ui.theme.Purple40
-import com.example.saglife.ui.theme.Purple80
-import com.example.saglife.ui.theme.PurpleGrey40
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -84,7 +68,6 @@ import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 import java.util.Calendar
-import java.util.Date
 
 // Authentification Firebase
 private val auth: FirebaseAuth = com.google.firebase.ktx.Firebase.auth
@@ -97,7 +80,7 @@ private val auth: FirebaseAuth = com.google.firebase.ktx.Firebase.auth
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapInfoScreen(navController: NavHostController, id : String?) {
+fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation: GeoPoint) {
 // État pour stocker les informations sur l'établissement
     var map by remember {
         mutableStateOf(
@@ -109,7 +92,8 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                 "Catégorie",
                 "Description...",
                 "event.jpg",
-                0.0
+                0.0,
+                0F
             )
         )
     }
@@ -139,6 +123,9 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                     val filter = document.getString("Filter")!!
                     val description = document.getString("Description")!!
                     val photoPath = document.getString("Photo")!!
+                    val results = FloatArray(1)
+                    Location.distanceBetween(adresseLocation.latitude, adresseLocation.longitude,clientLocation.latitude, clientLocation.longitude,results)
+                    print("Location :"+ results[0])
 
                     // Récupération des notes depuis Firestore
                     db.collection("map").document(id).collection("notes").get().addOnSuccessListener { res ->
@@ -150,7 +137,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                         if(res.size()!=0){
                             note= (sommeNote/res.size()).toDouble()
                         }
-                        map = MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,note)
+                        map = MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,note, results[0])
 
 
                     }
@@ -263,7 +250,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?) {
                                     Modifier
                                         .width(8.dp)
                                 )
-                                Text(text = "1,2km", fontSize = 12.sp, textAlign = TextAlign.Center)
+                                Text(text = map.distance.toString()+"km", fontSize = 12.sp, textAlign = TextAlign.Center)
                                 Spacer(
                                     Modifier
                                         .width(8.dp)

@@ -1,8 +1,8 @@
 package com.example.saglife.screen.map
 
+import android.location.Location
 import android.net.Uri
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FloatingActionButton
@@ -35,7 +34,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,18 +43,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.saglife.R
-import com.example.saglife.models.EventItem
-import com.example.saglife.models.Location
 import com.example.saglife.screen.calendar.FilterChip
 import com.example.saglife.models.MapItem
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 
@@ -66,9 +61,8 @@ import com.google.firebase.storage.storage
  * @param navController Le contrôleur de navigation.
  */
 @Composable
-fun MapScreen(navController: NavHostController) {
+fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
 
-    
 
     // Initialisation des états
     var selectedFilters = mutableListOf<String>()
@@ -103,8 +97,10 @@ fun MapScreen(navController: NavHostController) {
             val filter = document.getString("Filter")!!
             val description = document.getString("Description")!!
             val photoPath = document.getString("Photo")!!
-
-            allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0))
+            val results = FloatArray(1)
+            Location.distanceBetween(adresseLocation.latitude, adresseLocation.longitude,clientLocation.latitude, clientLocation.longitude,results)
+            print("Location :"+ results[0])
+            allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0,results[0]))
 
         }
 
@@ -292,7 +288,7 @@ fun MapComposant(map: MapItem, navController: NavHostController) {
                                 Modifier
                                     .width(8.dp)
                             )
-                            Text(text = "1,2km", style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+                            Text(text = map.distance.toString()+"km", style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
                             Spacer(
                                 Modifier
                                     .width(8.dp)

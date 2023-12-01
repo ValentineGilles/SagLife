@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChipDefaults
@@ -39,18 +38,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.saglife.models.ForumFilterItem
-import com.example.saglife.models.ForumPostItem
 import com.example.saglife.models.MapItem
-import com.example.saglife.screen.calendar.FilterChip
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
 import java.io.IOException
-import java.util.Calendar
-import java.util.UUID
 
 /**
  * Écran de création d'un nouvel établissement.
@@ -211,7 +203,8 @@ fun MapCreate(navController: NavHostController) {
                             filter = selectedFilter,
                             description = description.text,
                             photoPath = "map.png",
-                            0.0
+                            0.0,
+                            0F
                         )
                         // Enregistrement des données dans Firebase
                         map.toFirebase()

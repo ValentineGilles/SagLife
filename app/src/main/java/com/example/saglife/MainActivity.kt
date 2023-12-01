@@ -50,6 +50,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.ktx.Firebase
 
 private val auth: FirebaseAuth = Firebase.auth
@@ -69,47 +70,19 @@ class MainActivity : ComponentActivity() {
                 MyApp(navController)
             }
         }
-        /*
-        //Demande de permission
-        val locationPermissionRequest = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
-            permission ->
-            when {
-                permission.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)
-            }
-        }*/
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            val REQUEST_LOCATION_PERMISSION_CODE = 128
-            requestPermissions(arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ), REQUEST_LOCATION_PERMISSION_CODE)
-            return
-        }
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location : Location? ->
-                // Got last known location. In some rare situations this can be null.
-                val latitude = location?.latitude
-                val longitude = location?.longitude
-                println("Latitude: $latitude, Longitude: $longitude")
-            }
+
 
     }
 
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun MyApp(navController: NavHostController) {
 
+        val clientLocation = getCLientLocation()
 
         val currentUser = auth.currentUser
         var startpage = ""
@@ -162,7 +135,7 @@ class MainActivity : ComponentActivity() {
                     isTopBarVisible.value = true
                     isBottomBarVisible.value = true
                     isTopBarBack.value = false
-                    HomeScreen(navController = navController)
+                    HomeScreen(navController = navController, clientLocation)
                 }
                 composable(Routes.Calendar.route) {
                     isTopBarVisible.value = true
@@ -174,7 +147,7 @@ class MainActivity : ComponentActivity() {
                     isTopBarVisible.value = true
                     isBottomBarVisible.value = true
                     isTopBarBack.value = false
-                    MapScreen(navController = navController)
+                    MapScreen(navController = navController, clientLocation)
                 }
 
                 composable(Routes.Forum.route) {
@@ -208,7 +181,8 @@ class MainActivity : ComponentActivity() {
                     isBottomBarVisible.value = false
                     MapInfoScreen(
                         navController = navController,
-                        backStackEntry.arguments?.getString("id")
+                        backStackEntry.arguments?.getString("id"),
+                        clientLocation
                     )
                 }
                 composable(Routes.Registration.route) {
@@ -287,9 +261,10 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-    /*
-    fun getCLientLocation(){
-        var clientLocation
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun getCLientLocation() : GeoPoint{
+        var clientLocation = GeoPoint(0.0,0.0)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -304,19 +279,21 @@ class MainActivity : ComponentActivity() {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ), REQUEST_LOCATION_PERMISSION_CODE)
-            return
         }
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location : Location? ->
                 // Got last known location. In some rare situations this can be null.
-                val latitude = location?.latitude
-                val longitude = location?.longitude
-                clientLocation = com.example.saglife.models.Location(latitude!!,longitude!!)
-                println("Latitude: $latitude, Longitude: $longitude")
+                if(location != null){
+                    val latitude = location.latitude
+                    val longitude = location.longitude
+                    clientLocation = GeoPoint(latitude,longitude)
+                    println("Latitude: $latitude, Longitude: $longitude")
+                }
+
             }
 
         return clientLocation
-    }*/
+    }
     }
 
 

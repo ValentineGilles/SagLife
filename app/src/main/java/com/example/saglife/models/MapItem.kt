@@ -3,9 +3,6 @@ package com.example.saglife.models
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
-import com.google.firebase.storage.storage
-import kotlinx.coroutines.tasks.await
-import java.util.Date
 
 /**
  * Modèle de données représentant un élément sur la carte.
@@ -17,7 +14,7 @@ import java.util.Date
  * @param description Description de l'élément.
  * @param photoPath Chemin de l'image associée à l'élément.
  */
-class MapItem (val id:String, val name : String, val adresseName : String, val adresseLocation : GeoPoint, val filter : String, val description : String, val photoPath : String, var note: Double){
+class MapItem(val id:String, val name: String, val adresseName: String, val adresseLocation: GeoPoint, val filter: String, val description: String, val photoPath: String, var note: Double, var distance: Float){
 
     /**
      * Convertit l'objet MapItem en une structure de données JSON.
