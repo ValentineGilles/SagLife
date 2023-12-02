@@ -15,8 +15,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -34,6 +40,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,6 +63,7 @@ fun LoginScreen(navController: NavHostController) {
     // État des champs de texte pour l'e-mail et le mot de passe
     var email by remember { mutableStateOf(TextFieldValue("saglifeapp@gmail.com")) }
     var password by remember { mutableStateOf(TextFieldValue("UserTest")) }
+    var showPassword by remember { mutableStateOf(false) }
 
     // État pour afficher les messages d'erreur de connexion
     var ConnectionError by remember { mutableStateOf<String?>(null) }
@@ -102,7 +110,7 @@ fun LoginScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(20.dp))
 
         // Champ de texte pour l'adresse e-mail
-        TextField(
+        OutlinedTextField(
             label = { Text(text = "Adresse e-mail") },
             value = email,
             onValueChange = { email = it },
@@ -112,10 +120,34 @@ fun LoginScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // Champ de texte pour le mot de passe (avec masquage du texte)
-        TextField(
+        OutlinedTextField(
             label = { Text(text = "Mot de passe") },
             value = password,
-            visualTransformation = PasswordVisualTransformation(),
+            visualTransformation = if (showPassword) {
+                VisualTransformation.None
+            } else {
+                PasswordVisualTransformation()
+            },
+            trailingIcon = {
+                if (showPassword) {
+                    IconButton(onClick = { showPassword = false }) {
+                        Icon(
+                            imageVector = Icons.Filled.Visibility,
+                            contentDescription = "hide_password",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                } else {
+                    IconButton(
+                        onClick = { showPassword = true }) {
+                        Icon(
+                            imageVector = Icons.Filled.VisibilityOff,
+                            contentDescription = "hide_password",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                }
+            },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             onValueChange = { password = it },
             modifier = Modifier.fillMaxWidth()
