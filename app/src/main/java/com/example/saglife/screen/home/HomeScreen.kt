@@ -61,6 +61,7 @@ fun HomeScreen(navController: NavHostController, clientLocation: GeoPoint) {
                 val nb = document.get("Nb").toString().toIntOrNull() ?: 0
                 val description = document.get("Description").toString()
                 val filter = document.get("Filter").toString()
+                val imageUrls = document.get("ImageUrls").toString().split(",")
 
                 forumpost.add(
                     ForumPostItem(
@@ -71,7 +72,8 @@ fun HomeScreen(navController: NavHostController, clientLocation: GeoPoint) {
                         title,
                         nb,
                         filter,
-                        description
+                        description,
+                        imageUrls
                     )
                 )
             }

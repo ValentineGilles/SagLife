@@ -1,10 +1,15 @@
 package com.example.saglife.screen.forum
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -19,12 +24,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.example.saglife.R
 import com.example.saglife.database.getUsernameFromUid
 import com.example.saglife.models.ForumPostItem
@@ -40,6 +49,9 @@ fun ForumPostCard(navController: NavHostController, data: ForumPostItem) {
     // État pour stocker le nom de l'auteur
     var author by remember { mutableStateOf("") }
 
+    var showDialog by remember { mutableStateOf(false) }
+    var selectedImageUrl by remember { mutableStateOf("") }
+
     // Récupération des données du post
     val icon = data.icon
     val title = data.title
@@ -47,6 +59,9 @@ fun ForumPostCard(navController: NavHostController, data: ForumPostItem) {
     val date = data.getDay()
     val hour = data.getTime()
     val description = data.description
+    val imageUrls = data.imageUrls
+
+    println("data imageUrls : $imageUrls")
 
     // Récupération du nom de l'auteur en fonction de son ID
     if (author_id != "") {
@@ -54,6 +69,24 @@ fun ForumPostCard(navController: NavHostController, data: ForumPostItem) {
             author = username
         }
     }
+
+    if (showDialog) {
+        Dialog(onDismissRequest = { showDialog = false }) {
+            // Utilisez Box pour permettre à l'utilisateur de fermer la boîte de dialogue en cliquant en dehors de l'image
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                Image(
+                    painter = rememberAsyncImagePainter(selectedImageUrl),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .clickable { showDialog = false },
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
+    }
+
 
     Card(
         colors = CardDefaults.cardColors(
@@ -148,6 +181,25 @@ fun ForumPostCard(navController: NavHostController, data: ForumPostItem) {
                         style = TextStyle(textDecoration = TextDecoration.Underline)
                     )
                 }
+            }
+        }
+
+        LazyRow(modifier = Modifier.padding(16.dp)) {
+            items(imageUrls) { imageUrl ->
+                val cleanedImageUrl = imageUrl.trim().removePrefix("[").removeSuffix("]")
+                println("imageUrl : $cleanedImageUrl")
+                Image(
+                    painter = rememberAsyncImagePainter(cleanedImageUrl),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(end = 8.dp)
+                        .clickable {
+                            selectedImageUrl = cleanedImageUrl
+                            showDialog = true
+                        }
+                )
             }
         }
 
