@@ -38,21 +38,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.example.saglife.R
+import coil.compose.rememberAsyncImagePainter
 import com.example.saglife.models.EventItem
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
-import java.util.Calendar
 import java.util.Date
 
 /**
@@ -105,6 +100,8 @@ fun CalendarScreen(navController: NavHostController) {
             val description = document.get("Description").toString()
             val photoPath = document.get("Photo").toString()
             val filter = document.get("Filter").toString()
+            val author = document.get("Author").toString()
+
             allEvents.add(
                 EventItem(
                     document.id,
@@ -113,7 +110,8 @@ fun CalendarScreen(navController: NavHostController) {
                     dateEnd,
                     description,
                     photoPath,
-                    filter
+                    filter,
+                    author
                 )
             )
         }
@@ -201,11 +199,11 @@ fun filterEventItems(filters: List<String>, eventItems: List<EventItem>): Mutabl
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventComposant(event: EventItem, navController: NavHostController) {
-    // Récupération de l'URL de l'image depuis Firebase Storage.
-    val storage = Firebase.storage
-    val storageReference = storage.getReference("images/").child(event.photoPath)
-    var urlImage: Uri? by remember { mutableStateOf(null) }
-    storageReference.downloadUrl.addOnSuccessListener { url -> urlImage = url }
+    var urlImage = event.photoPath
+    if (!urlImage.startsWith("https://firebasestorage.googleapis.com/"))
+    {
+        urlImage = "https://firebasestorage.googleapis.com/v0/b/saglife-94b7c.appspot.com/o/images%2Fevent.jpg?alt=media&token=d050b68e-9cac-49f7-99dd-09d60d735e4a"
+    }
 
 // Affichage de la carte d'événement.
     Card(
@@ -221,13 +219,13 @@ fun EventComposant(event: EventItem, navController: NavHostController) {
             contentAlignment = Alignment.BottomCenter,
 
         ) {
-            if (urlImage != null)
-                AsyncImage(
-                    model = urlImage,
-                    contentDescription = "null",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxWidth(),
-                )
+            println("urimage : ${urlImage}")
+            Image(
+                painter = rememberAsyncImagePainter(urlImage),
+                contentDescription = "Image de l'événement",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxWidth(),
+            )
             ElevatedCard(
                 modifier = Modifier
                     .fillMaxWidth()

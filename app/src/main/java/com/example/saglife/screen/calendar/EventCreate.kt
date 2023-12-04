@@ -1,15 +1,10 @@
 package com.example.saglife.screen.calendar
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
-import android.content.Context
 import android.net.Uri
-import android.os.Build
-import android.widget.DatePicker
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +25,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
@@ -37,6 +33,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -54,27 +51,32 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
+import coil.compose.rememberImagePainter
 import com.example.saglife.models.EventItem
+import com.example.saglife.screen.forum.DisplaySquareImage
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.firestore
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
-import java.time.Instant
-import java.time.ZoneOffset
-import java.util.Calendar
+import com.google.firebase.storage.storage
 import java.util.Date
+import java.util.UUID
 
 /**
  * Ecran pour créer un événement.
  *
  * @param navController Navigation controller.
  */
+
+private val auth: FirebaseAuth = com.google.firebase.ktx.Firebase.auth
+
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("MutableCollectionMutableState")
 @Composable
@@ -104,6 +106,15 @@ fun EventCreate(navController: NavHostController) {
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = Date().time
     )
+
+    var selectedImageUri = remember { mutableStateOf<Uri?>(null) }
+
+    val imageLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                selectedImageUri.value = it
+            }
+        }
 
 
     val db = Firebase.firestore
@@ -182,14 +193,29 @@ fun EventCreate(navController: NavHostController) {
                 time_stop = TimePickerDialog(state = stopTimePickerState, time = time_stop)
             }
         }
-        // Bouton pour choisir une image
-        Button(onClick = {
-            singlePhotoPicker.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
 
-        }) {
-            Text("Pick Single Image")
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            selectedImageUri.value?.let { uri ->
+                DisplayImage(uri) {
+                    // Callback pour supprimer l'image
+                    selectedImageUri.value = null
+                }
+            }
+        }
+
+        // Bouton pour choisir une image
+        Button(
+            onClick = {
+                imageLauncher.launch("image/*")
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
+        ) {
+            Text("Ajouter une image")
         }
         // Champ de saisie de la description
         TextField(
@@ -238,10 +264,16 @@ fun EventCreate(navController: NavHostController) {
         }
 
 
+
+
+
+
         // Bouton pour enregistrer l'événement
-        ElevatedButton(
+        Button(
             onClick = {
-                if (name.text != "" && description.text != "" && selectedDate != null) {
+                if (name.text.isNotBlank() && description.text.isNotBlank() && selectedDate != null && selectedImageUri.value != null) {
+                    val imageUri = selectedImageUri.value!!
+
                     // Construction des objets de date pour le début et la fin
                     val dateStart = Date(selectedDate.time)
                     dateStart.hours = startTimePickerState.hour
@@ -250,24 +282,39 @@ fun EventCreate(navController: NavHostController) {
                     dateStop.hours = stopTimePickerState.hour
                     dateStop.minutes = stopTimePickerState.minute
 
-                    // Création de l'objet EventItem
-                    val event = EventItem(
-                        id = "",
-                        name = name.text,
-                        dateStart = dateStart,
-                        dateEnd = dateStop,
-                        filter = selectedFilter,
-                        description = description.text,
-                        photoPath = "event.jpg"
-                    )
-                    // Enregistrement de l'événement dans Firebase
-                    event.toFirebase()
+                    // Enregistrer l'image dans Firebase Storage
+                    val storageRef = Firebase.storage.reference
+                    val imageRef = storageRef.child("images/events/${UUID.randomUUID()}")
 
-                    // Retour à l'écran précédent
-                    navController.popBackStack()
+                    val uploadTask = imageRef.putFile(imageUri)
+
+                    uploadTask.addOnSuccessListener { taskSnapshot ->
+                        // L'image a été téléchargée avec succès, obtenez l'URL de téléchargement
+                        imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                            val imageUrl = downloadUri.toString()
+
+                            // Création de l'objet EventItem
+                            val event = auth.currentUser?.uid?.let {
+                                EventItem(
+                                    author = it,
+                                    id = UUID.randomUUID().toString(),
+                                    name = name.text,
+                                    dateStart = dateStart,
+                                    dateEnd = dateStop,
+                                    filter = selectedFilter,
+                                    description = description.text,
+                                    photoPath = imageUrl
+                                )
+                            }
+
+                            // Enregistrement de l'événement dans Firebase
+                            event?.toFirebase()
+
+                            // Retour à l'écran précédent
+                            navController.popBackStack()
+                        }
+                    }
                 }
-
-
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -275,7 +322,6 @@ fun EventCreate(navController: NavHostController) {
             Text("Enregistrer")
         }
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -353,6 +399,35 @@ fun TimePickerDialog(
 }
 
 
-
+@Composable
+fun DisplayImage(uri: Uri, onDeleteClick: () -> Unit) {
+    println("Uri de l'image : $uri")
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .clip(shape = RoundedCornerShape(8.dp))
+            .background(Color.Gray)
+    ) {
+        Image(
+            painter = rememberImagePainter(data = uri),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+        IconButton(
+            onClick = onDeleteClick, // Appel de la fonction de suppression
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(4.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = "Supprimer l'image",
+                tint = Color.White
+            )
+        }
+    }
+}
 
 
