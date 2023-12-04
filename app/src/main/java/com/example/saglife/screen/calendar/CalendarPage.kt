@@ -49,8 +49,7 @@ import java.util.Date
  */
 @Composable
 fun EventScreen(navController: NavHostController, id : String?) {
-    var postLoaded by remember { mutableStateOf(false) }
-
+    val postLoaded by remember { mutableStateOf(false) }
 
     var event by remember { mutableStateOf(EventItem(
         "id",
