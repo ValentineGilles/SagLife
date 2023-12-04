@@ -1,16 +1,12 @@
 package com.example.saglife.screen.forum
 
-import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -164,7 +160,7 @@ fun ForumCreatePost(navController: NavHostController) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(selectedImageUris) { uri ->
-                    DisplayImage(uri) {
+                    DisplaySquareImage(uri) {
                         // Callback pour supprimer l'image
                         selectedImageUris = selectedImageUris.filter { it != uri }.toMutableList()
                     }
@@ -267,7 +263,7 @@ private fun savePostToDatabase(post: ForumPostItem) {
 }
 
 @Composable
-fun DisplayImage(uri: Uri, onDeleteClick: () -> Unit) {
+fun DisplaySquareImage(uri: Uri, onDeleteClick: () -> Unit) {
     println("Uri de l'image : $uri")
     Box(
         modifier = Modifier

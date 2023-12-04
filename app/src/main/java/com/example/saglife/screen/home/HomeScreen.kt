@@ -150,6 +150,7 @@ fun HomeScreen(navController: NavHostController, clientLocation: GeoPoint) {
             val description = document.get("Description").toString()
             val photoPath = document.get("Photo").toString()
             val filter = document.get("Filter").toString()
+            val author = document.get("Auteur").toString()
             allEvents.add(
                 EventItem(
                     document.id,
@@ -158,7 +159,8 @@ fun HomeScreen(navController: NavHostController, clientLocation: GeoPoint) {
                     dateEnd,
                     description,
                     photoPath,
-                    filter
+                    filter,
+                    author
                 )
             )
         }

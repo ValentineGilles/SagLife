@@ -52,7 +52,16 @@ fun EventScreen(navController: NavHostController, id : String?) {
     var postLoaded by remember { mutableStateOf(false) }
 
 
-    var event by remember { mutableStateOf(EventItem("id","Evénement", Date(), Date(),"Description...","event.jpg","Catégorie")) }
+    var event by remember { mutableStateOf(EventItem(
+        "id",
+        "Evénement",
+        Date(),
+        Date(),
+        "Description...",
+        "event.jpg",
+        "Catégorie",
+        "Author"
+    )) }
     var urlImage: Uri? by remember { mutableStateOf(null) }
 
     val db = Firebase.firestore
@@ -67,7 +76,17 @@ fun EventScreen(navController: NavHostController, id : String?) {
             val description = document.get("Description").toString()
             val photoPath = document.get("Photo").toString()
             val filter = document.get("Filter").toString()
-            event = EventItem(document.id,name, dateStart, dateEnd,description, photoPath, filter)
+            val author = document.get("Author").toString()
+            event = EventItem(
+                document.id,
+                name,
+                dateStart,
+                dateEnd,
+                description,
+                photoPath,
+                filter,
+                author
+            )
 
         }
         val storage = Firebase.storage
@@ -88,7 +107,7 @@ fun EventScreen(navController: NavHostController, id : String?) {
         if (urlImage != null)
             AsyncImage(
                 model = urlImage,
-                contentDescription = "null",
+                contentDescription = "Photo de l'événement",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxWidth(),
             )
