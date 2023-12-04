@@ -137,7 +137,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
                         if(res.size()!=0){
                             note= (sommeNote/res.size()).toDouble()
                         }
-                        map = MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,note, results[0])
+                        map = MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,note, results[0]/1000)
 
 
                     }
@@ -250,7 +250,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
                                     Modifier
                                         .width(8.dp)
                                 )
-                                Text(text = map.distance.toString()+"km", fontSize = 12.sp, textAlign = TextAlign.Center)
+                                Text(text = String.format("%.1f", map.distance)+"km", fontSize = 12.sp, textAlign = TextAlign.Center)
                                 Spacer(
                                     Modifier
                                         .width(8.dp)

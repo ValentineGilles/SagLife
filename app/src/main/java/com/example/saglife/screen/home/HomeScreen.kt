@@ -95,7 +95,7 @@ fun HomeScreen(navController: NavHostController, clientLocation: GeoPoint) {
             val results = FloatArray(1)
             Location.distanceBetween(adresseLocation.latitude, adresseLocation.longitude,clientLocation.latitude, clientLocation.longitude,results)
             print("Location :"+ results[0])
-            allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0, results[0]))
+            allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0, (results[0]/1000)))
 
         }
         print("All map  " + allMaps)

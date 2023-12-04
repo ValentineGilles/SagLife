@@ -100,7 +100,7 @@ fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
             val results = FloatArray(1)
             Location.distanceBetween(adresseLocation.latitude, adresseLocation.longitude,clientLocation.latitude, clientLocation.longitude,results)
             print("Location :"+ results[0])
-            allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0,results[0]))
+            allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0,(results[0]/1000)))
 
         }
 
@@ -288,7 +288,7 @@ fun MapComposant(map: MapItem, navController: NavHostController) {
                                 Modifier
                                     .width(8.dp)
                             )
-                            Text(text = map.distance.toString()+"km", style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+                            Text(text = String.format("%.1f", map.distance)+"km", style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
                             Spacer(
                                 Modifier
                                     .width(8.dp)

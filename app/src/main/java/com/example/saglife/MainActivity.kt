@@ -12,6 +12,7 @@ import com.example.saglife.screen.forum.ForumScreen
 import com.example.saglife.screen.home.HomeScreen
 import com.example.saglife.screen.map.MapScreen
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -47,11 +49,13 @@ import com.example.saglife.screen.map.MapCreate
 import com.example.saglife.ui.theme.SagLifeTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 
 private val auth: FirebaseAuth = Firebase.auth
 
@@ -62,6 +66,7 @@ class MainActivity : ComponentActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         actionBar?.hide();
         setContent {
@@ -73,16 +78,77 @@ class MainActivity : ComponentActivity() {
 
 
 
+
+
+
+    }
+
+    // Declare the launcher at the top of your Activity/Fragment:
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // FCM SDK (and your app) can post notifications.
+        } else {
+            // TODO: Inform user that that your app will not show notifications.
+        }
+    }
+
+    private fun askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // FCM SDK (and your app) can post notifications.
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // TODO: display an educational UI explaining to the user the features that will be enabled
+                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
+                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
+                //       If the user selects "No thanks," allow the user to continue without notifications.
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
 
 
     @RequiresApi(Build.VERSION_CODES.M)
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun MyApp(navController: NavHostController) {
 
-        val clientLocation = getCLientLocation()
+        askNotificationPermission()
+
+        var clientLocation by remember { mutableStateOf(GeoPoint(48.40496419957457, -71.0574980680532)) }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            val REQUEST_LOCATION_PERMISSION_CODE = 128
+            requestPermissions(arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ), REQUEST_LOCATION_PERMISSION_CODE)
+        }
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location? ->
+                // Got last known location. In some rare situations this can be null.
+                if(location != null){
+                    val latitude = location.latitude
+                    val longitude = location.longitude
+                    clientLocation = GeoPoint(latitude,longitude)
+                    println("Latitude: $latitude, Longitude: $longitude")
+                }
+
+            }
 
         val currentUser = auth.currentUser
         var startpage = ""
@@ -260,40 +326,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun getCLientLocation() : GeoPoint{
-        var clientLocation = GeoPoint(0.0,0.0)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            val REQUEST_LOCATION_PERMISSION_CODE = 128
-            requestPermissions(arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ), REQUEST_LOCATION_PERMISSION_CODE)
-        }
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location : Location? ->
-                // Got last known location. In some rare situations this can be null.
-                if(location != null){
-                    val latitude = location.latitude
-                    val longitude = location.longitude
-                    clientLocation = GeoPoint(latitude,longitude)
-                    println("Latitude: $latitude, Longitude: $longitude")
-                }
-
-            }
-
-        return clientLocation
-    }
     }
 
 
