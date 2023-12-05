@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.saglife.R
 import com.example.saglife.database.getUsernameFromUid
@@ -89,8 +90,8 @@ fun ForumPostCard(navController: NavHostController, data: ForumPostItem) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()) {
-            Image(
-                painter = rememberAsyncImagePainter(selectedImageUrl),
+            AsyncImage(
+                model = selectedImageUrl,
                 contentDescription = "Image aggrandie du post",
                 modifier = Modifier.fillMaxSize()
                     .wrapContentHeight()
@@ -237,8 +238,8 @@ fun ForumPostCard(navController: NavHostController, data: ForumPostItem) {
             items(imageUrls) { imageUrl ->
                 val cleanedImageUrl = imageUrl.trim().removePrefix("[").removeSuffix("]")
                 println("imageUrl : $cleanedImageUrl")
-                Image(
-                    painter = rememberAsyncImagePainter(cleanedImageUrl),
+                AsyncImage(
+                    model = cleanedImageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

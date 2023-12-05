@@ -37,7 +37,7 @@ fun BottomNavigationBar(
             selected = selectedItem == 0, // Détermine si cette option est sélectionnée
             onClick = { onItemSelected(0) }, // Appelé lorsqu'on clique sur cette option
             icon = { Icon(imageVector = Icons.Default.Home, contentDescription = "Home") }, // Icône de l'option
-            label = { Text(text = "Accueil", style = MaterialTheme.typography.bodySmall) } // Texte de l'option
+            label = { Text(text = "Accueil", style = MaterialTheme.typography.labelSmall) } // Texte de l'option
         )
 
         // Deuxième option de navigation : Événements
@@ -45,7 +45,7 @@ fun BottomNavigationBar(
             selected = selectedItem == 1,
             onClick = { onItemSelected(1) },
             icon = { Icon(imageVector = Icons.Default.DateRange, contentDescription = "Calendar") },
-            label = { Text(text = "Evenements", style = MaterialTheme.typography.bodySmall) }
+            label = { Text(text = "Evenements", style = MaterialTheme.typography.labelSmall) }
         )
 
         // Troisième option de navigation : Carte
@@ -53,7 +53,7 @@ fun BottomNavigationBar(
             selected = selectedItem == 2,
             onClick = { onItemSelected(2) },
             icon = { Icon(imageVector = Icons.Default.Place, contentDescription = "Map") },
-            label = { Text(text = "Carte", style = MaterialTheme.typography.bodySmall) }
+            label = { Text(text = "Carte", style = MaterialTheme.typography.labelSmall) }
         )
 
         // Quatrième option de navigation : Forum
@@ -61,7 +61,7 @@ fun BottomNavigationBar(
             selected = selectedItem == 3,
             onClick = { onItemSelected(3) },
             icon = { Icon(imageVector = Icons.Default.MailOutline, contentDescription = "Forum") },
-            label = { Text(text = "Forum", style = MaterialTheme.typography.bodySmall) }
+            label = { Text(text = "Forum", style = MaterialTheme.typography.labelSmall) }
         )
     }
 }

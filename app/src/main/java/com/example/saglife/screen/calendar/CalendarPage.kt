@@ -115,11 +115,14 @@ fun EventCard(event: EventItem) {
     {
         urlImage = "https://firebasestorage.googleapis.com/v0/b/saglife-94b7c.appspot.com/o/images%2Fevent.jpg?alt=media&token=d050b68e-9cac-49f7-99dd-09d60d735e4a"
     }
-    var author = ""
+    var author by remember {mutableStateOf("Utilisateur supprimé")}
+
+    println("L'auteur est : ${event.author_id}")
 
     if (event.author_id != "") {
         getUsernameFromUid(event.author_id) { username ->
             author = username
+            println("L'auteur est : $author")
         }
     }
 
@@ -177,12 +180,13 @@ fun EventCard(event: EventItem) {
             }
         }
         Text(
-            text = author,
-            style = MaterialTheme.typography.bodyMedium,
+            text = "Créé par $author",
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier.padding(start = 16.dp),
         )
         Text(
             text = event.description,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(16.dp),
             textAlign = TextAlign.Justify
         )

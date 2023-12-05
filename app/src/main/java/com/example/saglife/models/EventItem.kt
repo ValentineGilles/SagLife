@@ -79,7 +79,7 @@ class EventItem(
             "Description" to this.description,
             "Filter" to this.filter,
             "Photo" to this.photoPath,
-            "Author" to this.author
+            "Author" to this.author_id
         )
     }
 

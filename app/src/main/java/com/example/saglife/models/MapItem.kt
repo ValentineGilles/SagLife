@@ -14,7 +14,7 @@ import com.google.firebase.firestore.firestore
  * @param description Description de l'élément.
  * @param photoPath Chemin de l'image associée à l'élément.
  */
-class MapItem(val id:String, val name: String, val adresseName: String, val adresseLocation: GeoPoint, val filter: String, val description: String, val photoPath: String, var note: Double, var distance: Float){
+class MapItem(val id:String, val author_id:String, val name: String, val adresseName: String, val adresseLocation: GeoPoint, val filter: String, val description: String, val photoPath: String, var note: Double, var distance: Float){
 
     /**
      * Convertit l'objet MapItem en une structure de données JSON.
@@ -23,6 +23,7 @@ class MapItem(val id:String, val name: String, val adresseName: String, val adre
      */
     fun toJson(): Map<String, Any> {
         return mapOf(
+            "Author_id" to this.author_id,
             "Name" to this.name,
             "AdresseName" to this.adresseName,
             "AdresseLocation" to this.adresseLocation,

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -146,180 +147,177 @@ fun EventCreate(navController: NavHostController) {
         }
     }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = "Ajouter un nouvel événement",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(bottom = 16.dp, top = 32.dp)
-        )
+        item {
+            Text(
+                text = "Ajouter un nouvel événement",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(bottom = 16.dp, top = 32.dp)
+            )
 
 // Champ de saisie du nom de l'événement
-        TextField(
-            shape = RoundedCornerShape(8.dp),
-            value = name,
-            onValueChange = { name = it },
-            label = { Text("Nom de l'événement") },
-            colors = TextFieldDefaults.textFieldColors(
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .widthIn(max = 300.dp) // Ajuster la largeur maximale
-                .padding(bottom = 16.dp)
-        )
-        // Sélecteur de date
-        DatePicker(state = datePickerState)
-        // Calcul de la date sélectionnée
-        val selectedDate = datePickerState.selectedDateMillis?.let {
-            Date(it)
-        }
-        // Sélecteurs d'heure de début et de fin
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("Horaires")
-            Row {
-                time_start = TimePickerDialog(state = startTimePickerState, time = time_start)
-                Text("-")
-                time_stop = TimePickerDialog(state = stopTimePickerState, time = time_stop)
+            TextField(
+                shape = RoundedCornerShape(8.dp),
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Nom de l'événement") },
+                colors = TextFieldDefaults.textFieldColors(
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .widthIn(max = 300.dp) // Ajuster la largeur maximale
+                    .padding(bottom = 16.dp)
+            )
+            // Sélecteur de date
+            DatePicker(state = datePickerState)
+            // Calcul de la date sélectionnée
+            val selectedDate = datePickerState.selectedDateMillis?.let {
+                Date(it)
             }
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            selectedImageUri.value?.let { uri ->
-                DisplayImage(uri) {
-                    // Callback pour supprimer l'image
-                    selectedImageUri.value = null
+            // Sélecteurs d'heure de début et de fin
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Horaires")
+                Row {
+                    time_start = TimePickerDialog(state = startTimePickerState, time = time_start)
+                    Text("-")
+                    time_stop = TimePickerDialog(state = stopTimePickerState, time = time_stop)
                 }
             }
-        }
 
-        // Bouton pour choisir une image
-        Button(
-            onClick = {
-                imageLauncher.launch("image/*")
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
-        ) {
-            Text("Ajouter une image")
-        }
-        // Champ de saisie de la description
-        TextField(
-            shape = RoundedCornerShape(8.dp),
-            value = description,
-            onValueChange = { description = it },
-            label = { Text("Description") },
-            colors = TextFieldDefaults.textFieldColors(
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
-                .height(200.dp)
-        )
-        // Liste déroulante des filtres
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(filterList) { filter ->
-                androidx.compose.material3.FilterChip(
-                    onClick = {
-                        selectedFilter = filter
-                    },
-                    label = {
-                        Text(filter)
-                    },
-                    selected = selectedFilter == filter,
-                    leadingIcon = if (selectedFilter == filter) {
-                        {
-                            Icon(
-                                imageVector = Icons.Filled.Done,
-                                contentDescription = "Done icon",
-                                modifier = Modifier.size(FilterChipDefaults.IconSize)
-                            )
-                        }
-                    } else {
-                        null
-                    },
-                )
-            }
-        }
-
-
-
-
-
-
-        // Bouton pour enregistrer l'événement
-        Button(
-            onClick = {
-                if (name.text.isNotBlank() && description.text.isNotBlank() && selectedDate != null && selectedImageUri.value != null) {
-                    val imageUri = selectedImageUri.value!!
-
-                    // Construction des objets de date pour le début et la fin
-                    val dateStart = Date(selectedDate.time)
-                    dateStart.hours = startTimePickerState.hour
-                    dateStart.minutes = startTimePickerState.minute
-                    val dateStop = Date(selectedDate.time)
-                    dateStop.hours = stopTimePickerState.hour
-                    dateStop.minutes = stopTimePickerState.minute
-
-                    // Enregistrer l'image dans Firebase Storage
-                    val storageRef = Firebase.storage.reference
-                    val imageRef = storageRef.child("images/events/${UUID.randomUUID()}")
-
-                    val uploadTask = imageRef.putFile(imageUri)
-
-                    uploadTask.addOnSuccessListener { taskSnapshot ->
-                        // L'image a été téléchargée avec succès, obtenez l'URL de téléchargement
-                        imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                            val imageUrl = downloadUri.toString()
-
-                            // Création de l'objet EventItem
-                            val event = auth.currentUser?.uid?.let {
-                                EventItem(
-                                    author = it,
-                                    id = UUID.randomUUID().toString(),
-                                    name = name.text,
-                                    dateStart = dateStart,
-                                    dateEnd = dateStop,
-                                    filter = selectedFilter,
-                                    description = description.text,
-                                    photoPath = imageUrl
-                                )
-                            }
-
-                            // Enregistrement de l'événement dans Firebase
-                            event?.toFirebase()
-
-                            // Retour à l'écran précédent
-                            navController.popBackStack()
-                        }
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                selectedImageUri.value?.let { uri ->
+                    DisplayImage(uri) {
+                        // Callback pour supprimer l'image
+                        selectedImageUri.value = null
                     }
                 }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text("Enregistrer")
+            }
+
+            // Bouton pour choisir une image
+            Button(
+                onClick = {
+                    imageLauncher.launch("image/*")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            ) {
+                Text("Ajouter une image")
+            }
+            // Champ de saisie de la description
+            TextField(
+                shape = RoundedCornerShape(8.dp),
+                value = description,
+                onValueChange = { description = it },
+                label = { Text("Description") },
+                colors = TextFieldDefaults.textFieldColors(
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+                    .height(200.dp)
+            )
+            // Liste déroulante des filtres
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(filterList) { filter ->
+                    androidx.compose.material3.FilterChip(
+                        onClick = {
+                            selectedFilter = filter
+                        },
+                        label = {
+                            Text(filter)
+                        },
+                        selected = selectedFilter == filter,
+                        leadingIcon = if (selectedFilter == filter) {
+                            {
+                                Icon(
+                                    imageVector = Icons.Filled.Done,
+                                    contentDescription = "Done icon",
+                                    modifier = Modifier.size(FilterChipDefaults.IconSize)
+                                )
+                            }
+                        } else {
+                            null
+                        },
+                    )
+                }
+            }
+
+
+            // Bouton pour enregistrer l'événement
+            Button(
+                onClick = {
+                    if (name.text.isNotBlank() && description.text.isNotBlank() && selectedDate != null && selectedImageUri.value != null) {
+                        val imageUri = selectedImageUri.value!!
+
+                        // Construction des objets de date pour le début et la fin
+                        val dateStart = Date(selectedDate.time)
+                        dateStart.hours = startTimePickerState.hour
+                        dateStart.minutes = startTimePickerState.minute
+                        val dateStop = Date(selectedDate.time)
+                        dateStop.hours = stopTimePickerState.hour
+                        dateStop.minutes = stopTimePickerState.minute
+
+                        // Enregistrer l'image dans Firebase Storage
+                        val storageRef = Firebase.storage.reference
+                        val imageRef = storageRef.child("images/events/${UUID.randomUUID()}")
+
+                        val uploadTask = imageRef.putFile(imageUri)
+
+                        uploadTask.addOnSuccessListener { taskSnapshot ->
+                            // L'image a été téléchargée avec succès, obtenez l'URL de téléchargement
+                            imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                                val imageUrl = downloadUri.toString()
+
+                                // Création de l'objet EventItem
+                                val event = auth.currentUser?.uid?.let {
+                                    EventItem(
+                                        author_id = it,
+                                        id = UUID.randomUUID().toString(),
+                                        name = name.text,
+                                        dateStart = dateStart,
+                                        dateEnd = dateStop,
+                                        filter = selectedFilter,
+                                        description = description.text,
+                                        photoPath = imageUrl
+                                    )
+                                }
+
+                                // Enregistrement de l'événement dans Firebase
+                                event?.toFirebase()
+
+                                // Retour à l'écran précédent
+                                navController.popBackStack()
+                            }
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text("Enregistrer")
+            }
         }
     }
 }
