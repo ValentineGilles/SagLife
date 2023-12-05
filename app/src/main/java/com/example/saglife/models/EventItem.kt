@@ -22,8 +22,9 @@ class EventItem(
     val description: String,
     val photoPath: String,
     val filter: String,
-    val author: String
+    val author_id: String
 ){
+
 
     /**
      * Obtient le jour du mois et le mois formaté.

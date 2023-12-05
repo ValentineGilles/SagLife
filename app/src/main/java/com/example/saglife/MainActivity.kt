@@ -1,24 +1,16 @@
 package com.example.saglife
 
-import LocationHelper
 import Routes
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
-
-import com.example.saglife.screen.calendar.CalendarScreen
-import com.example.saglife.screen.forum.ForumScreen
-import com.example.saglife.screen.home.HomeScreen
-import com.example.saglife.screen.map.MapScreen
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.compose.setContent
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,30 +24,32 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.saglife.screen.navbars.BottomNavigationBar
-import com.example.saglife.screen.forum.ForumPage
-import com.example.saglife.screen.calendar.EventScreen
-import com.example.saglife.screen.navbars.CustomTopAppBar
-import com.example.saglife.screen.map.MapInfoScreen
 import com.example.saglife.screen.account.ForgotPasswordScreen
 import com.example.saglife.screen.account.LoginScreen
 import com.example.saglife.screen.account.ProfileScreen
 import com.example.saglife.screen.account.RegistrationScreen
+import com.example.saglife.screen.calendar.CalendarScreen
 import com.example.saglife.screen.calendar.EventCreate
+import com.example.saglife.screen.calendar.EventScreen
 import com.example.saglife.screen.forum.ForumCreatePost
 import com.example.saglife.screen.forum.ForumModifyComment
 import com.example.saglife.screen.forum.ForumModifyPost
+import com.example.saglife.screen.forum.ForumPage
+import com.example.saglife.screen.forum.ForumScreen
+import com.example.saglife.screen.home.HomeScreen
 import com.example.saglife.screen.map.MapCreate
+import com.example.saglife.screen.map.MapInfoScreen
+import com.example.saglife.screen.map.MapScreen
+import com.example.saglife.screen.navbars.BottomNavigationBar
+import com.example.saglife.screen.navbars.CustomTopAppBar
 import com.example.saglife.ui.theme.SagLifeTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 
 private val auth: FirebaseAuth = Firebase.auth
 
@@ -269,7 +263,6 @@ class MainActivity : ComponentActivity() {
                     isBottomBarVisible.value = false
                     isTopBarBack.value = true
                     EventScreen(
-                        navController = navController,
                         backStackEntry.arguments?.getString("id")
                     )
                 }

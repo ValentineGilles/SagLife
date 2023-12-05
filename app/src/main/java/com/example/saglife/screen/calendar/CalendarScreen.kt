@@ -219,9 +219,8 @@ fun EventComposant(event: EventItem, navController: NavHostController) {
             contentAlignment = Alignment.BottomCenter,
 
         ) {
-            println("urimage : ${urlImage}")
-            Image(
-                painter = rememberAsyncImagePainter(urlImage),
+            AsyncImage(
+                model = urlImage,
                 contentDescription = "Image de l'événement",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxWidth(),
