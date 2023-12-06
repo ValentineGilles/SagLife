@@ -20,33 +20,33 @@ import androidx.core.view.ViewCompat
 
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
+    primary = PurpleGrey80,
     onPrimary = Color.White,
 
-    secondary = Color.LightGray,
+    secondary = DarkPurpleGrey,
     onSecondary = Color.White,
 
-    tertiary = PurpleGrey80 ,
+    tertiary = PurplePrimaryDark,
     onTertiary = Color.White,
 
-    background = Color(0xFF3D3C3E),
+    background = DarkGrey,
     onBackground = Color.White,
 
-    surface = Color(0xFF2E2D2F),
+    surface = Dark,
     onSurface = Color.White,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    onPrimary = Color.Black,
+    primary = PurplePrimaryDark,
+    onPrimary = Color.White,
 
-    secondary = Color.LightGray,
-    onSecondary = Color.Black,
+    secondary = LightPurple3,
+    onSecondary = Dark,
 
     tertiary = PurpleGrey80,
     onTertiary = Color.White,
 
-    background = Color(0xFFF3EDF7),
+    background = LightPurple4,
     onBackground = Color(0xFF000000),
 
     surface = Color.White,

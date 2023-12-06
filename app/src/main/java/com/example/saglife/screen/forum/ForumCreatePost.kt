@@ -13,17 +13,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddAPhoto
+import androidx.compose.material.icons.filled.CameraEnhance
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -39,6 +47,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
@@ -94,145 +103,190 @@ fun ForumCreatePost(navController: NavHostController) {
                 }
         }
     }
-
+    Card(
+        modifier = Modifier.padding(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+    ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {item {
-        Text(
-            text = "Créer un nouveau post",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(bottom = 16.dp, top= 32.dp)
-        )
-    }
-        item{
-            TextField(
-                shape = RoundedCornerShape(8.dp),
-                value = title,
-                onValueChange = { title = it },
-                label = { Text("Titre du post") },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .widthIn(max = 300.dp) // Ajuster la largeur maximale
-                    .padding(bottom = 16.dp)
-            )
-        }
-
+    ) {
         item {
-            TextField(
-                shape = RoundedCornerShape(8.dp),
-                value = description,
-                onValueChange = { description = it },
-                label = { Text("Description du post") },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-                    .height(200.dp)
-            )
-        }
-
-        item {
-            LazyRow(
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(filterList) { filter ->
-                FilterCreatePostChip(
-                    onClick = { filterName ->
-                        filter_chip = filterName
-                    },
-                    filter_chip,
-                    filter,
-                    ""
+                Text(
+                    text = "Créer un nouveau post",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(bottom = 16.dp, top = 24.dp)
                 )
             }
-        }
-            LazyRow(
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(selectedImageUris) { uri ->
-                    DisplaySquareImage(uri) {
-                        // Callback pour supprimer l'image
-                        selectedImageUris = selectedImageUris.filter { it != uri }.toMutableList()
-                    }
-                }
+            item {
+                OutlinedTextField(
+                    shape = RoundedCornerShape(16.dp),
+                    value = title,
+                    onValueChange = { title = it },
+                    label = { Text("Titre du post") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .widthIn(max = 300.dp) // Ajuster la largeur maximale
+                        .padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                        focusedContainerColor = MaterialTheme.colorScheme.background,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onBackground,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
+                    )
+                )
             }
 
+            item {
+                OutlinedTextField(
+                    shape = RoundedCornerShape(16.dp),
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Description du post") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
 
-            Button(
-                onClick = {
-                    imageLauncher.launch("image/*")
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            ) {
-                Text("Ajouter des images")}
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                        focusedContainerColor = MaterialTheme.colorScheme.background,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onBackground,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
+                    )
+                )
+            }
 
-            Button(
-                onClick = {
-                    val imagesUploadedUrls = mutableListOf<String>()
+            item {
+                Text(
+                    text = "Ajouter un filtre",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 16.dp, top = 16.dp),
+                    textAlign = TextAlign.Start)
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(filterList) { filter ->
+                        FilterCreatePostChip(
+                            onClick = { filterName ->
+                                filter_chip = filterName
+                            },
+                            filter_chip,
+                            filter,
+                            ""
+                        )
+                    }
+                }
+                Text(
+                    text = "Ajouter des images",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 16.dp, top = 16.dp),
+                    textAlign = TextAlign.Start
+                )
 
-                    val storageRef = Firebase.storage.reference
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 32.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(selectedImageUris) { uri ->
+                        DisplaySquareImage(uri) {
+                            // Callback pour supprimer l'image
+                            selectedImageUris =
+                                selectedImageUris.filter { it != uri }.toMutableList()
+                        }
+                    }
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(shape = RoundedCornerShape(8.dp))
+                                .background(MaterialTheme.colorScheme.secondary)
+                        ) {
+                            IconButton(
+                                onClick = {
+                                    imageLauncher.launch("image/*")
+                                },
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .padding(4.dp),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.AddAPhoto,
+                                    contentDescription = "Ajouter une image",
+                                    tint = MaterialTheme.colorScheme.onSecondary
+                                )
+                            }
+                        }
+                    }
+                }
 
-                    val uploadTasks = selectedImageUris.map { uri ->
-                        val imageRef = storageRef.child("images/posts/${UUID.randomUUID()}")
-                        val uploadTask = imageRef.putFile(uri)
 
-                        uploadTask.addOnSuccessListener { taskSnapshot ->
-                            // L'image a été téléchargée avec succès, obtenez l'URL de téléchargement
-                            imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                                val imageUrl = downloadUri.toString()
-                                imagesUploadedUrls.add(imageUrl)
+                Button(
+                    onClick = {
+                        val imagesUploadedUrls = mutableListOf<String>()
 
-                                if (imagesUploadedUrls.size == selectedImageUris.size) {
-                                    // Toutes les images ont été téléchargées, créez le post avec les URLs d'images
-                                    val newPost = auth.currentUser?.uid?.let {
-                                        ForumPostItem(
-                                            id = UUID.randomUUID().toString(),
-                                            author = it,
-                                            date = Calendar.getInstance().time,
-                                            icon = "ic_profile",
-                                            title = title.text,
-                                            nb = 0,
-                                            filter = filter_chip,
-                                            description = description.text,
-                                            imageUrls = imagesUploadedUrls
-                                        )
-                                    }
-                                    if (filter_chip != "") {
-                                        if (newPost != null) {
-                                            savePostToDatabase(newPost)
+                        val storageRef = Firebase.storage.reference
+
+                        val uploadTasks = selectedImageUris.map { uri ->
+                            val imageRef = storageRef.child("images/posts/${UUID.randomUUID()}")
+                            val uploadTask = imageRef.putFile(uri)
+
+                            uploadTask.addOnSuccessListener { taskSnapshot ->
+                                // L'image a été téléchargée avec succès, obtenez l'URL de téléchargement
+                                imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                                    val imageUrl = downloadUri.toString()
+                                    imagesUploadedUrls.add(imageUrl)
+
+                                    if (imagesUploadedUrls.size == selectedImageUris.size) {
+                                        // Toutes les images ont été téléchargées, créez le post avec les URLs d'images
+                                        val newPost = auth.currentUser?.uid?.let {
+                                            ForumPostItem(
+                                                id = UUID.randomUUID().toString(),
+                                                author = it,
+                                                date = Calendar.getInstance().time,
+                                                icon = "ic_profile",
+                                                title = title.text,
+                                                nb = 0,
+                                                filter = filter_chip,
+                                                description = description.text,
+                                                imageUrls = imagesUploadedUrls
+                                            )
                                         }
-                                        navController.navigate("forum")
+                                        if (filter_chip != "") {
+                                            if (newPost != null) {
+                                                savePostToDatabase(newPost)
+                                            }
+                                            navController.navigate("forum")
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .widthIn(max = 300.dp)
-            ) {
-                Text("Créer le post")
-            }
+                    },
+                    modifier = Modifier
+                        .wrapContentSize(),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Text("Créer le post")
+                }
 
+            }
         }
     }
-
-
-
 }
 
 // Fonction pour enregistrer un post dans la base de données Firestore
