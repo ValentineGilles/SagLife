@@ -189,6 +189,7 @@ fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
             onClick = {
                 navController.navigate("map/create")
             },
+            containerColor = MaterialTheme.colorScheme.primary
         ) {
             Icon(
                 imageVector = Icons.Default.Add,

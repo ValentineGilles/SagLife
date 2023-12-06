@@ -26,16 +26,22 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -56,6 +62,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
@@ -147,176 +154,223 @@ fun EventCreate(navController: NavHostController) {
         }
     }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+    Card(
+        modifier = Modifier.padding(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
     ) {
-        item {
-            Text(
-                text = "Ajouter un nouvel événement",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(bottom = 16.dp, top = 32.dp)
-            )
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item {
+                Text(
+                    text = "Nouvel événement",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(bottom = 16.dp, top = 16.dp)
+                )
 
 // Champ de saisie du nom de l'événement
-            TextField(
-                shape = RoundedCornerShape(8.dp),
-                value = name,
-                onValueChange = { name = it },
-                label = { Text("Nom de l'événement") },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .widthIn(max = 300.dp) // Ajuster la largeur maximale
-                    .padding(bottom = 16.dp)
-            )
-            // Sélecteur de date
-            DatePicker(state = datePickerState)
-            // Calcul de la date sélectionnée
-            val selectedDate = datePickerState.selectedDateMillis?.let {
-                Date(it)
-            }
-            // Sélecteurs d'heure de début et de fin
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text("Horaires")
-                Row {
-                    time_start = TimePickerDialog(state = startTimePickerState, time = time_start)
-                    Text("-")
-                    time_stop = TimePickerDialog(state = stopTimePickerState, time = time_stop)
-                }
-            }
+                OutlinedTextField(
+                    shape = RoundedCornerShape(8.dp),
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Nom de l'événement") },
 
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                selectedImageUri.value?.let { uri ->
-                    DisplayImage(uri) {
-                        // Callback pour supprimer l'image
-                        selectedImageUri.value = null
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .widthIn(max = 300.dp) // Ajuster la largeur maximale
+                        .padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                        focusedContainerColor = MaterialTheme.colorScheme.background,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onBackground,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
+                    )
+                )
+                // Sélecteur de date
+                DatePicker(state = datePickerState,
+                    colors = DatePickerDefaults.colors(
+                        containerColor = MaterialTheme.colorScheme.background,
+                    )
+                )
+
+                // Calcul de la date sélectionnée
+                val selectedDate = datePickerState.selectedDateMillis?.let {
+                    Date(it)
+                }
+                // Sélecteurs d'heure de début et de fin
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Horaire",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(bottom = 16.dp, top = 16.dp)
+                    )
+                    Row {
+                        time_start =
+                            TimePickerDialog(state = startTimePickerState, time = time_start)
+                        Text("-")
+                        time_stop = TimePickerDialog(state = stopTimePickerState, time = time_stop)
                     }
                 }
-            }
 
-            // Bouton pour choisir une image
-            Button(
-                onClick = {
-                    imageLauncher.launch("image/*")
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            ) {
-                Text("Ajouter une image")
-            }
-            // Champ de saisie de la description
-            TextField(
-                shape = RoundedCornerShape(8.dp),
-                value = description,
-                onValueChange = { description = it },
-                label = { Text("Description") },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-                    .height(200.dp)
-            )
-            // Liste déroulante des filtres
-            LazyRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(filterList) { filter ->
-                    androidx.compose.material3.FilterChip(
-                        onClick = {
-                            selectedFilter = filter
-                        },
-                        label = {
-                            Text(filter)
-                        },
-                        selected = selectedFilter == filter,
-                        leadingIcon = if (selectedFilter == filter) {
-                            {
-                                Icon(
-                                    imageVector = Icons.Filled.Done,
-                                    contentDescription = "Done icon",
-                                    modifier = Modifier.size(FilterChipDefaults.IconSize)
-                                )
-                            }
-                        } else {
-                            null
-                        },
-                    )
-                }
-            }
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 32.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
 
-
-            // Bouton pour enregistrer l'événement
-            Button(
-                onClick = {
-                    if (name.text.isNotBlank() && description.text.isNotBlank() && selectedDate != null && selectedImageUri.value != null) {
-                        val imageUri = selectedImageUri.value!!
-
-                        // Construction des objets de date pour le début et la fin
-                        val dateStart = Date(selectedDate.time)
-                        dateStart.hours = startTimePickerState.hour
-                        dateStart.minutes = startTimePickerState.minute
-                        val dateStop = Date(selectedDate.time)
-                        dateStop.hours = stopTimePickerState.hour
-                        dateStop.minutes = stopTimePickerState.minute
-
-                        // Enregistrer l'image dans Firebase Storage
-                        val storageRef = Firebase.storage.reference
-                        val imageRef = storageRef.child("images/events/${UUID.randomUUID()}")
-
-                        val uploadTask = imageRef.putFile(imageUri)
-
-                        uploadTask.addOnSuccessListener { taskSnapshot ->
-                            // L'image a été téléchargée avec succès, obtenez l'URL de téléchargement
-                            imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                                val imageUrl = downloadUri.toString()
-
-                                // Création de l'objet EventItem
-                                val event = auth.currentUser?.uid?.let {
-                                    EventItem(
-                                        author_id = it,
-                                        id = UUID.randomUUID().toString(),
-                                        name = name.text,
-                                        dateStart = dateStart,
-                                        dateEnd = dateStop,
-                                        filter = selectedFilter,
-                                        description = description.text,
-                                        photoPath = imageUrl
-                                    )
-                                }
-
-                                // Enregistrement de l'événement dans Firebase
-                                event?.toFirebase()
-
-                                // Retour à l'écran précédent
-                                navController.popBackStack()
+                ) {
+                    if (selectedImageUri.value == null) {
+                        IconButton(
+                            onClick = {
+                                imageLauncher.launch("image/*")
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
+                                .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(8.dp)),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.AddAPhoto,
+                                contentDescription = "Ajouter une image",
+                                tint = MaterialTheme.colorScheme.onSecondary,
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
+                    } else {
+                        selectedImageUri.value?.let { uri ->
+                            DisplayImage(uri) {
+                                // Callback pour supprimer l'image
+                                selectedImageUri.value = null
                             }
                         }
+
                     }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Text("Enregistrer")
+                }
+
+                Text(
+                    text = "Ajouter une image de couverture",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 16.dp, top = 16.dp),
+                    textAlign = TextAlign.Start
+                )
+
+                // Champ de saisie de la description
+                OutlinedTextField(
+                    shape = RoundedCornerShape(8.dp),
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Description") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .widthIn(max = 300.dp) // Ajuster la largeur maximale
+                        .padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                        focusedContainerColor = MaterialTheme.colorScheme.background,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onBackground,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
+                    )
+                )
+                // Liste déroulante des filtres
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(filterList) { filter ->
+                        androidx.compose.material3.FilterChip(
+                            onClick = {
+                                selectedFilter = filter
+                            },
+                            label = {
+                                Text(filter)
+                            },
+                            selected = selectedFilter == filter,
+                            leadingIcon = if (selectedFilter == filter) {
+                                {
+                                    Icon(
+                                        imageVector = Icons.Filled.Done,
+                                        contentDescription = "Done icon",
+                                        modifier = Modifier.size(FilterChipDefaults.IconSize)
+                                    )
+                                }
+                            } else {
+                                null
+                            },
+                        )
+                    }
+                }
+
+
+                // Bouton pour enregistrer l'événement
+                Button(
+                    onClick = {
+                        if (name.text.isNotBlank() && description.text.isNotBlank() && selectedDate != null && selectedImageUri.value != null) {
+                            val imageUri = selectedImageUri.value!!
+
+                            // Construction des objets de date pour le début et la fin
+                            val dateStart = Date(selectedDate.time)
+                            dateStart.hours = startTimePickerState.hour
+                            dateStart.minutes = startTimePickerState.minute
+                            val dateStop = Date(selectedDate.time)
+                            dateStop.hours = stopTimePickerState.hour
+                            dateStop.minutes = stopTimePickerState.minute
+
+                            // Enregistrer l'image dans Firebase Storage
+                            val storageRef = Firebase.storage.reference
+                            val imageRef = storageRef.child("images/events/${UUID.randomUUID()}")
+
+                            val uploadTask = imageRef.putFile(imageUri)
+
+                            uploadTask.addOnSuccessListener { taskSnapshot ->
+                                // L'image a été téléchargée avec succès, obtenez l'URL de téléchargement
+                                imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                                    val imageUrl = downloadUri.toString()
+
+                                    // Création de l'objet EventItem
+                                    val event = auth.currentUser?.uid?.let {
+                                        EventItem(
+                                            author_id = it,
+                                            id = UUID.randomUUID().toString(),
+                                            name = name.text,
+                                            dateStart = dateStart,
+                                            dateEnd = dateStop,
+                                            filter = selectedFilter,
+                                            description = description.text,
+                                            photoPath = imageUrl
+                                        )
+                                    }
+
+                                    // Enregistrement de l'événement dans Firebase
+                                    event?.toFirebase()
+
+                                    // Retour à l'écran précédent
+                                    navController.popBackStack()
+                                }
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text("Enregistrer")
+                }
             }
         }
     }

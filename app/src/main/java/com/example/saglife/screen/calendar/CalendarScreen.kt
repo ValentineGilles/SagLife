@@ -163,6 +163,7 @@ fun CalendarScreen(navController: NavHostController) {
             onClick = {
                 navController.navigate("event/create")
             },
+            containerColor = MaterialTheme.colorScheme.primary
         ) {
             Icon(
                 imageVector = Icons.Default.Add,

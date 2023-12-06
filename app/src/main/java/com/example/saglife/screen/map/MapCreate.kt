@@ -7,7 +7,10 @@ import android.location.Geocoder
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,18 +19,27 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -39,9 +51,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.saglife.models.MapItem
@@ -114,7 +128,12 @@ fun MapCreate(navController: NavHostController) {
     }
 
 
-
+Card(modifier = Modifier.padding(16.dp),
+    colors = CardDefaults.cardColors(
+        containerColor = MaterialTheme.colorScheme.surface,
+    ),
+)
+{
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -130,14 +149,18 @@ fun MapCreate(navController: NavHostController) {
             )
 
 // Champ de saisie pour le nom de l'établissement
-            TextField(
+            OutlinedTextField(
                 shape = RoundedCornerShape(8.dp),
                 value = name,
                 onValueChange = { name = it },
                 label = { Text("Nom de l'établissement") },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = Color.Transparent,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onBackground,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -145,14 +168,18 @@ fun MapCreate(navController: NavHostController) {
                     .padding(bottom = 16.dp)
             )
             // Champ de saisie pour l'adresse
-            TextField(
+            OutlinedTextField(
                 shape = RoundedCornerShape(8.dp),
                 value = locationName,
                 onValueChange = { locationName = it },
                 label = { Text("Adresse") },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = Color.Transparent,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onBackground,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -160,14 +187,18 @@ fun MapCreate(navController: NavHostController) {
                     .padding(bottom = 16.dp)
             )
             // Champ de saisie pour la description
-            TextField(
+            OutlinedTextField(
                 shape = RoundedCornerShape(8.dp),
                 value = description,
                 onValueChange = { description = it },
                 label = { Text("Description") },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = Color.Transparent,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onBackground,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -181,7 +212,7 @@ fun MapCreate(navController: NavHostController) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(filterList) { filter ->
-                    androidx.compose.material3.FilterChip(
+                    FilterChip(
                         onClick = {
                             selectedFilter = filter
                         },
@@ -203,33 +234,54 @@ fun MapCreate(navController: NavHostController) {
                     )
                 }
             }
+
+            Text(
+                text = "Ajouter une image de couverture",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 16.dp, top = 16.dp),
+                textAlign = TextAlign.Start
+            )
+
             Row(
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 32.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+
             ) {
-                selectedImageUri.value?.let { uri ->
-                    DisplayImage(uri) {
-                        // Callback pour supprimer l'image
-                        selectedImageUri.value = null
+                if (selectedImageUri.value == null) {
+                    IconButton(
+                        onClick = {
+                            imageLauncher.launch("image/*")
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(8.dp)),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AddAPhoto,
+                            contentDescription = "Ajouter une image",
+                            tint = MaterialTheme.colorScheme.onSecondary,
+                            modifier = Modifier.size(50.dp)
+                        )
                     }
+                } else {
+                        selectedImageUri.value?.let { uri ->
+                            DisplayImage(uri) {
+                                // Callback pour supprimer l'image
+                                selectedImageUri.value = null
+                            }
+                        }
+
                 }
             }
 
-            // Bouton pour choisir une image
-            Button(
-                onClick = {
-                    imageLauncher.launch("image/*")
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            ) {
-                Text("Ajouter une image")
-            }
 
 
             // Bouton pour enregistrer les informations sur la carte
-            ElevatedButton(
+            Button(
                 onClick = {
 
                     // Vérification des champs non vides avant d'enregistrer
@@ -287,12 +339,14 @@ fun MapCreate(navController: NavHostController) {
 
                 },
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .wrapContentSize(),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text("Enregistrer")
             }
         }
     }
+}
 
 }
 
