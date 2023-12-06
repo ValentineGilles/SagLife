@@ -234,22 +234,26 @@ fun ForumPostCard(navController: NavHostController, data: ForumPostItem) {
             }
         }
 
-        LazyRow(modifier = Modifier.padding(16.dp)) {
-            items(imageUrls) { imageUrl ->
-                val cleanedImageUrl = imageUrl.trim().removePrefix("[").removeSuffix("]")
-                println("imageUrl : $cleanedImageUrl")
-                AsyncImage(
-                    model = cleanedImageUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .padding(end = 8.dp)
-                        .clickable {
-                            selectedImageUrl = cleanedImageUrl
-                            showDialog = true
-                        }
-                )
+
+        if (imageUrls.toString() != "[null]") {
+            println("imageUrls : $imageUrls")
+            LazyRow(modifier = Modifier.padding(16.dp)) {
+                items(imageUrls) { imageUrl ->
+                    val cleanedImageUrl = imageUrl.trim().removePrefix("[").removeSuffix("]")
+                    println("imageUrl : $cleanedImageUrl")
+                    AsyncImage(
+                        model = cleanedImageUrl,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(100.dp)
+                            .padding(end = 8.dp)
+                            .clickable {
+                                selectedImageUrl = cleanedImageUrl
+                                showDialog = true
+                            }
+                    )
+                }
             }
         }
 

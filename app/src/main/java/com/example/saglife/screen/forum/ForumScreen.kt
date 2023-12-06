@@ -133,7 +133,7 @@ fun ForumScreen(navController: NavHostController) {
             ) {
                 // Affiche la liste des filtres sous forme de puce
                 LazyRow(
-                    modifier = Modifier.padding(8.dp),
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(filterList) { filter ->

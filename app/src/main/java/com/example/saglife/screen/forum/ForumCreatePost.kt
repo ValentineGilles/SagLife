@@ -151,7 +151,8 @@ fun ForumCreatePost(navController: NavHostController) {
                         filter_chip = filterName
                     },
                     filter_chip,
-                    filter
+                    filter,
+                    ""
                 )
             }
         }

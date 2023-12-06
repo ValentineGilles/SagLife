@@ -206,7 +206,8 @@ fun signUpWithFirebase(
     navController: NavHostController,
     onSignUpComplete: (success: Boolean, errorMessage: String?) -> Unit
 ) {
-    auth.createUserWithEmailAndPassword(email, password)
+    val trim_email = email.trim()
+    auth.createUserWithEmailAndPassword(trim_email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // L'utilisateur a été créé avec succès

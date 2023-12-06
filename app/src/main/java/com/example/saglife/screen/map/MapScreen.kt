@@ -145,6 +145,7 @@ fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
             ) {
                 items(filterList) { filter ->
                     FilterChip(
+
                         onClick = { filterName ->
                             // Filtrage des cartes en fonction des filtres sélectionnés
                             if (selectedFilters.contains(filterName)) {
@@ -164,10 +165,9 @@ fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
                                 mapsFiltered = allMaps
                             }
                             println(mapsFiltered)
-
-
                         },
-                        filter
+                        filter,
+
                     )
                 }
             }

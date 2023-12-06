@@ -198,7 +198,8 @@ fun LoginScreen(navController: NavHostController) {
 
 // Fonction pour valider la connexion
 fun isValidLogin(email: String, password: String, navController: NavHostController, onLoginComplete: (success: Boolean, errorMessage: String?) -> Unit) {
-    auth.signInWithEmailAndPassword(email, password)
+    val trim_email = email.trim()
+    auth.signInWithEmailAndPassword(trim_email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // Authentification réussie, naviguez vers l'écran d'accueil

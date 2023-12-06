@@ -22,7 +22,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.example.saglife.models.ForumFilterItem
 
@@ -57,6 +59,15 @@ fun FilterChip(onClick: (String) -> Unit, filtername: ForumFilterItem) {
         } else {
             null
         },
+        // Définir la couleur de fond du chip en fonction de l'état de sélection
+
+        colors = FilterChipDefaults.filterChipColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            labelColor = MaterialTheme.colorScheme.onSurface,
+            selectedLabelColor = MaterialTheme.colorScheme.onTertiary,
+            selectedLeadingIconColor = MaterialTheme.colorScheme.onTertiary,
+            selectedContainerColor = MaterialTheme.colorScheme.tertiary,
+        )
     )
 }
 
@@ -64,10 +75,13 @@ fun FilterChip(onClick: (String) -> Unit, filtername: ForumFilterItem) {
 fun FilterCreatePostChip(
     onClick: (String) -> Unit,
     selectedFilters: String,
-    filtername: ForumFilterItem
+    filtername: ForumFilterItem,
+    defaultFilter: String
 ) {
     // Vérifier si ce chip est sélectionné en fonction du nom du filtre
-    val isSelected = selectedFilters == filtername.name
+    println("defaultFilter : $defaultFilter")
+    val isSelected = selectedFilters == filtername.name || filtername.name == defaultFilter
+    println("isSelected : $isSelected")
 
     // Composable Card qui affiche le chip pour la création de messages
     Card(
@@ -86,9 +100,11 @@ fun FilterCreatePostChip(
             },
         // Définir la couleur de la Card en fonction de l'état de sélection
         colors = if (isSelected) CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary
+            containerColor = MaterialTheme.colorScheme.tertiary,
+            contentColor = MaterialTheme.colorScheme.onTertiary
         ) else CardDefaults.cardColors(
-            containerColor = Color.Transparent
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
         )
     ) {
         // Afficher le nom du filtre avec une mise en forme de style
