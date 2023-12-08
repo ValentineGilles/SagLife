@@ -86,6 +86,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
         mutableStateOf(
             MapItem(
                 "id",
+                "Utilisateur supprimé",
                 "Nom de l'établissement",
                 "Adresse",
                 GeoPoint(0.0, 0.0),
@@ -98,7 +99,13 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
         )
     }
     // URL de l'image à afficher
-    var urlImage : Uri? by remember { mutableStateOf(null) }
+    var urlImage = map.photoPath
+    if (!urlImage.startsWith("https://firebasestorage.googleapis.com/"))
+    {
+        urlImage = "https://firebasestorage.googleapis.com/v0/b/saglife-94b7c.appspot.com/o/images%2Fevent.jpg?alt=media&token=d050b68e-9cac-49f7-99dd-09d60d735e4a"
+    }
+    var author by remember {mutableStateOf("Utilisateur supprimé")}
+
     // État du chargement des données
     var postLoaded by remember { mutableStateOf(false) }
     // Liste des commentaires
@@ -117,6 +124,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
             if (id != null) {
                 // Récupération des informations sur l'établissement depuis Firestore
                 db.collection("map").document(id).get().addOnSuccessListener { document ->
+                    val author_id = document.getString("Author_id")!!
                     val name = document.getString("Name")!!
                     val adresseName = document.getString("AdresseName")!!
                     val adresseLocation = document.getGeoPoint("AdresseLocation")!!
@@ -137,7 +145,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
                         if(res.size()!=0){
                             note= (sommeNote/res.size()).toDouble()
                         }
-                        map = MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,note, results[0]/1000)
+                        map = MapItem(document.id, author_id, name, adresseName, adresseLocation, filter, description, photoPath,note, results[0]/1000)
 
 
                     }
@@ -163,10 +171,6 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
                     stars = document.getDouble("Note")?.toInt() ?: 0
                 }
             }
-            // Récupération de l'URL de l'image depuis Storage
-            var storage = Firebase.storage
-            var storageReference = storage.getReference("images/").child(map.photoPath)
-            storageReference.downloadUrl.addOnSuccessListener { url-> urlImage = url}
 
         }
         }
@@ -201,19 +205,13 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
         ) {
             item {
                 // Affichage de l'image
-                if (urlImage == null) Image(
-                    painter = painterResource(id = R.drawable.event),
+                AsyncImage(
+                    model = urlImage,
                     contentDescription = "null",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-                    ) else
-                    AsyncImage(
-                        model = urlImage,
-                        contentDescription = "null",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
                 // Informations principales sur l'établissement
                 Surface(
                     modifier = Modifier

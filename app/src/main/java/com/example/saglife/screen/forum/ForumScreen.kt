@@ -88,6 +88,7 @@ fun ForumScreen(navController: NavHostController) {
             val nb = document.get("Nb").toString().toIntOrNull() ?: 0
             val description = document.get("Description").toString()
             val filter = document.get("Filter").toString()
+            val imageUrls = document.get("ImageUrls").toString().split(",")
 
             forumpost.add(
                 ForumPostItem(
@@ -98,7 +99,8 @@ fun ForumScreen(navController: NavHostController) {
                     title,
                     nb,
                     filter,
-                    description
+                    description,
+                    imageUrls
                 )
             )
         }
@@ -133,7 +135,7 @@ fun ForumScreen(navController: NavHostController) {
             ) {
                 // Affiche la liste des filtres sous forme de puce
                 LazyRow(
-                    modifier = Modifier.padding(8.dp),
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(filterList) { filter ->
@@ -185,6 +187,7 @@ fun ForumScreen(navController: NavHostController) {
                 onClick = {
                     navController.navigate("forum/createpost")
                 },
+                containerColor = MaterialTheme.colorScheme.primary
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

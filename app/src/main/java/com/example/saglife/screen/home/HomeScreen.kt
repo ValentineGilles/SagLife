@@ -61,6 +61,7 @@ fun HomeScreen(navController: NavHostController, clientLocation: GeoPoint) {
                 val nb = document.get("Nb").toString().toIntOrNull() ?: 0
                 val description = document.get("Description").toString()
                 val filter = document.get("Filter").toString()
+                val imageUrls = document.get("ImageUrls").toString().split(",")
 
                 forumpost.add(
                     ForumPostItem(
@@ -71,7 +72,8 @@ fun HomeScreen(navController: NavHostController, clientLocation: GeoPoint) {
                         title,
                         nb,
                         filter,
-                        description
+                        description,
+                        imageUrls
                     )
                 )
             }
@@ -93,9 +95,10 @@ fun HomeScreen(navController: NavHostController, clientLocation: GeoPoint) {
             val description = document.getString("Description")!!
             val photoPath = document.getString("Photo")!!
             val results = FloatArray(1)
+            val author = document.get("Author").toString()
             Location.distanceBetween(adresseLocation.latitude, adresseLocation.longitude,clientLocation.latitude, clientLocation.longitude,results)
             print("Location :"+ results[0])
-            allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0, (results[0]/1000)))
+            allMaps.add(MapItem(document.id, author, name, adresseName, adresseLocation, filter, description, photoPath,0.0, (results[0]/1000)))
 
         }
         print("All map  " + allMaps)
@@ -148,6 +151,7 @@ fun HomeScreen(navController: NavHostController, clientLocation: GeoPoint) {
             val description = document.get("Description").toString()
             val photoPath = document.get("Photo").toString()
             val filter = document.get("Filter").toString()
+            val author = document.get("Auteur").toString()
             allEvents.add(
                 EventItem(
                     document.id,
@@ -156,7 +160,8 @@ fun HomeScreen(navController: NavHostController, clientLocation: GeoPoint) {
                     dateEnd,
                     description,
                     photoPath,
-                    filter
+                    filter,
+                    author
                 )
             )
         }
