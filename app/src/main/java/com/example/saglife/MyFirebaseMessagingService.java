@@ -33,10 +33,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
-        sendNotification(remoteMessage.getNotification().getBody());
+        sendNotification(remoteMessage.getNotification());
     }
 
-    private void sendNotification(String messageBody) {
+    private void sendNotification(RemoteMessage.Notification message) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -47,8 +47,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("FCM Message")
-                        .setContentText(messageBody)
+                        .setContentTitle(message.getTitle())
+                        .setContentText(message.getBody())
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);

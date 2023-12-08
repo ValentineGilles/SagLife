@@ -56,6 +56,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 
 private val auth: FirebaseAuth = Firebase.auth
 
@@ -120,6 +121,26 @@ class MainActivity : ComponentActivity() {
     fun MyApp(navController: NavHostController) {
 
         askNotificationPermission()
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                println("Fetching FCM registration token failed")
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            print("Token "+token)
+        })
+
+        Firebase.messaging.subscribeToTopic("notif")
+            .addOnCompleteListener { task ->
+                var msg = "Subscribed"
+                if (!task.isSuccessful) {
+                    msg = "Subscribe failed"
+                }
+                println(msg)
+            }
 
         var clientLocation by remember { mutableStateOf(GeoPoint(48.40496419957457, -71.0574980680532)) }
 
