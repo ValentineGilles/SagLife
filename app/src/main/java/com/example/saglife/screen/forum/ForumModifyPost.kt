@@ -139,7 +139,7 @@ fun ForumModifyPost(navController: NavHostController, id: String?) {
                 if (id != null) {
                     updatePostInDatabase(id, title.text, description.text, filter_chip)
                 }
-                navController.navigate("forum/$id")
+                navController.navigateUp()
             },
             modifier = Modifier
                 .fillMaxWidth()

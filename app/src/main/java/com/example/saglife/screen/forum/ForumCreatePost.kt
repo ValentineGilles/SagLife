@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,6 +27,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +42,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,6 +54,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
+import com.example.saglife.database.compressImage
 import com.example.saglife.models.ForumFilterItem
 import com.example.saglife.models.ForumPostItem
 import com.google.firebase.Firebase
@@ -58,6 +62,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.util.Calendar
 import java.util.UUID
 
@@ -77,6 +86,11 @@ fun ForumCreatePost(navController: NavHostController) {
     var filter_chip by remember { mutableStateOf("") }
 
     var selectedImageUris by remember { mutableStateOf<MutableList<Uri>>(mutableListOf()) }
+
+    val coroutineScope = rememberCoroutineScope()
+
+    var isUploading by remember { mutableStateOf(false) }
+
 
 
     val db = Firebase.firestore
@@ -118,7 +132,7 @@ fun ForumCreatePost(navController: NavHostController) {
     ) {
         item {
                 Text(
-                    text = "Créer un nouveau post",
+                    text = "Nouveau post",
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 16.dp, top = 24.dp)
                 )
@@ -237,46 +251,59 @@ fun ForumCreatePost(navController: NavHostController) {
 
                 Button(
                     onClick = {
-                        val imagesUploadedUrls = mutableListOf<String>()
+                        if (isUploading != true) {
+                            coroutineScope.launch {
+                                isUploading = true
+                                val imagesUploadedUrls = mutableListOf<String>()
+                                val storageRef = Firebase.storage.reference
+                                val context = navController.context
 
-                        val storageRef = Firebase.storage.reference
-
-                        val uploadTasks = selectedImageUris.map { uri ->
-                            val imageRef = storageRef.child("images/posts/${UUID.randomUUID()}")
-                            val uploadTask = imageRef.putFile(uri)
-
-                            uploadTask.addOnSuccessListener { taskSnapshot ->
-                                // L'image a été téléchargée avec succès, obtenez l'URL de téléchargement
-                                imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                                    val imageUrl = downloadUri.toString()
-                                    imagesUploadedUrls.add(imageUrl)
-
-                                    if (imagesUploadedUrls.size == selectedImageUris.size) {
-                                        // Toutes les images ont été téléchargées, créez le post avec les URLs d'images
-                                        val newPost = auth.currentUser?.uid?.let {
-                                            ForumPostItem(
-                                                id = UUID.randomUUID().toString(),
-                                                author = it,
-                                                date = Calendar.getInstance().time,
-                                                icon = "ic_profile",
-                                                title = title.text,
-                                                nb = 0,
-                                                filter = filter_chip,
-                                                description = description.text,
-                                                imageUrls = imagesUploadedUrls
-                                            )
+                                // Lancer des tâches asynchrones pour chaque téléchargement d'image
+                                val uploadTasks = selectedImageUris.map { uri ->
+                                    async(Dispatchers.IO) {
+                                        try {
+                                            val compressedImage = compressImage(uri, context)
+                                            val imageRef =
+                                                storageRef.child("images/posts/${UUID.randomUUID()}")
+                                            val uploadTask =
+                                                imageRef.putBytes(compressedImage).await()
+                                            val downloadUrl =
+                                                imageRef.downloadUrl.await().toString()
+                                            imagesUploadedUrls.add(downloadUrl)
+                                        } catch (e: Exception) {
+                                            println("Erreur lors du téléchargement de l'image : " + e)
                                         }
-                                        if (filter_chip != "") {
-                                            if (newPost != null) {
-                                                savePostToDatabase(newPost)
-                                            }
-                                            navController.navigate("forum")
-                                        }
+                                    }
+                                }
+
+                                // Attendre que toutes les tâches soient terminées
+                                uploadTasks.awaitAll()
+
+                                if (imagesUploadedUrls.size == selectedImageUris.size) {
+                                    val newPost = auth.currentUser?.uid?.let {
+                                        ForumPostItem(
+                                            id = UUID.randomUUID().toString(),
+                                            author = it,
+                                            date = Calendar.getInstance().time,
+                                            icon = "ic_profile",
+                                            title = title.text,
+                                            nb = 0,
+                                            filter = filter_chip,
+                                            description = description.text,
+                                            imageUrls = imagesUploadedUrls
+                                        )
+                                    }
+                                    isUploading = false
+
+                                    if (newPost != null && filter_chip != "") {
+                                        savePostToDatabase(newPost)
+                                        navController.navigate("forum")
                                     }
                                 }
                             }
                         }
-                    },
+                    }
+                    ,
                     modifier = Modifier
                         .wrapContentSize(),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
@@ -287,6 +314,15 @@ fun ForumCreatePost(navController: NavHostController) {
             }
         }
     }
+    if (isUploading) {
+        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)), contentAlignment = Alignment.Center) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                CircularProgressIndicator() // Icone de chargement
+                Text(text = "En cours de publication...")
+            }
+        }
+    }
+
 }
 
 // Fonction pour enregistrer un post dans la base de données Firestore

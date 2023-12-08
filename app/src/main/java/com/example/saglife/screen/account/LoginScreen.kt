@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -114,6 +115,7 @@ fun LoginScreen(navController: NavHostController) {
             label = { Text(text = "Adresse e-mail") },
             value = email,
             onValueChange = { email = it },
+            shape = RoundedCornerShape(16.dp),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -123,6 +125,7 @@ fun LoginScreen(navController: NavHostController) {
         OutlinedTextField(
             label = { Text(text = "Mot de passe") },
             value = password,
+            shape = RoundedCornerShape(16.dp),
             visualTransformation = if (showPassword) {
                 VisualTransformation.None
             } else {

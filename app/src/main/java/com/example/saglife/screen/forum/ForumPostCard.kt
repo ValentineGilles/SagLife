@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -34,6 +36,7 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -51,6 +54,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
 private val auth = Firebase.auth
+
 @Composable
 fun ForumPostCard(navController: NavHostController, data: ForumPostItem) {
     // État pour afficher ou masquer la description complète
@@ -62,7 +66,6 @@ fun ForumPostCard(navController: NavHostController, data: ForumPostItem) {
     var showDialog by remember { mutableStateOf(false) }
     var selectedImageUrl by remember { mutableStateOf("") }
     var rotationDegrees by remember { mutableStateOf(0f) }
-
 
 
     // Récupération des données du post
@@ -85,52 +88,71 @@ fun ForumPostCard(navController: NavHostController, data: ForumPostItem) {
     }
 
     if (showDialog) {
-        Dialog(onDismissRequest = { showDialog = false }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-            Box(contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()) {
-            AsyncImage(
-                model = selectedImageUrl,
-                contentDescription = "Image aggrandie du post",
-                modifier = Modifier.fillMaxSize()
-                    .wrapContentHeight()
-                    .graphicsLayer(
-                        scaleX = scale,
-                        scaleY = scale,
-                        translationX = offset.x,
-                        translationY = offset.y,
-                        rotationZ = rotationDegrees,
-                        transformOrigin = TransformOrigin.Center
-                    )
-                    .pointerInput(Unit) {
-                        detectTransformGestures { _, pan, zoom, _ ->
-                            scale *= zoom
-                            // Ajuster le déplacement en fonction de la rotation de l'image
-                            val adjustedPan = when (rotationDegrees) {
-                                0f, 360f -> pan
-                                90f -> Offset(-pan.y, +pan.x)
-                                180f -> Offset(-pan.x, -pan.y)
-                                270f -> Offset(pan.y, -pan.x)
-                                else -> pan // Pour les rotations non standard
+        Dialog(
+            onDismissRequest = { showDialog = false },
+            properties = DialogProperties(usePlatformDefaultWidth = false)
+        ) {
+                AsyncImage(
+                    model = selectedImageUrl,
+                    contentDescription = "Image aggrandie du post",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentHeight()
+                        .graphicsLayer(
+                            scaleX = scale,
+                            scaleY = scale,
+                            translationX = offset.x,
+                            translationY = offset.y,
+                            rotationZ = rotationDegrees,
+                            transformOrigin = TransformOrigin.Center
+                        )
+                        .pointerInput(Unit) {
+                            detectTransformGestures { _, pan, zoom, _ ->
+                                scale *= zoom
+                                // Ajuster le déplacement en fonction de la rotation de l'image
+                                val adjustedPan = when (rotationDegrees) {
+                                    0f, 360f -> pan
+                                    90f -> Offset(-pan.y, +pan.x)
+                                    180f -> Offset(-pan.x, -pan.y)
+                                    270f -> Offset(pan.y, -pan.x)
+                                    else -> pan // Pour les rotations non standard
+                                }
+
+                                offset += adjustedPan
                             }
+                        },
+                    contentScale = ContentScale.Fit,
 
-                            offset += adjustedPan
-                        }
+                    )
+            Box(modifier = Modifier.fillMaxWidth())
+            {
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(16.dp)
+                ) {
+                    IconButton(
+                        onClick = {
+                            rotationDegrees += if (rotationDegrees == 0f) 90f else -90f
+                            scale = 1f
+                            offset = Offset.Zero
+                        },
+                    )
+                    {
+                        Icon(Icons.Default.ScreenRotation, contentDescription = "Rotation")
                     }
-                    .clickable {
-                        rotationDegrees += if(rotationDegrees == 0f) 90f else -90f
-                    },
-                contentScale = ContentScale.Fit,
 
-            )
-
-                IconButton(onClick = { showDialog = false
-                    scale =1f
-                    offset = Offset.Zero
-                    rotationDegrees = 0f}, modifier = Modifier.align(Alignment.TopEnd).padding(16.dp)) {
-                    Icon(Icons.Default.Close, contentDescription = "Fermer")
+                    IconButton(onClick = {
+                        showDialog = false
+                        scale = 1f
+                        offset = Offset.Zero
+                        rotationDegrees = 0f
+                    }) {
+                        Icon(Icons.Default.Close, contentDescription = "Fermer")
+                    }
                 }
+
+
             }
 
         }
@@ -174,11 +196,15 @@ fun ForumPostCard(navController: NavHostController, data: ForumPostItem) {
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(10.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         ) {
             // Titre du post
             Text(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
                 text = title,
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
