@@ -1,19 +1,14 @@
 package com.example.saglife.screen.home
-import LocationHelper
 import androidx.compose.foundation.layout.Column
 import android.annotation.SuppressLint
 import android.location.Location
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.saglife.models.EventItem
 import com.example.saglife.models.ForumPostItem
@@ -36,8 +30,8 @@ import com.example.saglife.screen.forum.ForumCard
 import com.example.saglife.screen.map.MapComposant
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.delay
@@ -46,8 +40,7 @@ import java.util.Date
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
 @Composable
-fun HomeScreen(navController: NavHostController) {
-
+fun HomeScreen(navController: NavHostController, clientLocation: GeoPoint) {
     val db = Firebase.firestore
     val forumpost = mutableListOf<ForumPostItem>()
     var ForumPostList by remember { mutableStateOf(mutableListOf<ForumPostItem>()) }
@@ -68,6 +61,7 @@ fun HomeScreen(navController: NavHostController) {
                 val nb = document.get("Nb").toString().toIntOrNull() ?: 0
                 val description = document.get("Description").toString()
                 val filter = document.get("Filter").toString()
+                val imageUrls = document.get("ImageUrls").toString().split(",")
 
                 forumpost.add(
                     ForumPostItem(
@@ -78,7 +72,8 @@ fun HomeScreen(navController: NavHostController) {
                         title,
                         nb,
                         filter,
-                        description
+                        description,
+                        imageUrls
                     )
                 )
             }
@@ -99,7 +94,11 @@ fun HomeScreen(navController: NavHostController) {
             val filter = document.getString("Filter")!!
             val description = document.getString("Description")!!
             val photoPath = document.getString("Photo")!!
-            allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0))
+            val results = FloatArray(1)
+            val author = document.get("Author").toString()
+            Location.distanceBetween(adresseLocation.latitude, adresseLocation.longitude,clientLocation.latitude, clientLocation.longitude,results)
+            print("Location :"+ results[0])
+            allMaps.add(MapItem(document.id, author, name, adresseName, adresseLocation, filter, description, photoPath,0.0, (results[0]/1000)))
 
         }
         print("All map  " + allMaps)
@@ -152,6 +151,7 @@ fun HomeScreen(navController: NavHostController) {
             val description = document.get("Description").toString()
             val photoPath = document.get("Photo").toString()
             val filter = document.get("Filter").toString()
+            val author = document.get("Auteur").toString()
             allEvents.add(
                 EventItem(
                     document.id,
@@ -160,7 +160,8 @@ fun HomeScreen(navController: NavHostController) {
                     dateEnd,
                     description,
                     photoPath,
-                    filter
+                    filter,
+                    author
                 )
             )
         }
@@ -246,7 +247,6 @@ fun HomeScreen(navController: NavHostController) {
 
         }
     }
-
 
 }
 

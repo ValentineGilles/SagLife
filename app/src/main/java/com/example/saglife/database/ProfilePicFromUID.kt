@@ -3,8 +3,9 @@ package com.example.saglife.database
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 
-fun getUsernameFromUid(uid: String, onSuccess: (String) -> Unit) {
+fun getProfilePicFromUid(uid: String, onSuccess: (String) -> Unit) {
     // Référence à la collection "users" dans Firestore
+    println("getProfilePicFromUid")
     val db = Firebase.firestore
     val usersCollection = db.collection("users")
 
@@ -16,19 +17,20 @@ fun getUsernameFromUid(uid: String, onSuccess: (String) -> Unit) {
         .addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
                 // Le document existe, récupérer le nom d'utilisateur
-                val username = documentSnapshot.getString("username")
-                if (username != null) {
-                    onSuccess(username)
+                val profile_pic = documentSnapshot.getString("profile_pic")
+                if ( profile_pic!= null) {
+                    println("La photo est est : $profile_pic")
+                    onSuccess(profile_pic)
                 } else {
-                    println("Le nom d'utilisateur est null pour l'UID: $uid")
-                    onSuccess("Utilisateur supprimé")
+                    println("Photo est null pour l'UID: $uid")
+                    onSuccess("")
                 }
             } else {
-                onSuccess("Utilisateur supprimé")
+                onSuccess("")
             }
         }
         .addOnFailureListener { exception ->
-            println("Erreur lors de la récupération du nom d'utilisateur: $exception")
-            onSuccess("Utilisateur supprimé")
+            println("Erreur lors de la récupération de la photo: $exception")
+            onSuccess("")
         }
 }

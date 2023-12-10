@@ -45,23 +45,10 @@ fun CustomTopAppBar(
             if (showBackIcon && navController.previousBackStackEntry != null) {
                 IconButton(onClick = {
                     navController.navigateUp() // Retour en arrière dans la navigation
-                    if (currentRoute == Routes.ForumPage.route) {
-                        navController.navigate(Routes.Forum.route) // Navigue vers la page du forum si nécessaire
-                    }
                 }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Back"
-                    )
-                }
-            } else {
-                IconButton(onClick = {
-                    auth.signOut() // Déconnexion de l'utilisateur
-                    navController.navigate(Routes.Login.route) // Navigue vers l'écran de connexion
-                }) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_logout), // Icône de déconnexion personnalisée
-                        contentDescription = "Log out"
                     )
                 }
             }

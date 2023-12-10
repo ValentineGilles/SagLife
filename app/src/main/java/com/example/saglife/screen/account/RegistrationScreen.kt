@@ -16,12 +16,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,6 +41,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -69,6 +75,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
             var password by remember { mutableStateOf(TextFieldValue()) }
             var password2 by remember { mutableStateOf(TextFieldValue()) }
             var email by remember { mutableStateOf(TextFieldValue()) }
+            var showPassword by remember { mutableStateOf(false) }
 
             var ConnectionError by remember { mutableStateOf<String?>(null) }
 
@@ -97,14 +104,10 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                TextField(
-                    shape = RoundedCornerShape(8.dp),
+                OutlinedTextField(
                     label = { Text(text = "Nom d'utilisateur") },
                     value = username,
-                    colors = TextFieldDefaults.textFieldColors(
-                        unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent
-                    ),
+                    shape = RoundedCornerShape(16.dp),
                     onValueChange = { username = it },
                     modifier = Modifier.fillMaxWidth()
                         .padding(start = 60.dp, end = 60.dp)
@@ -112,44 +115,80 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                TextField(
-                    shape = RoundedCornerShape(8.dp),
+                OutlinedTextField(
                     label = { Text(text = "Adresse E-mail") },
                     value = email,
+                    shape = RoundedCornerShape(16.dp),
                     onValueChange = { email = it },
-                    colors = TextFieldDefaults.textFieldColors(
-                        unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent
-                    ),
                     modifier = Modifier.fillMaxWidth()
                         .padding(start = 60.dp, end = 60.dp)
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
-                TextField(
-                    shape = RoundedCornerShape(8.dp),
+                OutlinedTextField(
+                    shape = RoundedCornerShape(16.dp),
                     label = { Text(text = "Mot de passe") },
                     value = password,
-                    colors = TextFieldDefaults.textFieldColors(
-                        unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent
-                    ),
-                    visualTransformation = PasswordVisualTransformation(),
+                    visualTransformation = if (showPassword) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
+                    trailingIcon = {
+                        if (showPassword) {
+                            IconButton(onClick = { showPassword = false }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Visibility,
+                                    contentDescription = "hide_password",
+                                    tint = MaterialTheme.colorScheme.onBackground
+                                )
+                            }
+                        } else {
+                            IconButton(
+                                onClick = { showPassword = true }) {
+                                Icon(
+                                    imageVector = Icons.Filled.VisibilityOff,
+                                    contentDescription = "hide_password",
+                                    tint = MaterialTheme.colorScheme.onBackground
+                                )
+                            }
+                        }
+                    },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     onValueChange = { password = it },
                     modifier = Modifier.fillMaxWidth()
                         .padding(start = 60.dp, end = 60.dp)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                TextField(
-                    shape = RoundedCornerShape(8.dp),
+                OutlinedTextField(
+                    shape = RoundedCornerShape(16.dp),
                     label = { Text(text = "Confirmer votre mot de passe") },
                     value = password2,
-                    colors = TextFieldDefaults.textFieldColors(
-                        unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent
-                    ),
-                    visualTransformation = PasswordVisualTransformation(),
+                    visualTransformation = if (showPassword) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
+                    trailingIcon = {
+                        if (showPassword) {
+                            IconButton(onClick = { showPassword = false }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Visibility,
+                                    contentDescription = "hide_password",
+                                    tint = MaterialTheme.colorScheme.onBackground
+                                )
+                            }
+                        } else {
+                            IconButton(
+                                onClick = { showPassword = true }) {
+                                Icon(
+                                    imageVector = Icons.Filled.VisibilityOff,
+                                    contentDescription = "hide_password",
+                                    tint = MaterialTheme.colorScheme.onBackground
+                                )
+                            }
+                        }
+                    },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     onValueChange = { password2 = it },
                     modifier = Modifier.fillMaxWidth()
@@ -206,7 +245,8 @@ fun signUpWithFirebase(
     navController: NavHostController,
     onSignUpComplete: (success: Boolean, errorMessage: String?) -> Unit
 ) {
-    auth.createUserWithEmailAndPassword(email, password)
+    val trim_email = email.trim()
+    auth.createUserWithEmailAndPassword(trim_email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // L'utilisateur a été créé avec succès

@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -27,7 +26,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.saglife.models.ForumFilterItem
-import com.example.saglife.models.ForumPostItem
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 
@@ -37,7 +35,7 @@ fun ForumModifyPost(navController: NavHostController, id: String?) {
     // États pour gérer le titre, la description et le filtre du post modifié
     var title by remember { mutableStateOf(TextFieldValue()) }
     var description by remember { mutableStateOf(TextFieldValue()) }
-    var filter by remember { mutableStateOf(TextFieldValue()) }
+    var filter_post by remember { mutableStateOf("") }
 
     // État pour le chargement des données du post
     var postLoaded by remember { mutableStateOf(false) }
@@ -57,7 +55,7 @@ fun ForumModifyPost(navController: NavHostController, id: String?) {
                     // Remplissez les champs de titre, de description et de filtre avec les valeurs du document
                     title = TextFieldValue(documentSnapshot.getString("Title") ?: "")
                     description = TextFieldValue(documentSnapshot.getString("Description") ?: "")
-                    filter = TextFieldValue(documentSnapshot.getString("Filter") ?: "")
+                    filter_post = documentSnapshot.getString("Filter").toString()
                 } else {
                     // Document non trouvé
                 }
@@ -128,8 +126,9 @@ fun ForumModifyPost(navController: NavHostController, id: String?) {
                     onClick = { filterName ->
                         filter_chip = filterName
                     },
-                    filter_chip,
-                    filter
+                    selectedFilters = filter_chip,
+                    filtername = filter,
+                    defaultFilter = filter_post
                 )
             }
         }
@@ -140,7 +139,7 @@ fun ForumModifyPost(navController: NavHostController, id: String?) {
                 if (id != null) {
                     updatePostInDatabase(id, title.text, description.text, filter_chip)
                 }
-                navController.navigate("forum/$id")
+                navController.navigateUp()
             },
             modifier = Modifier
                 .fillMaxWidth()

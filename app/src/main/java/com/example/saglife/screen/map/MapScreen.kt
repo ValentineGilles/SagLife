@@ -1,8 +1,8 @@
 package com.example.saglife.screen.map
 
+import android.location.Location
 import android.net.Uri
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FloatingActionButton
@@ -35,7 +34,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,18 +43,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.saglife.R
-import com.example.saglife.models.EventItem
-import com.example.saglife.models.Location
 import com.example.saglife.screen.calendar.FilterChip
 import com.example.saglife.models.MapItem
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 
@@ -66,9 +61,8 @@ import com.google.firebase.storage.storage
  * @param navController Le contrôleur de navigation.
  */
 @Composable
-fun MapScreen(navController: NavHostController) {
+fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
 
-    
 
     // Initialisation des états
     var selectedFilters = mutableListOf<String>()
@@ -103,8 +97,11 @@ fun MapScreen(navController: NavHostController) {
             val filter = document.getString("Filter")!!
             val description = document.getString("Description")!!
             val photoPath = document.getString("Photo")!!
-
-            allMaps.add(MapItem(document.id, name, adresseName, adresseLocation, filter, description, photoPath,0.0))
+            val results = FloatArray(1)
+            val author = document.get("Author").toString()
+            Location.distanceBetween(adresseLocation.latitude, adresseLocation.longitude,clientLocation.latitude, clientLocation.longitude,results)
+            print("Location :"+ results[0])
+            allMaps.add(MapItem(document.id, author, name, adresseName, adresseLocation, filter, description, photoPath,0.0,(results[0]/1000)))
 
         }
 
@@ -148,6 +145,7 @@ fun MapScreen(navController: NavHostController) {
             ) {
                 items(filterList) { filter ->
                     FilterChip(
+
                         onClick = { filterName ->
                             // Filtrage des cartes en fonction des filtres sélectionnés
                             if (selectedFilters.contains(filterName)) {
@@ -167,10 +165,9 @@ fun MapScreen(navController: NavHostController) {
                                 mapsFiltered = allMaps
                             }
                             println(mapsFiltered)
-
-
                         },
-                        filter
+                        filter,
+
                     )
                 }
             }
@@ -192,6 +189,7 @@ fun MapScreen(navController: NavHostController) {
             onClick = {
                 navController.navigate("map/create")
             },
+            containerColor = MaterialTheme.colorScheme.primary
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
@@ -229,10 +227,13 @@ fun filterMapItems(filters: List<String>, mapItems: List<MapItem>): MutableList<
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapComposant(map: MapItem, navController: NavHostController) {
-    var storage = Firebase.storage
-    var storageReference = storage.getReference("images/").child(map.photoPath)
-    var urlImage: Uri? by remember { mutableStateOf(null) }
-    storageReference.downloadUrl.addOnSuccessListener { url -> urlImage = url }
+    var urlImage = map.photoPath
+
+    println("urlImage : " + urlImage)
+    if (!urlImage.startsWith("https://firebasestorage.googleapis.com/"))
+    {
+        urlImage = "https://firebasestorage.googleapis.com/v0/b/saglife-94b7c.appspot.com/o/event.jpg?alt=media&token=200c1435-7d41-48cd-bdf4-664f42af7611"
+    }
 
     Card(
         colors = CardDefaults.cardColors(
@@ -246,19 +247,12 @@ fun MapComposant(map: MapItem, navController: NavHostController) {
         Box(
             contentAlignment = Alignment.BottomCenter
         ) {
-            if (urlImage == null) Image(
-                painter = painterResource(id = R.drawable.event),
+                AsyncImage(
+                model = urlImage,
                 contentDescription = "null",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth())
 
-                ) else
-                AsyncImage(
-                    model = urlImage,
-                    contentDescription = "null",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxWidth(),
-                )
             Surface(modifier = Modifier
                 .fillMaxWidth()
                 .height(80.dp)
@@ -292,7 +286,7 @@ fun MapComposant(map: MapItem, navController: NavHostController) {
                                 Modifier
                                     .width(8.dp)
                             )
-                            Text(text = "1,2km", style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+                            Text(text = String.format("%.1f", map.distance)+"km", style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
                             Spacer(
                                 Modifier
                                     .width(8.dp)

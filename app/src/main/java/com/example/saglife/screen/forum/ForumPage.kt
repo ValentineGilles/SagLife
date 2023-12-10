@@ -82,7 +82,7 @@ fun ForumPage(navController: NavHostController, id: String?) {
     val db = Firebase.firestore
 
     // Etat du post
-    var forumpost by remember { mutableStateOf(ForumPostItem("", "", Date(), "", "", 0, "", "")) }
+    var forumpost by remember { mutableStateOf(ForumPostItem("", "", Date(), "", "", 0, "", "", emptyList())) }
 
     // Etat du commentaire
     var comment by remember { mutableStateOf(TextFieldValue()) }
@@ -110,13 +110,16 @@ fun ForumPage(navController: NavHostController, id: String?) {
                 val title = document.get("Title").toString()
                 val nb = document.get("Nb").toString().toIntOrNull() ?: 0
                 val description = document.get("Description").toString()
+                val imageUrls = document.get("ImageUrls").toString().split(", ")
+
+                println("imageUrls : ${document.get("ImageUrls")}")
 
                 // Affichage des données du post dans la console (à des fins de débogage)
-                println("forum : $author_id, $date, $icon, $title, $nb, $description")
+                println("forum : $id, $author_id, $date, $icon, $title, $nb, $description, $imageUrls")
 
                 // Création d'un objet ForumPostItem avec les données récupérées
                 forumpost =
-                    ForumPostItem(document.id, author_id, date, icon, title, nb, "", description)
+                    ForumPostItem(document.id, author_id, date, icon, title, nb, "", description, imageUrls)
                 postLoaded = true // Indique que les données du post ont été récupérées pour empêcher le refresh automatique
             }
                 .addOnFailureListener { e ->

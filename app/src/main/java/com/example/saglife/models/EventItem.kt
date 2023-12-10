@@ -14,7 +14,17 @@ import java.util.Date
  * @param photoPath Chemin de l'image associée à l'événement.
  * @param filter Filtre associé à l'événement.
  */
-class EventItem (val id:String,val name : String, val dateStart : Date, val dateEnd : Date, val description : String, val photoPath : String, val filter : String){
+class EventItem(
+    val id: String,
+    val name: String,
+    val dateStart: Date,
+    val dateEnd: Date,
+    val description: String,
+    val photoPath: String,
+    val filter: String,
+    val author_id: String
+){
+
 
     /**
      * Obtient le jour du mois et le mois formaté.
@@ -69,6 +79,7 @@ class EventItem (val id:String,val name : String, val dateStart : Date, val date
             "Description" to this.description,
             "Filter" to this.filter,
             "Photo" to this.photoPath,
+            "Author" to this.author_id
         )
     }
 

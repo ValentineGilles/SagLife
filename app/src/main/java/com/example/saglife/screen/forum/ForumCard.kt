@@ -140,10 +140,7 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
                 // Affichage de l'auteur du message
                 Text(
                     text = author,
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        letterSpacing = 0.sp
-                    ),
+                    style = MaterialTheme.typography.labelMedium,
                     color = Color.Gray
                 )
                 // Affichage du nombre de commentaires et de la date/heure du message
@@ -153,17 +150,11 @@ fun ForumCard(data: ForumPostItem, navController: NavHostController) {
                 ) {
                     Text(
                         text = "$nb_com réponse(s)",
-                        style = TextStyle(
-                            fontSize = 10.sp,
-                            letterSpacing = 0.sp
-                        ),
+                        style = MaterialTheme.typography.labelSmall,
                     )
                     Text(
                         text = "$date à $hour",
-                        style = TextStyle(
-                            fontSize = 10.sp,
-                            letterSpacing = 0.sp
-                        ),
+                        style = MaterialTheme.typography.labelSmall,
                     )
                 }
             }
