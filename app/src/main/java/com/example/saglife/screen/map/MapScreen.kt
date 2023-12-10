@@ -1,5 +1,6 @@
 package com.example.saglife.screen.map
 
+import android.content.Intent
 import android.location.Location
 import android.net.Uri
 import androidx.compose.foundation.Image
@@ -16,12 +17,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -34,6 +37,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -50,10 +55,13 @@ import coil.compose.AsyncImage
 import com.example.saglife.R
 import com.example.saglife.screen.calendar.FilterChip
 import com.example.saglife.models.MapItem
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
+import kotlinx.coroutines.delay
 
 /**
  * Écran affichant la liste des établissements.
@@ -69,11 +77,16 @@ fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
     var mapsFiltered by remember { mutableStateOf(mutableListOf<MapItem>()) }
     var allMaps = mutableListOf<MapItem>()
+    var postLoaded by remember { mutableStateOf(false) }
+
+    // Etat du rafraîchissement
+    var refreshing by remember { mutableStateOf(false) }
 
     // Instance de Firebase Firestore
     val db = Firebase.firestore
 
     // Récupération des filtres depuis la collection "filter_map"
+
     db.collection("filter_map").get().addOnSuccessListener { result ->
         val filters = mutableListOf<String>()
         for (document in result) {
@@ -87,114 +100,152 @@ fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
         }
 
 
+    LaunchedEffect(postLoaded) {
+        if (!postLoaded) {
+            // Récupération de toutes les cartes depuis la collection "map"
+            db.collection("map").get().addOnSuccessListener { result ->
+                for (document in result) {
+                    val name = document.getString("Name")!!
+                    val adresseName = document.getString("AdresseName")!!
+                    val adresseLocation = document.getGeoPoint("AdresseLocation")!!
+                    val filter = document.getString("Filter")!!
+                    val description = document.getString("Description")!!
+                    val photoPath = document.getString("Photo")!!
+                    val results = FloatArray(1)
+                    val author = document.get("Author").toString()
+                    Location.distanceBetween(
+                        adresseLocation.latitude,
+                        adresseLocation.longitude,
+                        clientLocation.latitude,
+                        clientLocation.longitude,
+                        results
+                    )
+                    print("Location :" + results[0])
+                    allMaps.add(
+                        MapItem(
+                            document.id,
+                            author,
+                            name,
+                            adresseName,
+                            adresseLocation,
+                            filter,
+                            description,
+                            photoPath,
+                            0.0,
+                            (results[0] / 1000)
+                        )
+                    )
 
-    // Récupération de toutes les cartes depuis la collection "map"
-    db.collection("map").get().addOnSuccessListener { result ->
-        for (document in result) {
-            val name = document.getString("Name")!!
-            val adresseName = document.getString("AdresseName")!!
-            val adresseLocation = document.getGeoPoint("AdresseLocation")!!
-            val filter = document.getString("Filter")!!
-            val description = document.getString("Description")!!
-            val photoPath = document.getString("Photo")!!
-            val results = FloatArray(1)
-            val author = document.get("Author").toString()
-            Location.distanceBetween(adresseLocation.latitude, adresseLocation.longitude,clientLocation.latitude, clientLocation.longitude,results)
-            print("Location :"+ results[0])
-            allMaps.add(MapItem(document.id, author, name, adresseName, adresseLocation, filter, description, photoPath,0.0,(results[0]/1000)))
-
-        }
-
-        mapsFiltered = allMaps
-
-        for(mapItem in allMaps){
-            // Récupération des notes depuis Firestore
-            db.collection("map").document(mapItem.id).collection("notes").get().addOnSuccessListener { resultat ->
-
-                var note = 0.0
-                var sommeNote = 0
-                for (document in resultat) {
-                    sommeNote += document.getDouble("Note")?.toInt() ?: 0
                 }
-                if(resultat.size()!=0){
-                    note= (sommeNote/resultat.size()).toDouble()
-                }
 
-                mapItem.note = note
-
-            }.continueWith {
                 mapsFiltered = allMaps
-            }
 
+                for (mapItem in allMaps) {
+                    // Récupération des notes depuis Firestore
+                    db.collection("map").document(mapItem.id).collection("notes").get()
+                        .addOnSuccessListener { resultat ->
+
+                            var note = 0.0
+                            var sommeNote = 0
+                            for (document in resultat) {
+                                sommeNote += document.getDouble("Note")?.toInt() ?: 0
+                            }
+                            if (resultat.size() != 0) {
+                                note = (sommeNote / resultat.size()).toDouble()
+                            }
+
+                            mapItem.note = note
+
+                        }.continueWith {
+                            mapsFiltered = allMaps
+                        }
+
+                }
+            }
+            postLoaded = true
         }
 
     }
 
-
-
-    // Mise en page de l'interface utilisateur avec Compose
-    Box(
-        modifier = Modifier.fillMaxSize(),
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing = refreshing),
+        onRefresh = {
+            refreshing = true
+        },
+        modifier = Modifier.fillMaxSize()
     ) {
-
-        Column(modifier = Modifier.fillMaxSize()) {
-            // Affichage des filtres dans une LazyRow
-            LazyRow(
-                modifier = Modifier.padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(filterList) { filter ->
-                    FilterChip(
-
-                        onClick = { filterName ->
-                            // Filtrage des cartes en fonction des filtres sélectionnés
-                            if (selectedFilters.contains(filterName)) {
-                                selectedFilters.remove(filterName)
-                            } else {
-                                selectedFilters.add(filterName)
-                            }
-                            println(selectedFilters)
-                            if (selectedFilters.isNotEmpty()) {
-                                print("All map" + allMaps)
-                                mapsFiltered = filterMapItems(selectedFilters, allMaps)
-                                println("not empty")
-                                println("filter : " + filterMapItems(selectedFilters, allMaps))
-                            } else {
-                                println("empty")
-
-                                mapsFiltered = allMaps
-                            }
-                            println(mapsFiltered)
-                        },
-                        filter,
-
-                    )
-                }
+        LaunchedEffect(refreshing) {
+            if (refreshing) {
+                delay(1000) // Simule une attente de 1 seconde
+                refreshing = false
+                postLoaded = false
             }
-            // Affichage des cartes filtrées dans une LazyColumn
-            LazyColumn(modifier = Modifier.padding(16.dp)) {
-                items(mapsFiltered) { map ->
-                    MapComposant(map = map, navController = navController)
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
-            }
-
-
         }
-        // Bouton flottant pour ajouter une nouvelle carte
-        FloatingActionButton(
-            modifier = Modifier
-                .padding(16.dp)
-                .align(Alignment.BottomEnd),
-            onClick = {
-                navController.navigate("map/create")
-            },
-            containerColor = MaterialTheme.colorScheme.primary
+
+        // Mise en page de l'interface utilisateur avec Compose
+        Box(
+            modifier = Modifier.fillMaxSize(),
         ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Ajouter un établissement"
-            )
+
+            Column(modifier = Modifier.fillMaxSize()) {
+                // Affichage des filtres dans une LazyRow
+                LazyRow(
+                    modifier = Modifier.padding(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(filterList) { filter ->
+                        FilterChip(
+
+                            onClick = { filterName ->
+                                // Filtrage des cartes en fonction des filtres sélectionnés
+                                if (selectedFilters.contains(filterName)) {
+                                    selectedFilters.remove(filterName)
+                                } else {
+                                    selectedFilters.add(filterName)
+                                }
+                                println(selectedFilters)
+                                if (selectedFilters.isNotEmpty()) {
+                                    print("All map" + allMaps)
+                                    mapsFiltered = filterMapItems(selectedFilters, allMaps)
+                                    println("not empty")
+                                    println("filter : " + filterMapItems(selectedFilters, allMaps))
+                                } else {
+                                    println("empty")
+
+                                    mapsFiltered = allMaps
+                                }
+                                println(mapsFiltered)
+                            },
+                            filter,
+
+                            )
+                    }
+                }
+                // Affichage des cartes filtrées dans une LazyColumn
+                LazyColumn(modifier = Modifier.padding(16.dp)) {
+                    items(mapsFiltered) { map ->
+                        MapComposant(map = map, navController = navController)
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                }
+
+
+            }
+            // Bouton flottant pour ajouter une nouvelle carte
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomEnd),
+                onClick = {
+                    navController.navigate("map/create")
+                },
+                containerColor = MaterialTheme.colorScheme.primary
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Ajouter un établissement"
+                )
+            }
         }
     }
 }
@@ -227,6 +278,7 @@ fun filterMapItems(filters: List<String>, mapItems: List<MapItem>): MutableList<
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapComposant(map: MapItem, navController: NavHostController) {
+    val context = LocalContext.current
     var urlImage = map.photoPath
 
     println("urlImage : " + urlImage)
@@ -306,15 +358,38 @@ fun MapComposant(map: MapItem, navController: NavHostController) {
 
                         }
                     }
-                    FilledTonalButton(
-                        onClick = { },
-                        contentPadding = PaddingValues(16.dp, 8.dp),
+                    Button(
+                        onClick = {
+                            val adresse = map.adresseName
+                            val gmmIntentUri = Uri.parse("geo:0,0?q=$adresse")
+                            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                            mapIntent.setPackage("com.google.android.apps.maps")
+                            if (mapIntent.resolveActivity(context.packageManager) != null) {
+                                context.startActivity(mapIntent)
+                            } else {
+                                val playStoreIntent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("market://details?id=com.google.android.apps.maps")
+                                )
+
+                                val playStoreInfo =
+                                    context.packageManager.resolveActivity(playStoreIntent, 0)
+                                if (playStoreInfo != null) {
+                                    // Si le Play Store est disponible, l'ouvrir
+                                    context.startActivity(playStoreIntent)
+                                } else {
+                                    // Si le Play Store n'est pas disponible, ouvrir une URL web vers le Play Store
+                                    val webPlayStoreIntent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps")
+                                    )
+                                    context.startActivity(webPlayStoreIntent)
+                                }
+                            }
+                        },
                         modifier = Modifier
-                            .defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                        shape = RoundedCornerShape(24),
-                        elevation = ButtonDefaults.buttonElevation(
-                            defaultElevation = 8.dp
-                        )
+                            .wrapContentSize(),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Text("Itinéraire")
                     }

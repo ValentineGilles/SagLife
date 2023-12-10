@@ -26,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.saglife.screen.account.ForgotPasswordScreen
 import com.example.saglife.screen.account.LoginScreen
+import com.example.saglife.screen.account.ModifyProfileScreen
 import com.example.saglife.screen.account.ProfileScreen
 import com.example.saglife.screen.account.RegistrationScreen
 import com.example.saglife.screen.calendar.CalendarScreen
@@ -45,6 +46,7 @@ import com.example.saglife.screen.navbars.CustomTopAppBar
 import com.example.saglife.ui.theme.SagLifeTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -338,7 +340,17 @@ class MainActivity : ComponentActivity() {
                             backStackEntry.arguments?.getString("post_id"),
                             backStackEntry.arguments?.getString("comment_id")
                         )
+
+
                     }
+                composable(Routes.ModifyProfile.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    ModifyProfileScreen(
+                        navController = navController
+                    )
+                }
                 }
             }
         }

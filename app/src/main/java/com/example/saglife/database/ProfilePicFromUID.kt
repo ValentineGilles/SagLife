@@ -19,7 +19,6 @@ fun getProfilePicFromUid(uid: String, onSuccess: (String) -> Unit) {
                 // Le document existe, récupérer le nom d'utilisateur
                 val profile_pic = documentSnapshot.getString("profile_pic")
                 if ( profile_pic!= null) {
-                    println("La photo est est : $profile_pic")
                     onSuccess(profile_pic)
                 } else {
                     println("Photo est null pour l'UID: $uid")

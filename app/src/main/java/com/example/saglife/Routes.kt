@@ -15,4 +15,5 @@ sealed class Routes(val route: String) {
     object ForumCreatePost : Routes("forum/createpost")
     object ForumModifyPost : Routes("forum/modifypost/{id}")
     object ForumModifyComment : Routes("forum/modifycomment/{post_id}/{comment_id}")
+    object ModifyProfile : Routes("Profile/editProfile")
 }
