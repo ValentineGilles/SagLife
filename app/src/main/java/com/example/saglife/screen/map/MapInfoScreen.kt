@@ -1,4 +1,6 @@
 package com.example.saglife.screen.map
+import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.net.Uri
 import androidx.compose.foundation.Image
@@ -49,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -118,13 +121,18 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
     var stars by remember { mutableStateOf(0) }
 
 
+    //Contexte
+    val context = LocalContext.current
+
+
     val db = Firebase.firestore
     LaunchedEffect(postLoaded) {
         if (!postLoaded) {
             if (id != null) {
                 // Récupération des informations sur l'établissement depuis Firestore
                 db.collection("map").document(id).get().addOnSuccessListener { document ->
-                    val author_id = document.getString("Author_id")!!
+                    var author_id = document.getString("Author_id")
+                    if(author_id==null)author_id="auteur"
                     val name = document.getString("Name")!!
                     val adresseName = document.getString("AdresseName")!!
                     val adresseLocation = document.getGeoPoint("AdresseLocation")!!
@@ -273,7 +281,9 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
                             }
                         }
                         FilledTonalButton(
-                            onClick = { },
+                            onClick = {
+                                openGoogleMaps(context, map.adresseName)
+                            },
                             contentPadding = PaddingValues(16.dp, 8.dp),
                             modifier = Modifier
                                 .defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
@@ -482,6 +492,24 @@ fun insertNoteIntoFirebase(mapId: String, note: Int, userId : String) {
         .addOnFailureListener { e ->
             println("Erreur lors de l'ajout de la note : $e")
         }
+}
+
+fun openGoogleMaps(context: Context, address: String) {
+    // Créer l'URL avec l'adresse spécifique
+    val mapUri = Uri.parse("geo:0,0?q=$address")
+
+    // Créer une intention pour ouvrir Google Maps
+    val mapIntent = Intent(Intent.ACTION_VIEW, mapUri)
+
+    // Vérifier si une application de cartographie est installée
+    if (mapIntent.resolveActivity(context.packageManager) != null) {
+        // Ouvrir Google Maps
+        context.startActivity(mapIntent)
+    } else {
+        // Gérer le cas où Google Maps n'est pas installé
+        // Vous pouvez rediriger l'utilisateur vers le Google Play Store pour l'installer, par exemple.
+        // ...
+    }
 }
 
 
