@@ -48,6 +48,7 @@ import com.example.saglife.screen.navbars.CustomTopAppBar
 import com.example.saglife.ui.theme.SagLifeTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
