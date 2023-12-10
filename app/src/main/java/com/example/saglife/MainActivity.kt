@@ -26,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.saglife.screen.account.ForgotPasswordScreen
 import com.example.saglife.screen.account.LoginScreen
+import com.example.saglife.screen.account.ModifyProfileScreen
 import com.example.saglife.screen.account.ProfileScreen
 import com.example.saglife.screen.account.RegistrationScreen
 import com.example.saglife.screen.calendar.CalendarScreen
@@ -45,11 +46,14 @@ import com.example.saglife.screen.navbars.CustomTopAppBar
 import com.example.saglife.ui.theme.SagLifeTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 
 private val auth: FirebaseAuth = Firebase.auth
 
@@ -114,6 +118,26 @@ class MainActivity : ComponentActivity() {
     fun MyApp(navController: NavHostController) {
 
         askNotificationPermission()
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                println("Fetching FCM registration token failed")
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            print("Token "+token)
+        })
+
+        Firebase.messaging.subscribeToTopic("notif")
+            .addOnCompleteListener { task ->
+                var msg = "Subscribed"
+                if (!task.isSuccessful) {
+                    msg = "Subscribe failed"
+                }
+                println(msg)
+            }
 
         var clientLocation by remember { mutableStateOf(GeoPoint(48.40496419957457, -71.0574980680532)) }
 
@@ -316,7 +340,17 @@ class MainActivity : ComponentActivity() {
                             backStackEntry.arguments?.getString("post_id"),
                             backStackEntry.arguments?.getString("comment_id")
                         )
+
+
                     }
+                composable(Routes.ModifyProfile.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    ModifyProfileScreen(
+                        navController = navController
+                    )
+                }
                 }
             }
         }

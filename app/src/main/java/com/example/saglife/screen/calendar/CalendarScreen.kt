@@ -3,6 +3,7 @@ package com.example.saglife.screen.calendar
 import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -44,10 +47,14 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.saglife.models.EventItem
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
+import kotlinx.coroutines.delay
+import java.util.Calendar
 import java.util.Date
 
 /**
@@ -62,17 +69,25 @@ fun CalendarScreen(navController: NavHostController) {
     var postLoaded by remember { mutableStateOf(false) }
 
     // Liste des filtres sélectionnés.
-    var selectedFilters by remember { mutableStateOf(mutableListOf<String>()) }
+    val selectedFilters by remember { mutableStateOf(mutableListOf<String>()) }
 
     // Liste de tous les filtres disponibles.
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
+
+    val ongoingEvents by remember { mutableStateOf(mutableListOf<EventItem>()) }
+    val pastEvents by remember { mutableStateOf(mutableListOf<EventItem>()) }
+    val incomingEvents by remember { mutableStateOf(mutableListOf<EventItem>()) }
+
+    val currentDate = Calendar.getInstance().time
+
+    // Etat du rafraîchissement
+    var refreshing by remember { mutableStateOf(false) }
 
     // Instance de la base de données Firestore.
     val db = Firebase.firestore
 
     // Récupération des filtres depuis Firestore.
     db.collection("filter_event").get().addOnSuccessListener { result ->
-        println("filter")
         val filters = mutableListOf<String>()
         for (document in result) {
             val name = document.getString("Name")!!
@@ -90,89 +105,186 @@ fun CalendarScreen(navController: NavHostController) {
 
     // Liste de tous les événements.
     val allEvents = mutableListOf<EventItem>()
-    db.collection("event").orderBy("Date_start", Query.Direction.DESCENDING).get().addOnSuccessListener { result ->
-        println("event")
-        for (document in result) {
+    LaunchedEffect(postLoaded) {
+        if (!postLoaded) {
+            db.collection("event").orderBy("Date_start", Query.Direction.DESCENDING).get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
 
-            val name = document.get("Name").toString()
-            val dateStart: Date = document.getDate("Date_start")!!
-            val dateEnd = document.getDate("Date_stop")!!
-            val description = document.get("Description").toString()
-            val photoPath = document.get("Photo").toString()
-            val filter = document.get("Filter").toString()
-            val author = document.get("Author").toString()
+                        val name = document.get("Name").toString()
+                        val dateStart: Date = document.getDate("Date_start")!!
+                        val dateEnd = document.getDate("Date_stop")!!
+                        val description = document.get("Description").toString()
+                        val photoPath = document.get("Photo").toString()
+                        val filter = document.get("Filter").toString()
+                        val author = document.get("Author").toString()
 
-            allEvents.add(
-                EventItem(
-                    document.id,
-                    name,
-                    dateStart,
-                    dateEnd,
-                    description,
-                    photoPath,
-                    filter,
-                    author
-                )
-            )
+                        val eventItem = EventItem(
+                                document.id,
+                                name,
+                                dateStart,
+                                dateEnd,
+                                description,
+                                photoPath,
+                                filter,
+                                author
+                            )
+                        if (currentDate.after(dateStart) && currentDate.before(dateEnd)) {
+                            ongoingEvents.add(eventItem)
+                        } else if (currentDate.after(dateEnd)) {
+                            pastEvents.add(eventItem)
+                        }
+                        else
+                        {
+                            incomingEvents.add(eventItem)
+                        }
+
+                        allEvents.add(eventItem)
+                    }
+                    eventsFiltered = allEvents
+                }
+
         }
-        eventsFiltered = allEvents
-    }
-    // Affichage de la page principale.
-    Box(
-        modifier = Modifier.fillMaxSize(),
+        postLoaded = true
+        }
+
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing = refreshing),
+        onRefresh = {
+            refreshing = true
+        },
+        modifier = Modifier.fillMaxSize()
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            // Affichage des filtres sous forme de puce.
-            LazyRow(
-                modifier = Modifier.padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(filterList) { filter ->
-                    FilterChip(
-                        onClick = { filterName ->
-                            // Gestion de la sélection/déselection du filtre.
-                            if (selectedFilters.contains(filterName)) {
-                                selectedFilters.remove(filterName)
-                            } else {
-                                selectedFilters.add(filterName)
-                            }
-                            // Filtrage des événements en fonction des filtres sélectionnés.
-                            if (selectedFilters.isNotEmpty()) {
-                                eventsFiltered = filterEventItems(selectedFilters, allEvents)
-                            } else {
-                                eventsFiltered = allEvents
-                            }
-
-
-                        },
-                        filter
-                    )
-                }
-            }
-// Affichage des événements filtrés.
-            LazyColumn(modifier = Modifier.padding(16.dp)) {
-                items(eventsFiltered) { event ->
-                    EventComposant(event = event, navController = navController)
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
+        LaunchedEffect(refreshing) {
+            if (refreshing) {
+                delay(1000) // Simule une attente de 1 seconde
+                refreshing = false
+                postLoaded = false
             }
         }
-        // Bouton flottant pour ajouter un nouvel événement.
-        FloatingActionButton(
-            modifier = Modifier.padding(16.dp).align(Alignment.BottomEnd),
-            onClick = {
-                navController.navigate("event/create")
-            },
-            containerColor = MaterialTheme.colorScheme.primary
+        // Affichage de la page principale.
+        Box(
+            modifier = Modifier.fillMaxSize(),
         ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Ajouter un événement"
-            )
+            Column(modifier = Modifier.fillMaxSize()) {
+                // Affichage des filtres sous forme de puce.
+                LazyRow(
+                    modifier = Modifier.padding(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(filterList) { filter ->
+                        FilterChip(
+                            onClick = { filterName ->
+                                // Gestion de la sélection/déselection du filtre.
+                                if (selectedFilters.contains(filterName)) {
+                                    selectedFilters.remove(filterName)
+                                } else {
+                                    selectedFilters.add(filterName)
+                                }
+                                // Filtrage des événements en fonction des filtres sélectionnés.
+                                if (selectedFilters.isNotEmpty()) {
+                                    eventsFiltered = filterEventItems(selectedFilters, allEvents)
+                                } else {
+                                    eventsFiltered = allEvents
+                                }
+
+
+                            },
+                            filter
+                        )
+                    }
+                }
+// Affichage des événements filtrés.
+                LazyColumn(modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally ) {
+                    items(incomingEvents) { event ->
+                        EventComposant(event = event, navController = navController)
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                    if (ongoingEvents.isNotEmpty()) {
+                        item {
+                            Box(
+                                modifier = Modifier.fillMaxWidth().height(1.dp)
+                                    .background(MaterialTheme.colorScheme.onBackground)
+                                    .padding(top = 8.dp)
+                            )
+                            Text(
+                                text = "Événements en cours",
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier
+                                    .padding(top = 16.dp, bottom = 16.dp)
+                                ,
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                            Box(
+                                modifier = Modifier.fillMaxWidth().height(1.dp)
+                                    .background(MaterialTheme.colorScheme.onBackground)
+                                    .padding(bottom = 8.dp)
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+                        items(ongoingEvents) { event ->
+                            EventComposant(event = event, navController = navController)
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+                    }
+                    if (pastEvents.isNotEmpty()) {
+                        item {
+                            Box(
+                                modifier = Modifier.fillMaxWidth().height(1.dp)
+                                    .background(MaterialTheme.colorScheme.onBackground)
+                                    .padding(top = 8.dp)
+                            )
+                            Text(
+                                text = "Événements passés",
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier
+                                    .padding(top = 8.dp, bottom = 8.dp),
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                            Box(
+                                modifier = Modifier.fillMaxWidth().height(1.dp)
+                                    .background(MaterialTheme.colorScheme.onBackground)
+                                    .padding(bottom = 8.dp)
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+                        items(pastEvents) { event ->
+                            EventComposant(event = event, navController = navController)
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+                    }
+                }
+            }
+            // Bouton flottant pour ajouter un nouvel événement.
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomEnd),
+                onClick = {
+                    navController.navigate("event/create")
+                },
+                containerColor = MaterialTheme.colorScheme.primary
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Ajouter un événement"
+                )
+            }
         }
     }
 }
 
+/**
+ * Fonction qui prend en paramètre une liste de chaînes de caractères [filters] et une liste d'objets [EventItem].
+ * La fonction filtre la liste d'objets en ne retournant que les éléments où l'un des éléments de [filters] est égal au champ [filter].
+ *
+ * @param filters Liste des filtres à appliquer.
+ * @param eventItems Liste des événements à filtrer.
+ * @return Liste filtrée d'objets [EventItem].
+ */
 /**
  * Fonction qui prend en paramètre une liste de chaînes de caractères [filters] et une liste d'objets [EventItem].
  * La fonction filtre la liste d'objets en ne retournant que les éléments où l'un des éléments de [filters] est égal au champ [filter].
@@ -191,6 +303,12 @@ fun filterEventItems(filters: List<String>, eventItems: List<EventItem>): Mutabl
     return filteredEventItems
 }
 
+/**
+ * Composant qui affiche un événement.
+ *
+ * @param event Objet [EventItem] à afficher.
+ * @param navController Contrôleur de navigation.
+ */
 /**
  * Composant qui affiche un événement.
  *

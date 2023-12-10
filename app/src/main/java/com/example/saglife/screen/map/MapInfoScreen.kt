@@ -1,4 +1,5 @@
 package com.example.saglife.screen.map
+import android.content.Intent
 import android.location.Location
 import android.net.Uri
 import androidx.compose.foundation.Image
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -25,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.twotone.Star
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -49,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -104,7 +108,6 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
     {
         urlImage = "https://firebasestorage.googleapis.com/v0/b/saglife-94b7c.appspot.com/o/images%2Fevent.jpg?alt=media&token=d050b68e-9cac-49f7-99dd-09d60d735e4a"
     }
-    var author by remember {mutableStateOf("Utilisateur supprimé")}
 
     // État du chargement des données
     var postLoaded by remember { mutableStateOf(false) }
@@ -117,6 +120,8 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
     //Etat des stars
     var stars by remember { mutableStateOf(0) }
 
+    val context = LocalContext.current
+
 
     val db = Firebase.firestore
     LaunchedEffect(postLoaded) {
@@ -124,7 +129,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
             if (id != null) {
                 // Récupération des informations sur l'établissement depuis Firestore
                 db.collection("map").document(id).get().addOnSuccessListener { document ->
-                    val author_id = document.getString("Author_id")!!
+                    val author_id = document.getString("Author_id") ?: ""
                     val name = document.getString("Name")!!
                     val adresseName = document.getString("AdresseName")!!
                     val adresseLocation = document.getGeoPoint("AdresseLocation")!!
@@ -272,15 +277,38 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
 
                             }
                         }
-                        FilledTonalButton(
-                            onClick = { },
-                            contentPadding = PaddingValues(16.dp, 8.dp),
+                        Button(
+                            onClick = {
+                                val adresse = map.adresseName
+                                val gmmIntentUri = Uri.parse("geo:0,0?q=$adresse")
+                                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                                mapIntent.setPackage("com.google.android.apps.maps")
+                                if (mapIntent.resolveActivity(context.packageManager) != null) {
+                                    context.startActivity(mapIntent)
+                                } else {
+                                    val playStoreIntent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("market://details?id=com.google.android.apps.maps")
+                                    )
+
+                                    val playStoreInfo =
+                                        context.packageManager.resolveActivity(playStoreIntent, 0)
+                                    if (playStoreInfo != null) {
+                                        // Si le Play Store est disponible, l'ouvrir
+                                        context.startActivity(playStoreIntent)
+                                    } else {
+                                        // Si le Play Store n'est pas disponible, ouvrir une URL web vers le Play Store
+                                        val webPlayStoreIntent = Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps")
+                                        )
+                                        context.startActivity(webPlayStoreIntent)
+                                    }
+                                }
+                            },
                             modifier = Modifier
-                                .defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                            shape = RoundedCornerShape(24),
-                            elevation = ButtonDefaults.buttonElevation(
-                                defaultElevation = 8.dp
-                            )
+                                .wrapContentSize(),
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                         ) {
                             Text("Itinéraire")
                         }
