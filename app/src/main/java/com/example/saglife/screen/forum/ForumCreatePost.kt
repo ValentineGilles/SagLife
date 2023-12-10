@@ -1,5 +1,7 @@
 package com.example.saglife.screen.forum
 
+import Notification
+import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -296,7 +298,7 @@ fun ForumCreatePost(navController: NavHostController) {
                                     isUploading = false
 
                                     if (newPost != null && filter_chip != "") {
-                                        savePostToDatabase(newPost)
+                                        savePostToDatabase(newPost, context)
                                         navController.navigate("forum")
                                     }
                                 }
@@ -326,7 +328,7 @@ fun ForumCreatePost(navController: NavHostController) {
 }
 
 // Fonction pour enregistrer un post dans la base de données Firestore
-private fun savePostToDatabase(post: ForumPostItem) {
+private fun savePostToDatabase(post: ForumPostItem, context: Context) {
     // Assurez-vous que l'ID du post est null, car un nouvel ID sera généré lors de l'ajout dans Firestore
     val newPost = mapOf(
         "Date" to post.date,
@@ -351,6 +353,8 @@ private fun savePostToDatabase(post: ForumPostItem) {
         .addOnFailureListener { e ->
             println("Erreur lors de l'ajout du post: $e")
         }
+
+    Notification("Saglife",post.title,"notif").send(context)
 }
 
 @Composable

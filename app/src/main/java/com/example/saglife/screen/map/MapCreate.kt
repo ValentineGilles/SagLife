@@ -1,5 +1,6 @@
 package com.example.saglife.screen.map
 
+import Notification
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Address
@@ -326,6 +327,10 @@ Card(modifier = Modifier.padding(16.dp),
                                     }
                                     // Enregistrement des données dans Firebase
                                     map?.toFirebase()
+
+                                    //Envoie de la notification
+                                    Notification("Saglife",name.text,"notif").send(context)
+
                                     // Retour à l'écran précédent
                                     navController.popBackStack()
                                 }

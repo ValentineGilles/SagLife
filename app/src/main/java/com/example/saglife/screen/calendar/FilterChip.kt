@@ -35,7 +35,7 @@ fun FilterChip(onClick: (String) -> Unit, filtername: String) {
         onClick = {
             // Inversion de l'état de sélection lors du clic sur la puce
             selected = !selected
-                    onClick(filtername)},
+            onClick(filtername)},
         label = {
             Text(filtername)
         },
