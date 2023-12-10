@@ -5,7 +5,6 @@ import com.google.firebase.firestore.firestore
 
 fun getDescriptionFromUid(uid: String, onSuccess: (String) -> Unit) {
     // Référence à la collection "users" dans Firestore
-    println("getProfilePicFromUid")
     val db = Firebase.firestore
     val usersCollection = db.collection("users")
 
@@ -19,7 +18,6 @@ fun getDescriptionFromUid(uid: String, onSuccess: (String) -> Unit) {
                 // Le document existe, récupérer le nom d'utilisateur
                 val description = documentSnapshot.getString("description")
                 if ( description != null) {
-                    println("La description est est : $description")
                     onSuccess(description)
                 } else {
                     println("description est null pour l'UID: $uid")

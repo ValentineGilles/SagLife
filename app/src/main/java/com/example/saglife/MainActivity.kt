@@ -29,6 +29,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.saglife.screen.account.ForgotPasswordScreen
 import com.example.saglife.screen.account.LoginScreen
+import com.example.saglife.screen.account.ModifyProfileScreen
 import com.example.saglife.screen.account.ProfileScreen
 import com.example.saglife.screen.account.RegistrationScreen
 import com.example.saglife.screen.calendar.CalendarScreen
@@ -342,7 +343,17 @@ class MainActivity : ComponentActivity() {
                             backStackEntry.arguments?.getString("post_id"),
                             backStackEntry.arguments?.getString("comment_id")
                         )
+
+
                     }
+                composable(Routes.ModifyProfile.route) {
+                    isTopBarVisible.value = true
+                    isBottomBarVisible.value = true
+                    isTopBarBack.value = true
+                    ModifyProfileScreen(
+                        navController = navController
+                    )
+                }
                 }
             }
         }
