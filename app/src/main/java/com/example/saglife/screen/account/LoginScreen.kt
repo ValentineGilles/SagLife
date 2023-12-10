@@ -62,7 +62,7 @@ private val auth: FirebaseAuth = Firebase.auth
 @Composable
 fun LoginScreen(navController: NavHostController) {
     // État des champs de texte pour l'e-mail et le mot de passe
-    var email by remember { mutableStateOf(TextFieldValue("saglifeapp@gmail.com")) }
+    var email by remember { mutableStateOf(TextFieldValue("valentine.gilles2000@gmail.com")) }
     var password by remember { mutableStateOf(TextFieldValue("UserTest")) }
     var showPassword by remember { mutableStateOf(false) }
 

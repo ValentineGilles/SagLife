@@ -1,4 +1,6 @@
 package com.example.saglife.models
+import android.content.Context
+import android.widget.Toast
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import java.util.Date
@@ -86,16 +88,18 @@ class EventItem(
     /**
      * Envoie l'événement vers la base de données Firebase.
      */
-    fun toFirebase() {
+    fun toFirebase(context : Context) {
         val db = Firebase.firestore
 
         db.collection("event")
             .add(toJson())
             .addOnSuccessListener { documentReference ->
                 println("Evénement ajouté avec l'ID: ${documentReference.id}")
+                Toast.makeText(context, "Evenement créé", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
                 println("Erreur lors de l'ajout de l'événement: $e")
+                Toast.makeText(context, "Erreur lors de la création de l'évenement", Toast.LENGTH_SHORT).show()
             }
     }
 

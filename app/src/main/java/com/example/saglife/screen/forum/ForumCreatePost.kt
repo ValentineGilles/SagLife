@@ -1,6 +1,8 @@
 package com.example.saglife.screen.forum
 
+import android.content.Context
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -49,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -76,8 +79,8 @@ private val auth: FirebaseAuth = com.google.firebase.ktx.Firebase.auth
 @Composable
 fun ForumCreatePost(navController: NavHostController) {
     // État pour gérer le titre et la description du post
-    var title by remember { mutableStateOf(TextFieldValue()) }
-    var description by remember { mutableStateOf(TextFieldValue()) }
+    var title by remember { mutableStateOf(TextFieldValue("Covoit")) }
+    var description by remember { mutableStateOf(TextFieldValue("Je vais à Montréal ce week-end. J'ai 3 places de disponibles si ça intéresse quelqu'un.")) }
 
     // État pour le chargement des données des filtres de post
     var postLoaded by remember { mutableStateOf(false) }
@@ -296,7 +299,7 @@ fun ForumCreatePost(navController: NavHostController) {
                                     isUploading = false
 
                                     if (newPost != null && filter_chip != "") {
-                                        savePostToDatabase(newPost)
+                                        savePostToDatabase(newPost, context)
                                         navController.navigate("forum")
                                     }
                                 }
@@ -326,7 +329,7 @@ fun ForumCreatePost(navController: NavHostController) {
 }
 
 // Fonction pour enregistrer un post dans la base de données Firestore
-private fun savePostToDatabase(post: ForumPostItem) {
+private fun savePostToDatabase(post: ForumPostItem, context : Context) {
     // Assurez-vous que l'ID du post est null, car un nouvel ID sera généré lors de l'ajout dans Firestore
     val newPost = mapOf(
         "Date" to post.date,
@@ -347,9 +350,11 @@ private fun savePostToDatabase(post: ForumPostItem) {
         .add(newPost)
         .addOnSuccessListener { documentReference ->
             println("Post ajouté avec l'ID: ${documentReference.id}")
+            Toast.makeText(context, "Post créé", Toast.LENGTH_SHORT).show()
         }
         .addOnFailureListener { e ->
             println("Erreur lors de l'ajout du post: $e")
+            Toast.makeText(context, "Erreur lors de la création du post", Toast.LENGTH_SHORT).show()
         }
 }
 

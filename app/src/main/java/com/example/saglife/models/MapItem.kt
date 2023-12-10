@@ -1,5 +1,7 @@
 package com.example.saglife.models
 
+import android.content.Context
+import android.widget.Toast
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
@@ -36,16 +38,18 @@ class MapItem(val id:String, val author_id:String, val name: String, val adresse
     /**
      * Envoie l'élément vers la base de données Firebase.
      */
-    fun toFirebase() {
+    fun toFirebase(context : Context) {
         val db = Firebase.firestore
 
         db.collection("map")
             .add(this.toJson())
             .addOnSuccessListener { documentReference ->
                 println("Etablissement ajouté avec l'ID: ${documentReference.id}")
+                Toast.makeText(context, "Etablissement ajouté", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
                 println("Erreur lors de l'ajout du post: $e")
+                Toast.makeText(context, "Erreur lors de l'ajout de l'établissement", Toast.LENGTH_SHORT).show()
             }
     }
 

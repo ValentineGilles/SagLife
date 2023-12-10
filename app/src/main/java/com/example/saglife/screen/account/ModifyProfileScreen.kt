@@ -1,6 +1,8 @@
 package com.example.saglife.screen.account
 
+import android.content.Context
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -37,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.saglife.screen.calendar.DisplayImage
@@ -54,14 +57,15 @@ fun ModifyProfileScreen(navController: NavHostController) {
     var profilePic by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var selectedImageUri = remember { mutableStateOf<Uri?>(null) }
+    val selectedImageUri = remember { mutableStateOf<Uri?>(null) }
     val db = Firebase.firestore
+    val context = LocalContext.current
 
     db.collection("users").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener { document ->
         if (document != null) {
             profilePic = document.data?.get("profile_pic").toString()
             username = document.data?.get("username").toString()
-            description = document.data?.get("description").toString()
+            description = document.data?.get("description").toString() ?: ""
         }
     }.addOnFailureListener { exception ->
         println("get failed with $exception")
@@ -191,7 +195,8 @@ fun ModifyProfileScreen(navController: NavHostController) {
                                     it.uid,
                                     selectedImageUri,
                                     username,
-                                    description
+                                    description,
+                                    context
                                 )
                             }
                         navController.navigateUp()
@@ -206,7 +211,7 @@ fun ModifyProfileScreen(navController: NavHostController) {
 }
 
 
-fun updateUserProfile(userId: String, profilePic: MutableState<Uri?>, username: String, description: String) {
+fun updateUserProfile(userId: String, profilePic: MutableState<Uri?>, username: String, description: String, context : Context) {
     val userRef = Firebase.firestore.collection("users").document(userId)
 
     var oldImageUrl: String? = null
@@ -241,8 +246,10 @@ fun updateUserProfile(userId: String, profilePic: MutableState<Uri?>, username: 
                     }
                 }
                 println("DocumentSnapshot successfully updated!")
+                Toast.makeText(context, "Profil mis à jour", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener { e ->
                 println("Error updating document: $e")
+                Toast.makeText(context, "Mise à jour du profil impossible", Toast.LENGTH_SHORT).show()
             }
         }
     }

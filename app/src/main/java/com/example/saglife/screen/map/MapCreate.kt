@@ -31,6 +31,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -48,6 +49,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,6 +68,7 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.UUID
 
@@ -82,20 +85,21 @@ private val auth: FirebaseAuth = Firebase.auth
 @Composable
 fun MapCreate(navController: NavHostController) {
     // État des champs de saisie
-    var name by remember { mutableStateOf(TextFieldValue()) }
-    var locationName by remember { mutableStateOf(TextFieldValue()) }
-    var description by remember { mutableStateOf(TextFieldValue()) }
-    var photoPath by remember { mutableStateOf(TextFieldValue()) }
-
+    var name by remember { mutableStateOf(TextFieldValue("Sport Expert")) }
+    var locationName by remember { mutableStateOf(TextFieldValue("1401 Bd Talbot, Chicoutimi")) }
+    var description by remember { mutableStateOf(TextFieldValue("Un magasin de sport très complet !")) }
+    var isUploading by remember { mutableStateOf(false) }
 
     // Etat de chargement des données
-    var postLoaded by remember { mutableStateOf(false) }
+    val postLoaded by remember { mutableStateOf(false) }
 
     // État des filtres
     var selectedFilter by remember { mutableStateOf("") }
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
 
-    var selectedImageUri = remember { mutableStateOf<Uri?>(null) }
+    val selectedImageUri = remember { mutableStateOf<Uri?>(null) }
+
+    val coroutineScope = rememberCoroutineScope()
 
     //Contexte
     val context = LocalContext.current
@@ -123,6 +127,7 @@ fun MapCreate(navController: NavHostController) {
             }
                 .addOnFailureListener { e ->
                     println("Erreur lors de la récupération des données des filtres : $e")
+
                 }
         }
     }
@@ -278,63 +283,65 @@ Card(modifier = Modifier.padding(16.dp),
                 }
             }
 
-
-
             // Bouton pour enregistrer les informations sur la carte
             Button(
                 onClick = {
+                    if (!isUploading) {
+                        coroutineScope.launch {
+                            // Vérification des champs non vides avant d'enregistrer
+                            if (name.text != "" && description.text != "" && locationName.text != "" && selectedImageUri.value != null) {
+                                isUploading = true
+                                val imageUri = selectedImageUri.value!!
+                                val coordinates = getLocationFromAddress(context, locationName.text)
+                                if (coordinates != null) {
+                                    val (latitude, longitude) = coordinates
+                                    // Faites quelque chose avec les coordonnées obtenues
+                                    println("Latitude: $latitude, Longitude: $longitude")
 
-                    // Vérification des champs non vides avant d'enregistrer
-                    if (name.text != "" && description.text != "" && locationName.text != "" && selectedImageUri.value != null) {
-                        val imageUri = selectedImageUri.value!!
-                        //TEST
+                                    val storageRef = Firebase.storage.reference
+                                    val imageRef =
+                                        storageRef.child("images/map/${UUID.randomUUID()}")
 
-                        val coordinates = getLocationFromAddress(context, locationName.text)
+                                    val uploadTask = imageRef.putFile(imageUri)
 
+                                    uploadTask.addOnSuccessListener { taskSnapshot ->
+                                        // L'image a été téléchargée avec succès, obtenez l'URL de téléchargement
+                                        imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                                            val imageUrl = downloadUri.toString()
 
-                        if (coordinates != null) {
-                            val (latitude, longitude) = coordinates
-                            // Faites quelque chose avec les coordonnées obtenues
-                            println("Latitude: $latitude, Longitude: $longitude")
-
-                            val storageRef = Firebase.storage.reference
-                            val imageRef = storageRef.child("images/map/${UUID.randomUUID()}")
-
-                            val uploadTask = imageRef.putFile(imageUri)
-
-                            uploadTask.addOnSuccessListener { taskSnapshot ->
-                                // L'image a été téléchargée avec succès, obtenez l'URL de téléchargement
-                                imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                                    val imageUrl = downloadUri.toString()
-
-                                    val map = auth.currentUser?.uid?.let {
-                                        MapItem(
-                                            id = "",
-                                            author_id = it,
-                                            name = name.text,
-                                            adresseName = locationName.text,
-                                            adresseLocation = GeoPoint(
-                                                coordinates.first,
-                                                coordinates.second
-                                            ),
-                                            filter = selectedFilter,
-                                            description = description.text,
-                                            photoPath = imageUrl,
-                                            0.0,
-                                            0F
-                                        )
+                                            val map = auth.currentUser?.uid?.let {
+                                                MapItem(
+                                                    id = "",
+                                                    author_id = it,
+                                                    name = name.text,
+                                                    adresseName = locationName.text,
+                                                    adresseLocation = GeoPoint(
+                                                        coordinates.first,
+                                                        coordinates.second
+                                                    ),
+                                                    filter = selectedFilter,
+                                                    description = description.text,
+                                                    photoPath = imageUrl,
+                                                    0.0,
+                                                    0F
+                                                )
+                                            }
+                                            // Enregistrement des données dans Firebase
+                                            map?.toFirebase(context)
+                                            // Retour à l'écran précédent
+                                            navController.popBackStack()
+                                        }
+                                        isUploading = false
+                                    }.addOnFailureListener {
+                                        println("Erreur lors du téléchargement de l'image : $it")
+                                        isUploading = false
                                     }
-                                    // Enregistrement des données dans Firebase
-                                    map?.toFirebase()
-                                    // Retour à l'écran précédent
-                                    navController.popBackStack()
                                 }
+                            } else {
+                                // Gérez le cas où les coordonnées ne peuvent pas être obtenues
+                                println("Impossible d'obtenir les coordonnées pour l'adresse donnée.")
                             }
-                        } else {
-                            // Gérez le cas où les coordonnées ne peuvent pas être obtenues
-                            println("Impossible d'obtenir les coordonnées pour l'adresse donnée.")
                         }
-
                     }
 
                 },
@@ -347,7 +354,15 @@ Card(modifier = Modifier.padding(16.dp),
         }
     }
 }
-
+    if (isUploading) {
+        println("Test")
+        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)), contentAlignment = Alignment.Center) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                CircularProgressIndicator() // Icone de chargement
+                Text(text = "En cours de publication...")
+            }
+        }
+    }
 }
 
 
