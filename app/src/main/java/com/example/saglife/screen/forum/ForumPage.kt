@@ -129,8 +129,8 @@ fun ForumPage(navController: NavHostController, id: String?) {
     }
 
     // Récupération des commentaires au lancement de la page
-    LaunchedEffect(id, postLoaded) {
-        if (id != null && !postLoaded) {
+    LaunchedEffect(id, commentsLoaded) {
+        if (id != null && !commentsLoaded) {
             db.collection("forum").document(id).collection("comments")
                 .orderBy("Date", Query.Direction.ASCENDING)
                 .get()
@@ -268,9 +268,10 @@ fun ForumPage(navController: NavHostController, id: String?) {
                             ) // Ajoute le commentaire à la base de données
                         }
                         comment = TextFieldValue("") // Réinitialise le champ de texte
+                        commentsLoaded = false // Refresh automatique
                     },
                     modifier = Modifier.align(Alignment.CenterVertically)
-                ) {
+                            ) {
                     Icon(
                         imageVector = Icons.Default.Send,
                         contentDescription = "Envoyer"
