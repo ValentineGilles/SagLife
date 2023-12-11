@@ -46,7 +46,7 @@ fun CustomTopAppBar(
 
     var profilePicture by remember { mutableStateOf("") }
     getProfilePicFromUid(auth.uid.toString()) { profilePic ->
-        if (profilePic != "")
+        if (profilePic.startsWith("https://firebasestorage.googleapis.com/"))
             profilePicture = profilePic
         else profilePicture = "https://firebasestorage.googleapis.com/v0/b/saglife-94b7c.appspot.com/o/profile_pic%2Fblank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg?alt=media&token=368f0c1f-8e2a-46c2-a253-640287f74515"
 

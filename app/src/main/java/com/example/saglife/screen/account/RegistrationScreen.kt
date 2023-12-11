@@ -210,7 +210,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                 Box(modifier = Modifier.padding(40.dp, 8.dp, 40.dp, 0.dp)) {
                     Button(
                         onClick = {
-                            if (password.text.isNotEmpty() && email.text.isNotEmpty() && username.text.isNotEmpty()) {
+                           if (password.text.isNotEmpty() && email.text.isNotEmpty() && username.text.isNotEmpty()) {
                                 if (password2 == password) {
                                     signUpWithFirebase(
                                         email.text,
@@ -288,7 +288,7 @@ fun signUpWithFirebase(
 
 // Fonction pour ajouter l'utilisateur à la base de données
 fun addUserToDatabase(uid: String, username: String, context : Context) {
-    val profileImage = "R.drawable.ic_profile"
+    val profileImage = ""
     val userMap = mapOf(
         "username" to username,
         "profile_pic" to profileImage
