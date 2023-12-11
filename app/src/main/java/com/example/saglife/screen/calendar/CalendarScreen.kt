@@ -72,6 +72,9 @@ fun CalendarScreen(navController: NavHostController) {
 
     // Liste des filtres sélectionnés.
     val selectedFilters by remember { mutableStateOf(mutableListOf<String>()) }
+    var ongoingEventsFiltered by remember { mutableStateOf(mutableListOf<EventItem>()) }
+    var pastEventsFiltered by remember { mutableStateOf(mutableListOf<EventItem>()) }
+    var incomingEventsFiltered by remember { mutableStateOf(mutableListOf<EventItem>()) }
 
     // Liste de tous les filtres disponibles.
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
@@ -101,12 +104,6 @@ fun CalendarScreen(navController: NavHostController) {
             println("Erreur lors de la récupération des données des filtres : $e")
         }
 
-    // Liste des événements filtrés.
-    var eventsFiltered by remember { mutableStateOf(mutableListOf<EventItem>()) }
-
-
-    // Liste de tous les événements.
-    val allEvents = mutableListOf<EventItem>()
     LaunchedEffect(postLoaded) {
         if (!postLoaded) {
             db.collection("event").orderBy("Date_start", Query.Direction.DESCENDING).get()
@@ -140,13 +137,13 @@ fun CalendarScreen(navController: NavHostController) {
                         {
                             incomingEvents.add(eventItem)
                         }
-
-                        allEvents.add(eventItem)
                     }
-                    eventsFiltered = allEvents
+                    incomingEventsFiltered = incomingEvents
+                    ongoingEventsFiltered = ongoingEvents
+                    pastEventsFiltered = pastEvents
                 }
 
-        }
+            }
         postLoaded = true
         }
 
@@ -185,9 +182,14 @@ fun CalendarScreen(navController: NavHostController) {
                                 }
                                 // Filtrage des événements en fonction des filtres sélectionnés.
                                 if (selectedFilters.isNotEmpty()) {
-                                    eventsFiltered = filterEventItems(selectedFilters, allEvents)
+                                    println("going : $ongoingEvents")
+                                    ongoingEventsFiltered = filterEventItems(selectedFilters, ongoingEvents)
+                                    pastEventsFiltered = filterEventItems(selectedFilters, pastEvents)
+                                    incomingEventsFiltered = filterEventItems(selectedFilters, incomingEvents)
                                 } else {
-                                    eventsFiltered = allEvents
+                                    ongoingEventsFiltered = ongoingEvents
+                                    pastEventsFiltered = pastEvents
+                                    incomingEventsFiltered = incomingEvents
                                 }
 
 
@@ -199,11 +201,34 @@ fun CalendarScreen(navController: NavHostController) {
 // Affichage des événements filtrés.
                 LazyColumn(modifier = Modifier.padding(16.dp).fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally ) {
-                    items(incomingEvents) { event ->
-                        EventComposant(event = event, navController = navController)
-                        Spacer(modifier = Modifier.height(16.dp))
+                    if (incomingEventsFiltered.isNotEmpty()) {
+                        item {
+                            Box(
+                                modifier = Modifier.fillMaxWidth().height(1.dp)
+                                    .background(MaterialTheme.colorScheme.onBackground)
+                                    .padding(top = 8.dp)
+                            )
+                            Text(
+                                text = "Événements à venir",
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier
+                                    .padding(top = 8.dp, bottom = 8.dp),
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                            Box(
+                                modifier = Modifier.fillMaxWidth().height(1.dp)
+                                    .background(MaterialTheme.colorScheme.onBackground)
+                                    .padding(bottom = 8.dp)
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+                        items(incomingEventsFiltered) { event ->
+                            EventComposant(event = event, navController = navController)
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
                     }
-                    if (ongoingEvents.isNotEmpty()) {
+                    if (ongoingEventsFiltered.isNotEmpty()) {
                         item {
                             Box(
                                 modifier = Modifier.fillMaxWidth().height(1.dp)
@@ -214,7 +239,7 @@ fun CalendarScreen(navController: NavHostController) {
                                 text = "Événements en cours",
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier
-                                    .padding(top = 16.dp, bottom = 16.dp)
+                                    .padding(top = 8.dp, bottom = 8.dp)
                                 ,
                                 textAlign = TextAlign.Center,
                                 color = MaterialTheme.colorScheme.onBackground
@@ -226,12 +251,12 @@ fun CalendarScreen(navController: NavHostController) {
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                         }
-                        items(ongoingEvents) { event ->
+                        items(ongoingEventsFiltered) { event ->
                             EventComposant(event = event, navController = navController)
                             Spacer(modifier = Modifier.height(16.dp))
                         }
                     }
-                    if (pastEvents.isNotEmpty()) {
+                    if (pastEventsFiltered.isNotEmpty()) {
                         item {
                             Box(
                                 modifier = Modifier.fillMaxWidth().height(1.dp)
@@ -253,7 +278,7 @@ fun CalendarScreen(navController: NavHostController) {
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                         }
-                        items(pastEvents) { event ->
+                        items(pastEventsFiltered) { event ->
                             EventComposant(event = event, navController = navController)
                             Spacer(modifier = Modifier.height(16.dp))
                         }
@@ -296,6 +321,8 @@ fun CalendarScreen(navController: NavHostController) {
  * @return Liste filtrée d'objets [EventItem].
  */
 fun filterEventItems(filters: List<String>, eventItems: List<EventItem>): MutableList<EventItem> {
+    println("Filtre : $filters")
+    println("Événements : $eventItems")
     val filteredEventItems = mutableListOf<EventItem>()
     for (eventItem in eventItems) {
         if (filters.any { it == eventItem.filter }) {

@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -33,6 +34,7 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.ElevatedButton
@@ -60,6 +62,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -92,9 +95,8 @@ private val auth: FirebaseAuth = com.google.firebase.ktx.Firebase.auth
 @Composable
 fun EventCreate(navController: NavHostController) {
     // État des champs du formulaire
-    var name by remember { mutableStateOf(TextFieldValue()) }
-    var description by remember { mutableStateOf(TextFieldValue()) }
-    var photoPath by remember { mutableStateOf(TextFieldValue()) }
+    var name by remember { mutableStateOf(TextFieldValue("Présentation de SagLife")) }
+    var description by remember { mutableStateOf(TextFieldValue("Par Sacha et Valentine")) }
 
     // Heures de début et de fin
     var time_start by remember { mutableStateOf("10h00") }
@@ -106,6 +108,7 @@ fun EventCreate(navController: NavHostController) {
     // Filtre sélectionné et liste des filtres disponibles
     var selectedFilter by remember { mutableStateOf("") }
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
+    var isUploading by remember { mutableStateOf(false) }
 
     //Contexte
     val context = LocalContext.current
@@ -120,7 +123,9 @@ fun EventCreate(navController: NavHostController) {
         initialSelectedDateMillis = Date().time
     )
 
-    var selectedImageUri = remember { mutableStateOf<Uri?>(null) }
+    val selectedImageUri = remember { mutableStateOf<Uri?>(null) }
+
+    val context = LocalContext.current
 
     val imageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -203,7 +208,8 @@ fun EventCreate(navController: NavHostController) {
                 DatePicker(state = datePickerState,
                     colors = DatePickerDefaults.colors(
                         containerColor = MaterialTheme.colorScheme.background,
-                    )
+                    ),
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 // Calcul de la date sélectionnée
@@ -325,52 +331,59 @@ fun EventCreate(navController: NavHostController) {
                 // Bouton pour enregistrer l'événement
                 Button(
                     onClick = {
-                        if (name.text.isNotBlank() && description.text.isNotBlank() && selectedDate != null && selectedImageUri.value != null) {
-                            val imageUri = selectedImageUri.value!!
+                        if (isUploading != true) {
+                            isUploading = true
+                            println("isUploading")
+                            if (name.text.isNotBlank() && description.text.isNotBlank() && selectedDate != null && selectedImageUri.value != null) {
+                                val imageUri = selectedImageUri.value!!
 
-                            // Construction des objets de date pour le début et la fin
-                            val dateStart = Date(selectedDate.time)
-                            dateStart.hours = startTimePickerState.hour
-                            dateStart.minutes = startTimePickerState.minute
-                            val dateStop = Date(selectedDate.time)
-                            dateStop.hours = stopTimePickerState.hour
-                            dateStop.minutes = stopTimePickerState.minute
+                                // Construction des objets de date pour le début et la fin
+                                val dateStart = Date(selectedDate.time)
+                                dateStart.hours = startTimePickerState.hour
+                                dateStart.minutes = startTimePickerState.minute
+                                val dateStop = Date(selectedDate.time)
+                                dateStop.hours = stopTimePickerState.hour
+                                dateStop.minutes = stopTimePickerState.minute
 
-                            // Enregistrer l'image dans Firebase Storage
-                            val storageRef = Firebase.storage.reference
-                            val imageRef = storageRef.child("images/events/${UUID.randomUUID()}")
+                                // Enregistrer l'image dans Firebase Storage
+                                val storageRef = Firebase.storage.reference
+                                val imageRef =
+                                    storageRef.child("images/events/${UUID.randomUUID()}")
 
-                            val uploadTask = imageRef.putFile(imageUri)
+                                val uploadTask = imageRef.putFile(imageUri)
 
-                            uploadTask.addOnSuccessListener { taskSnapshot ->
-                                // L'image a été téléchargée avec succès, obtenez l'URL de téléchargement
-                                imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                                    val imageUrl = downloadUri.toString()
+                                uploadTask.addOnSuccessListener { taskSnapshot ->
+                                    // L'image a été téléchargée avec succès, obtenez l'URL de téléchargement
+                                    imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                                        val imageUrl = downloadUri.toString()
 
-                                    // Création de l'objet EventItem
-                                    val event = auth.currentUser?.uid?.let {
-                                        EventItem(
-                                            author_id = it,
-                                            id = UUID.randomUUID().toString(),
-                                            name = name.text,
-                                            dateStart = dateStart,
-                                            dateEnd = dateStop,
-                                            filter = selectedFilter,
-                                            description = description.text,
-                                            photoPath = imageUrl
-                                        )
+                                        // Création de l'objet EventItem
+                                        val event = auth.currentUser?.uid?.let {
+                                            EventItem(
+                                                author_id = it,
+                                                id = UUID.randomUUID().toString(),
+                                                name = name.text,
+                                                dateStart = dateStart,
+                                                dateEnd = dateStop,
+                                                filter = selectedFilter,
+                                                description = description.text,
+                                                photoPath = imageUrl
+                                            )
+                                        }
+
+                                        // Enregistrement de l'événement dans Firebase
+                                        event?.toFirebase(context)
+
+                                        //Envoie de la notification
+                                        Notification("Saglife",name.text,"notif").send(context)
+
+
+                                        // Retour à l'écran précédent
+                                        navController.popBackStack()
                                     }
-
-                                    // Enregistrement de l'événement dans Firebase
-                                    event?.toFirebase()
-
-                                    //Envoie de la notification
-                                    Notification("Saglife",name.text,"notif").send(context)
-
-                                    // Retour à l'écran précédent
-                                    navController.popBackStack()
                                 }
                             }
+                            isUploading = false
                         }
                     },
                     modifier = Modifier
@@ -378,6 +391,14 @@ fun EventCreate(navController: NavHostController) {
                 ) {
                     Text("Enregistrer")
                 }
+            }
+        }
+    }
+    if (isUploading) {
+        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)), contentAlignment = Alignment.Center) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                CircularProgressIndicator() // Icone de chargement
+                Text(text = "En cours de publication...")
             }
         }
     }

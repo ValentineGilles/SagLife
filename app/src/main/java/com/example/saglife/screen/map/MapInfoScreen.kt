@@ -480,7 +480,7 @@ fun MapInfoScreen(navController: NavHostController, id : String?, clientLocation
                     val commentdate = Calendar.getInstance().time
 
                     if (author != null && id != null) {
-                        MapComment(author, commentText, commentdate).toFirebase(id,auth.currentUser?.uid.toString()) // Ajoute le commentaire à la base de données
+                        MapComment(author, commentText, commentdate).toFirebase(id,auth.currentUser?.uid.toString(), context) // Ajoute le commentaire à la base de données
                     }
 
 
