@@ -61,22 +61,30 @@ fun ProfileScreen(navController: NavHostController) {
     var profilePicture by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 
-    getProfilePicFromUid(auth.uid.toString()) { profilePic ->
-        if (profilePic != "")
-            profilePicture = profilePic
-        else profilePicture = "https://firebasestorage.googleapis.com/v0/b/saglife-94b7c.appspot.com/o/profile_pic%2Fblank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg?alt=media&token=368f0c1f-8e2a-46c2-a253-640287f74515"
-
-    }
-
-    getDescriptionFromUid(auth.uid.toString()) { descriptionUser ->
-        description = descriptionUser
-    }
-
-    if (description == "") description = "Je suis un utilisateur de SagLife."
 
     // Etat du rafraîchissement
     var refreshing by remember { mutableStateOf(false) }
+    var infoLoaded by remember { mutableStateOf(false) }
 
+    LaunchedEffect(infoLoaded)
+    {
+        getProfilePicFromUid(auth.uid.toString()) { profilePic ->
+            println("profilePic: $profilePic")
+            if (profilePic.startsWith("https://firebasestorage.googleapis.com/"))
+                profilePicture = profilePic
+            else profilePicture =
+                "https://firebasestorage.googleapis.com/v0/b/saglife-94b7c.appspot.com/o/profile_pic%2Fblank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg?alt=media&token=368f0c1f-8e2a-46c2-a253-640287f74515"
+
+        }
+
+        getDescriptionFromUid(auth.uid.toString()) { descriptionUser ->
+            description = descriptionUser
+        }
+
+        if (description == "") description = "Je suis un utilisateur de SagLife."
+
+        infoLoaded = true
+    }
 
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing = refreshing),
@@ -89,6 +97,7 @@ fun ProfileScreen(navController: NavHostController) {
             if (refreshing) {
                 delay(1000) // Simule une attente de 1 seconde
                 refreshing = false
+                infoLoaded = false
             }
         }
 

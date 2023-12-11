@@ -65,7 +65,14 @@ fun ModifyProfileScreen(navController: NavHostController) {
         if (document != null) {
             profilePic = document.data?.get("profile_pic").toString()
             username = document.data?.get("username").toString()
-            description = document.data?.get("description").toString() ?: ""
+            if (document.data?.get("description").toString() != "null")
+            {
+                description = document.data?.get("description").toString()
+            }
+            else
+            {
+                description = ""
+            }
         }
     }.addOnFailureListener { exception ->
         println("get failed with $exception")
@@ -168,7 +175,7 @@ fun ModifyProfileScreen(navController: NavHostController) {
                 // Champ pour la description
                 OutlinedTextField(
                     value = description,
-                    onValueChange = { description = it },
+                    onValueChange = { description = it},
                     label = { Text("Description") },
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier
@@ -237,8 +244,9 @@ fun updateUserProfile(userId: String, profilePic: MutableState<Uri?>, username: 
                 )
             ).addOnSuccessListener {
                 println("oldImageUrl : $oldImageUrl")
-                oldImageUrl?.let {
-                    val oldImageRef = Firebase.storage.getReferenceFromUrl(it)
+                if (oldImageUrl != "")
+                {
+                    val oldImageRef = Firebase.storage.getReferenceFromUrl(oldImageUrl!!)
                     oldImageRef.delete().addOnSuccessListener {
                         println("Old image successfully deleted")
                     }.addOnFailureListener { e ->
