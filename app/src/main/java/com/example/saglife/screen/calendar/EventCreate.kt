@@ -125,8 +125,6 @@ fun EventCreate(navController: NavHostController) {
 
     val selectedImageUri = remember { mutableStateOf<Uri?>(null) }
 
-    val context = LocalContext.current
-
     val imageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
