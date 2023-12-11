@@ -35,7 +35,7 @@ class Notification(private val title: String, private val body: String, private 
             override fun getHeaders(): Map<String, String> {
                 return mapOf(
                     "Content-Type" to "application/json",
-                    "Authorization" to "key=AAAAtbl3SOY:APA91bGF0c0P3tWlIcYgiShd3Q9TuYrLZOdTXUd_xy3ZAXkECh_q6Rw5P9o8NjTaolmgpGLc_2sVvSrE5xxZd4t_JkZMqZUOIkXfw-YmNsOPaI8Wb2KkPSed4tkAEG02OxGqSk3FQi2n"
+                    "Authorization" to "key=AAAAhn0steg:APA91bHFguUEWUoA-yUPGsHlWP_gJVYNKjEBsyU3kyV5oi7zIUX74HwUiZj3bTKRpwcborXrdL5WetVLzKsZrvnY2hNX7kf0a4yDatoHkiYQ_NuVUixsB6BJKdnliXVYUceOgjB87e4W"
                 )
             }
         }

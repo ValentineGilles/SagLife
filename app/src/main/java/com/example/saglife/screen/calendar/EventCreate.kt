@@ -1,5 +1,6 @@
 package com.example.saglife.screen.calendar
 
+import Notification
 import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -109,6 +110,9 @@ fun EventCreate(navController: NavHostController) {
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
     var isUploading by remember { mutableStateOf(false) }
 
+    //Contexte
+    val context = LocalContext.current
+
     // États pour les composants de sélection de date et d'heure
     val startTimePickerState =
         remember { TimePickerState(is24Hour = true, initialHour = 0, initialMinute = 0) }
@@ -120,8 +124,6 @@ fun EventCreate(navController: NavHostController) {
     )
 
     val selectedImageUri = remember { mutableStateOf<Uri?>(null) }
-
-    val context = LocalContext.current
 
     val imageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -218,16 +220,15 @@ fun EventCreate(navController: NavHostController) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Horaire",
+                        text = "Début ",
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.padding(bottom = 16.dp, top = 16.dp)
                     )
-                    Row {
-                        time_start =
-                            TimePickerDialog(state = startTimePickerState, time = time_start)
-                        Text("-")
-                        time_stop = TimePickerDialog(state = stopTimePickerState, time = time_stop)
-                    }
+                    time_start =
+                        TimePickerDialog(state = startTimePickerState, time = time_start)
+                    Text(" - Fin ")
+                    time_stop = TimePickerDialog(state = stopTimePickerState, time = time_stop)
+
                 }
 
                 Row(
@@ -370,6 +371,10 @@ fun EventCreate(navController: NavHostController) {
 
                                         // Enregistrement de l'événement dans Firebase
                                         event?.toFirebase(context)
+
+                                        //Envoie de la notification
+                                        Notification("Saglife",name.text,"notif").send(context)
+
 
                                         // Retour à l'écran précédent
                                         navController.popBackStack()

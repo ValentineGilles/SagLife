@@ -1,5 +1,6 @@
 package com.example.saglife.screen.forum
 
+import Notification
 import android.content.Context
 import android.net.Uri
 import android.widget.Toast
@@ -356,6 +357,8 @@ private fun savePostToDatabase(post: ForumPostItem, context : Context) {
             println("Erreur lors de l'ajout du post: $e")
             Toast.makeText(context, "Erreur lors de la création du post", Toast.LENGTH_SHORT).show()
         }
+
+    Notification("Saglife",post.title,"notif").send(context)
 }
 
 @Composable

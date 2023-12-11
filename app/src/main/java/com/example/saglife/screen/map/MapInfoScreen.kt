@@ -1,4 +1,5 @@
 package com.example.saglife.screen.map
+import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.net.Uri
@@ -503,7 +504,7 @@ fun insertNoteIntoFirebase(mapId: String, note: Int, userId : String) {
     db.collection("map")
         .document(mapId)
         .collection("notes")
-        .document(userId).set(mapOf("Note" to note ))
+        .document(userId).set(mapOf("Note" to note))
         .addOnSuccessListener { documentReference ->
             println("Note ajouté avec l'ID : ${userId}")
         }
@@ -512,46 +513,3 @@ fun insertNoteIntoFirebase(mapId: String, note: Int, userId : String) {
         }
 }
 
-
-@Composable
-fun Comment2(comment : MapComment){
-    // Affichage des commentaires
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(end = 16.dp, start = 16.dp, bottom = 16.dp)
-            .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_profile),
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = comment.author)
-
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = comment.getDay(),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = comment.comment)
-        }
-
-    }
-}

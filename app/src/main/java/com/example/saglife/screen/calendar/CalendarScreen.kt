@@ -35,6 +35,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,6 +66,7 @@ import java.util.Date
 @SuppressLint("MutableCollectionMutableState")
 @Composable
 fun CalendarScreen(navController: NavHostController) {
+
     // État pour suivre le chargement des données.
     var postLoaded by remember { mutableStateOf(false) }
 
