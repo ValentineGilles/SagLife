@@ -62,7 +62,10 @@ fun ProfileScreen(navController: NavHostController) {
     var description by remember { mutableStateOf("") }
 
     getProfilePicFromUid(auth.uid.toString()) { profilePic ->
-        profilePicture = profilePic
+        if (profilePic != "")
+            profilePicture = profilePic
+        else profilePicture = "https://firebasestorage.googleapis.com/v0/b/saglife-94b7c.appspot.com/o/profile_pic%2Fblank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg?alt=media&token=368f0c1f-8e2a-46c2-a253-640287f74515"
+
     }
 
     getDescriptionFromUid(auth.uid.toString()) { descriptionUser ->
@@ -90,150 +93,142 @@ fun ProfileScreen(navController: NavHostController) {
         }
 
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                item {
-                    Spacer(modifier = Modifier.height(32.dp))
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(32.dp))
 
-                    // Photo de profil dans un cercle
-                    Box(
+                // Photo de profil dans un cercle
+                Box(
+                    modifier = Modifier
+                        .size(120.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                ) {
+                    AsyncImage(
+                        model = profilePicture,
+                        contentDescription = "Profile picture",
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
+                // Nom d'utilisateur
+                Text(
+                    text = auth.currentUser?.displayName.toString(),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(
+                        start = 16.dp,
+                        end = 8.dp,
+                        top = 8.dp,
+                        bottom = 8.dp
+                    )
+                )
+
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(8.dp)
+                )
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                // Paramètres avec Icone et texte
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 16.dp, start = 16.dp, bottom = 16.dp)
+                        .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
+                    onClick = { navController.navigate("Profile/editProfile") },
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                ) {
+                    Row(
                         modifier = Modifier
-                            .size(120.dp)
-                            .clip(CircleShape)
-                            .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                            .fillMaxWidth()
+                            .padding(16.dp),
+
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        AsyncImage(
-                            model = profilePicture,
-                            contentDescription = "Profile picture",
-                            modifier = Modifier.fillMaxSize()
-                        )
-                        // Icone de crayon pour modifier la photo de profil
+
                         Icon(
                             imageVector = Icons.Default.Edit,
-                            contentDescription = "Modifier Photo de profil",
-                            modifier = Modifier
-                                .size(5.dp)
-                                .padding(4.dp)
+                            contentDescription = "Icone d'edition",
+                            modifier = Modifier.size(30.dp)
+                        )
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Text(
+                            text = "Modifier mon profil",
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
+                }
 
-                    // Nom d'utilisateur
-                    Text(
-                        text = auth.currentUser?.displayName.toString(),
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.padding(
-                            start = 16.dp,
-                            end = 8.dp,
-                            top = 8.dp,
-                            bottom = 8.dp
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 16.dp, start = 16.dp, bottom = 16.dp)
+                        .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = "Icone de paramètres",
+                            modifier = Modifier.size(30.dp)
                         )
-                    )
-
-                    Text(
-                        text = description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(8.dp)
-                    )
-
-                    Spacer(modifier = Modifier.height(32.dp))
-
-                    // Paramètres avec Icone et texte
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 16.dp, start = 16.dp, bottom = 16.dp)
-                            .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
-                        onClick = { navController.navigate("Profile/editProfile") },
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                        ),
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-
-                            Icon(
-                                imageVector = Icons.Default.Edit,
-                                contentDescription = "Icone d'edition",
-                                modifier = Modifier.size(30.dp)
-                            )
-                            Spacer(modifier = Modifier.width(20.dp))
-                            Text(
-                                text = "Modifier mon profil",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Text(
+                            text = "Paramètres",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     }
-
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 16.dp, start = 16.dp, bottom = 16.dp)
-                            .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                        ),
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-
-                            Icon(
-                                imageVector = Icons.Default.Settings,
-                                contentDescription = "Icone de paramètres",
-                                modifier = Modifier.size(30.dp)
-                            )
-                            Spacer(modifier = Modifier.width(20.dp))
-                            Text(
-                                text = "Paramètres",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
+                }
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 16.dp, start = 16.dp, bottom = 16.dp)
+                        .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                    onClick = {
+                        auth.signOut() // Déconnexion de l'utilisateur
+                        navController.navigate(Routes.Login.route)
                     }
-                    Card(
+                ) {
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(end = 16.dp, start = 16.dp, bottom = 16.dp)
-                            .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                        ),
-                        onClick = {
-                            auth.signOut() // Déconnexion de l'utilisateur
-                            navController.navigate(Routes.Login.route)
-                        }
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
+                            .padding(16.dp),
 
-                            verticalAlignment = Alignment.CenterVertically,
+                        verticalAlignment = Alignment.CenterVertically,
 
-                            ) {
-                            Icon(
-                                imageVector = Icons.Default.Logout,
-                                contentDescription = "Icone de déconnexion",
-                                modifier = Modifier.size(30.dp)
-                            )
-                            Spacer(modifier = Modifier.width(20.dp))
-                            Text(
-                                text = "Déconnexion",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
+                        ) {
+                        Icon(
+                            imageVector = Icons.Default.Logout,
+                            contentDescription = "Icone de déconnexion",
+                            modifier = Modifier.size(30.dp)
+                        )
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Text(
+                            text = "Déconnexion",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     }
                 }
             }
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.example.saglife.screen.forum
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -32,7 +35,7 @@ import com.google.firebase.firestore.firestore
 fun ForumModifyComment(navController: NavHostController, post_id: String?, comment_id: String?) {
     // État pour gérer le commentaire modifié
     var comment by remember { mutableStateOf(TextFieldValue()) }
-
+    val context = LocalContext.current
     val db = Firebase.firestore
 
     // Effect pour charger les données du document correspondant à l'ID du commentaire
@@ -45,11 +48,10 @@ fun ForumModifyComment(navController: NavHostController, post_id: String?, comme
                 if (documentSnapshot.exists()) {
                     // Remplissez le champ de commentaire avec la valeur du document
                     comment = TextFieldValue(documentSnapshot.getString("Comment") ?: "")
-                } else {
-                    // Document non trouvé
                 }
             }.addOnFailureListener { exception ->
                 println("Erreur lors de la récupération des données du post : $exception")
+                Toast.makeText(context, "Erreur de chargement", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -79,9 +81,9 @@ fun ForumModifyComment(navController: NavHostController, post_id: String?, comme
         Button(
             onClick = {
                 if (post_id != null && comment_id != null) {
-                    updateCommentInDatabase(post_id, comment_id, comment.text)
+                    updateCommentInDatabase(post_id, comment_id, comment.text, context)
                 }
-                navController.navigate("forum/$post_id")
+                navController.navigateUp()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -93,12 +95,13 @@ fun ForumModifyComment(navController: NavHostController, post_id: String?, comme
 }
 
 // Fonction pour mettre à jour le commentaire dans la base de données Firestore
-private fun updateCommentInDatabase(postId: String, commentId: String, updatedComment: String) {
+private fun updateCommentInDatabase(postId: String, commentId: String, updatedComment: String, context : Context) {
     val updatedData = mapOf(
         "Comment" to updatedComment,
     )
 
     val db = Firebase.firestore
+
 
     // Utilisez la référence au document avec l'ID du post pour mettre à jour les champs spécifiques du commentaire
     db.collection("forum")
@@ -108,8 +111,10 @@ private fun updateCommentInDatabase(postId: String, commentId: String, updatedCo
         .update(updatedData)
         .addOnSuccessListener {
             println("Champs du post mis à jour avec succès")
+            Toast.makeText(context, "Post mis à jour", Toast.LENGTH_SHORT).show()
         }
         .addOnFailureListener { e ->
             println("Erreur lors de la mise à jour des champs du post: $e")
+            Toast.makeText(context, "Erreur lors de la mise à jour du post", Toast.LENGTH_SHORT).show()
         }
 }

@@ -73,10 +73,10 @@ fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
 
 
     // Initialisation des états
-    var selectedFilters = mutableListOf<String>()
+    val selectedFilters = mutableListOf<String>()
     var filterList by remember { mutableStateOf(mutableListOf<String>()) }
     var mapsFiltered by remember { mutableStateOf(mutableListOf<MapItem>()) }
-    var allMaps = mutableListOf<MapItem>()
+    val allMaps by remember { mutableStateOf(mutableListOf<MapItem>()) }
     var postLoaded by remember { mutableStateOf(false) }
 
     // Etat du rafraîchissement
@@ -120,7 +120,6 @@ fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
                         clientLocation.longitude,
                         results
                     )
-                    print("Location :" + results[0])
                     allMaps.add(
                         MapItem(
                             document.id,
@@ -137,7 +136,6 @@ fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
                     )
 
                 }
-
                 mapsFiltered = allMaps
 
                 for (mapItem in allMaps) {
@@ -163,6 +161,7 @@ fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
                 }
             }
             postLoaded = true
+            println("All map" + allMaps)
         }
 
     }
@@ -195,7 +194,6 @@ fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
                 ) {
                     items(filterList) { filter ->
                         FilterChip(
-
                             onClick = { filterName ->
                                 // Filtrage des cartes en fonction des filtres sélectionnés
                                 if (selectedFilters.contains(filterName)) {
@@ -205,13 +203,8 @@ fun MapScreen(navController: NavHostController, clientLocation: GeoPoint) {
                                 }
                                 println(selectedFilters)
                                 if (selectedFilters.isNotEmpty()) {
-                                    print("All map" + allMaps)
                                     mapsFiltered = filterMapItems(selectedFilters, allMaps)
-                                    println("not empty")
-                                    println("filter : " + filterMapItems(selectedFilters, allMaps))
                                 } else {
-                                    println("empty")
-
                                     mapsFiltered = allMaps
                                 }
                                 println(mapsFiltered)

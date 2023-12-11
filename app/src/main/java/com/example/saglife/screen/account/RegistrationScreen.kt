@@ -1,6 +1,8 @@
 package com.example.saglife.screen.account
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -71,13 +74,16 @@ fun RegistrationScreen(navController: NavHostController) {
 fun ScaffoldWithTopBar(navController: NavHostController) {
     Scaffold(
         content = {
-            var username by remember { mutableStateOf(TextFieldValue()) }
-            var password by remember { mutableStateOf(TextFieldValue()) }
-            var password2 by remember { mutableStateOf(TextFieldValue()) }
-            var email by remember { mutableStateOf(TextFieldValue()) }
-            var showPassword by remember { mutableStateOf(false) }
+            var username by remember { mutableStateOf(TextFieldValue("Presentation")) }
+            var password by remember { mutableStateOf(TextFieldValue("UserTest")) }
+            var password2 by remember { mutableStateOf(TextFieldValue("UserTest")) }
+            var email by remember { mutableStateOf(TextFieldValue("valentine.gilles2000@gmail.com")) }
+            var showPassword1 by remember { mutableStateOf(false) }
+            var showPassword2 by remember { mutableStateOf(false) }
 
             var ConnectionError by remember { mutableStateOf<String?>(null) }
+
+            val context = LocalContext.current
 
             Box(
                 modifier = Modifier
@@ -129,14 +135,14 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                     shape = RoundedCornerShape(16.dp),
                     label = { Text(text = "Mot de passe") },
                     value = password,
-                    visualTransformation = if (showPassword) {
+                    visualTransformation = if (showPassword1) {
                         VisualTransformation.None
                     } else {
                         PasswordVisualTransformation()
                     },
                     trailingIcon = {
-                        if (showPassword) {
-                            IconButton(onClick = { showPassword = false }) {
+                        if (showPassword1) {
+                            IconButton(onClick = { showPassword1 = false }) {
                                 Icon(
                                     imageVector = Icons.Filled.Visibility,
                                     contentDescription = "hide_password",
@@ -145,7 +151,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                             }
                         } else {
                             IconButton(
-                                onClick = { showPassword = true }) {
+                                onClick = { showPassword1 = true }) {
                                 Icon(
                                     imageVector = Icons.Filled.VisibilityOff,
                                     contentDescription = "hide_password",
@@ -164,14 +170,14 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                     shape = RoundedCornerShape(16.dp),
                     label = { Text(text = "Confirmer votre mot de passe") },
                     value = password2,
-                    visualTransformation = if (showPassword) {
+                    visualTransformation = if (showPassword2) {
                         VisualTransformation.None
                     } else {
                         PasswordVisualTransformation()
                     },
                     trailingIcon = {
-                        if (showPassword) {
-                            IconButton(onClick = { showPassword = false }) {
+                        if (showPassword2) {
+                            IconButton(onClick = { showPassword2 = false }) {
                                 Icon(
                                     imageVector = Icons.Filled.Visibility,
                                     contentDescription = "hide_password",
@@ -180,7 +186,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                             }
                         } else {
                             IconButton(
-                                onClick = { showPassword = true }) {
+                                onClick = { showPassword2 = true }) {
                                 Icon(
                                     imageVector = Icons.Filled.VisibilityOff,
                                     contentDescription = "hide_password",
@@ -210,7 +216,8 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                                         email.text,
                                         password.text,
                                         username.text,
-                                        navController
+                                        navController,
+                                        context
                                     ) { success, errorMessage ->
                                         if (!success) {
                                             // Affichez le message d'erreur sur ConnectionError
@@ -243,6 +250,7 @@ fun signUpWithFirebase(
     password: String,
     username: String,
     navController: NavHostController,
+    context : Context,
     onSignUpComplete: (success: Boolean, errorMessage: String?) -> Unit
 ) {
     val trim_email = email.trim()
@@ -257,13 +265,14 @@ fun signUpWithFirebase(
                 user?.updateProfile(userProfileChangeRequest)
                     ?.addOnCompleteListener { profileUpdateTask ->
                         if (profileUpdateTask.isSuccessful) {
-                            addUserToDatabase(user.uid, username)
+                            addUserToDatabase(user.uid, username, context)
                             navController.navigate("login")
                             onSignUpComplete(true, null) // Succès de l'inscription
                         } else {
                             // La mise à jour du pseudo a échoué
                             val errorMessage = profileUpdateTask.exception?.message
                             println("Echec de l'ajout du pseudo: $errorMessage")
+                            Toast.makeText(context, "Erreur lors de la création du compte", Toast.LENGTH_SHORT).show()
                             onSignUpComplete(false, errorMessage)
                         }
                     }
@@ -271,13 +280,14 @@ fun signUpWithFirebase(
                 // La création de l'utilisateur a échoué
                 val errorMessage = task.exception?.message
                 println("Echec de l'ajout de l'utilisateur: $errorMessage")
+                Toast.makeText(context, "Erreur lors de la création du compte", Toast.LENGTH_SHORT).show()
                 onSignUpComplete(false, errorMessage)
             }
         }
 }
 
 // Fonction pour ajouter l'utilisateur à la base de données
-fun addUserToDatabase(uid: String, username: String) {
+fun addUserToDatabase(uid: String, username: String, context : Context) {
     val profileImage = "R.drawable.ic_profile"
     val userMap = mapOf(
         "username" to username,
@@ -290,8 +300,10 @@ fun addUserToDatabase(uid: String, username: String) {
         .set(userMap)
         .addOnSuccessListener {
             println("Utilisateur ajouté à la base de données avec succès")
+            Toast.makeText(context, "Votre compte a été créé", Toast.LENGTH_SHORT).show()
         }
         .addOnFailureListener { e ->
             println("Erreur lors de l'ajout de l'utilisateur à la base de données: $e")
+            Toast.makeText(context, "Erreur lors de la création du compte", Toast.LENGTH_SHORT).show()
         }
 }

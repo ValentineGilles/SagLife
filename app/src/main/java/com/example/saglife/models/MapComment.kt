@@ -1,5 +1,7 @@
 package com.example.saglife.models
 
+import android.content.Context
+import android.widget.Toast
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import java.util.Date
@@ -53,7 +55,7 @@ class MapComment (val author: String, val comment : String, val date : Date) {
         }
     }
 
-    fun toFirebase(mapId: String, userId : String){
+    fun toFirebase(mapId: String, userId : String, context : Context){
         val db = Firebase.firestore
 
         // Ajoute le nouveau commentaire à la collection "comments"
@@ -63,9 +65,11 @@ class MapComment (val author: String, val comment : String, val date : Date) {
             .document(userId).set(toJson())
             .addOnSuccessListener { documentReference ->
                 println("Note ajouté avec l'ID : ${userId}")
+                Toast.makeText(context, "Note ajoutée !", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
                 println("Erreur lors de l'ajout de la note : $e")
+                Toast.makeText(context, "Erreur lors de l'ajout de la note", Toast.LENGTH_SHORT).show()
             }
     }
 }
